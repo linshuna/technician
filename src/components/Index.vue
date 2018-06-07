@@ -1,52 +1,28 @@
 <template>
-  <div class="home-wrapper">
-    <router-view></router-view>
-    <mt-tabbar v-model="selected">
-      <mt-tab-item id="/workTab">
-        <router-link to="/workTab">
-          
-          工作台
-        </router-link>
-      </mt-tab-item>
-      <mt-tab-item id="/customer">
-        <router-link to="/customer">
-          
-          客户
-        </router-link>
-      </mt-tab-item>
-      <mt-tab-item id="/pickupCar">
-        <router-link to="/pickupCar">
-          
-          接车
-        </router-link>  
-      </mt-tab-item>
-      <mt-tab-item id="/order">
-        <router-link to="/order">
-          
-          订单
-        </router-link>   
-      </mt-tab-item>
-      <mt-tab-item id="/user">
-        <router-link to="/user">
-        
-          我的
-        </router-link>   
-      </mt-tab-item>
-    </mt-tabbar>
+  <div>
+    <h1>工作台</h1>
+    <h2 @click="goTest">去测试页面</h2>
+
+    <div class="test"></div>
+
+    <h1 @click="goLogin">登录页面</h1>
   </div>
 </template>
 <script>
-  export default{
-  	data() {
-  		return {
-  			selected: '/workTab'
+  export default {
+    methods: {
+      goTest() {
+        window.location.href="./test.html"
+      },
+      goLogin() {
+        window.location.href="./login.html"
       }
-    },
-    created(){
-
-    },
+    }
   }
 </script>
-<style lang="">
-  
+<style lang="stylus">
+  .test
+    width: 7.5rem
+    height: 1rem
+    background: green
 </style>
