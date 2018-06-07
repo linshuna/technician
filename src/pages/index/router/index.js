@@ -6,7 +6,7 @@ import Customer from 'components/Customer.vue'
 import PickupCar from 'components/PickupCar.vue'
 import Order from 'components/Order.vue'
 import User from 'components/User.vue'
-import NotFound from 'components/404Page.vue'
+
 
 Vue.use(Router)
 
@@ -26,11 +26,6 @@ export default new Router({
         { path: '/order', component: Order, name: '订单' },
         { path: '/user', component: User, name: '我的' }
       ]
-    },
-    {
-      path: '*',
-      component: NotFound,
-      name: '404'
     }
   ]
 })
