@@ -12,6 +12,7 @@ export default {
 
 <style lang="stylus">
   #app 
+    font-family: PingFangSC-Regular
     text-align: center;
     color: #2c3e50;
 </style>
