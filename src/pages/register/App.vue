@@ -6,20 +6,28 @@
       <mt-field label="验证码" placeholder="请输入验证码" type="number" v-model="code"></mt-field> -->
       <ul class="loginWrap">
         <li class="border-bottom-1px">
-          <span>账号</span>
+          <span>手机号</span>
           <input type="tel" v-model.trim="phone" placeholder="请输入手机号">
+          <button id="gainCodeBtn">获取验证码</button>
         </li>
         <li class="border-bottom-1px">
           <span>密码</span>
-          <input type="password" v-model.trim="password" placeholder="请输入登录密码">
+          <input type="password" v-model.trim="password" placeholder="请输入注册密码">
+        </li>
+        <li class="border-bottom-1px">
+          <span>验证码</span>
+          <input type="text" v-model.trim="code" placeholder="请输入短信验证码">
         </li>
       </ul>
-      
       <div class="btnWrap">
-        <button id="registerBtn" @click="login" :class="{'isRegister': !invalid}">登录</button>
+        <button id="registerBtn" @click="register" :class="{'isRegister': !invalid}">注册</button>
       </div>
-      <p class="textRight">
-        <a href="forgetpwd.html">忘记密码？</a>
+      <p class="derictLogin">
+        <a href="login.html">通过账号密码登录></a>
+      </p>
+      <p class="tip">
+        <span>注册/登录代表您已同意</span>
+        <a href="javascript:void(0)"> 《用户协议》 </a>
       </p>
   </div>
 </template>
@@ -29,7 +37,6 @@
   import { Field,Button,Toast  } from 'mint-ui';
   import Vuerify from 'vuerify'
   Vue.use(Vuerify)
-  
   Vue.component(Field.name, Field);
   Vue.component(Button.name, Button);
 export default {
@@ -37,7 +44,10 @@ export default {
   data(){
     return {
       phone:'',
-      password:''
+      password:'',
+      code:'',
+      bolArr:[],
+      
     }
   },
   vuerify:{
@@ -47,7 +57,7 @@ export default {
     },
     password: {
       test: /^[\w!@#$%^&*.]{6,16}$/,
-      message: '请输入正确的登录密码'
+      message: '密码至少6位'
     },
   },
   computed: {
@@ -59,7 +69,7 @@ export default {
     }
   },
   methods:{
-    login:function(){
+    register:function(){
         if(!this.phone){
           this.toast('请输入手机号码')
           return false;
@@ -70,7 +80,7 @@ export default {
           }
         } 
         if(!this.password){
-          this.toast('请输入登录密码')
+          this.toast('请输入注册密码')
           return false;
         }else{
           if(this.errors.password){
@@ -78,9 +88,13 @@ export default {
               return false;
           }
         }
+        if(!this.code){
+          this.toast('请输入验证码')
+          return false;
+        }
 
         if (this.$vuerify.check()) {
-            this.toast('登录成功')
+            this.toast('注册成功')
         }
     },
     toast:function(msg,posi,time){
@@ -90,7 +104,8 @@ export default {
             // position: posi||'bottom',
             
         })  
-    }
+    },
+    
   }
 }
 </script>
@@ -108,6 +123,11 @@ export default {
       li
         line-height: .9rem
         height: .9rem
+        span 
+          display: inline-block
+          width: 13%
+        input[type="tel"]
+          width:55%
         input
           width: 80%
           height: 100%
@@ -130,9 +150,15 @@ export default {
         border-radius: 100px
         background: #a1a1a1
         border:none
-        color: #ffffff      
+        color: #ffffff  
       .isRegister
-        background: #FA9E15!important       
+        background: #FA9E15!important
+    .derictLogin
+      text-align: center
+      font-size: .2rem
+      margin-top: .3rem
+      a
+        color: #FA9E15            
     .tip
       font-size:.18rem
       text-align: center
@@ -143,10 +169,5 @@ export default {
         color: #ababab
       a 
         color: #3c3c3c  
-    .textRight
-      text-align: right   
-      font-size: .2rem
-      margin-top:.3rem
-      a
-        color: #FA9E15   
+      
 </style>

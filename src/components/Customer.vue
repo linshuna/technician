@@ -1,3 +1,14 @@
 <template>
-  <h1>客户</h1>
+  <div class="customerWrap">
+
+  </div>
 </template>
+<script>
+  export default {
+    data(){
+      return{
+        
+      }
+    }
+  }
+</script>
