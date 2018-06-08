@@ -12,13 +12,10 @@
   "dependencies": {
     "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
-<<<<<<< Updated upstream
     "vue-calendar-component": "^2.5.0",
-    "vue-router": "^3.0.1"
-=======
     "vue-router": "^3.0.1",
     "vuerify": "^0.4.0"
->>>>>>> Stashed changes
+
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
