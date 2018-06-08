@@ -15,7 +15,6 @@
     "vue-calendar-component": "^2.5.0",
     "vue-router": "^3.0.1",
     "vuerify": "^0.4.0"
-
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
