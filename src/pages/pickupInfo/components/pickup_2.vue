@@ -23,7 +23,7 @@
 </template>
 <script>
   import Vue from 'vue';
-  
+
   export default {
     data() {
       return {
@@ -50,12 +50,12 @@
     background: none
     padding: 0
   .wrapper >>> .mint-radiolist
-    float: left  
+    float: left
   .wrapper >>> .mint-cell
     float: left
     min-height: auto
   .wrapper >>> .mint-cell:last-child
-    background: none 
+    background: none
 
   .carInfo-wrapper
     overflow: hidden
@@ -68,7 +68,7 @@
       margin-top: .2rem
   .name-wrapper
       overflow: hidden
-      margin-bottom: .2rem
+      margin: .2rem 0
       line-height: .8rem
       .title
         float: left
@@ -85,11 +85,15 @@
       .title
         float: left
         width: 1.4rem
-      .phone  
+        height: .8rem
+        line-height: .8rem
+      .phone
         float: left
         width: 4rem
         font-size: .28rem
         border: 1px solid #d9d9d9
+        padding: .1rem .2rem
+        margin-top: .2rem
     .chooseCus
-      float: right           
+      float: right
 </style>

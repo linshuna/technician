@@ -30,7 +30,7 @@
   import Vue from 'vue';
   import { Radio} from 'mint-ui';
   Vue.component(Radio.name, Radio);
-  
+
   export default {
     data() {
       return {
@@ -57,12 +57,12 @@
     background: none
     padding: 0
   .wrapper >>> .mint-radiolist
-    float: left  
+    float: left
   .wrapper >>> .mint-cell
     float: left
     min-height: auto
   .wrapper >>> .mint-cell:last-child
-    background: none    
+    background: none
 
   .wrapper
     margin-bottom: 1rem
@@ -73,29 +73,37 @@
         float: left
         width: 1.4rem
       .carno
-        float: left 
+        float: left
     .vin-wrapper
       overflow: hidden
       margin-bottom: .2rem
       .title
         float: left
         width: 1.4rem
+        height: .8rem
+        line-height: .8rem
       .vin
         float: left
         width: 4rem
         font-size: .28rem
         border: 1px solid #d9d9d9
+        padding: .1rem .2rem
+        margin-top: .2rem
     .brand-wrapper
       overflow: hidden
       margin-bottom: .2rem
       .title
         float: left
         width: 1.4rem
+        height: .8rem
+        line-height: .8rem
       .brand
         float: left
         width: 4rem
         font-size: .28rem
         border: 1px solid #d9d9d9
+        padding: .1rem .2rem
+        margin-top: .2rem
     .name-wrapper
       overflow: hidden
       margin-bottom: .2rem
@@ -109,17 +117,22 @@
         font-size: .28rem
         line-height: .8rem
         border: 1px solid #d9d9d9
+        padding: 0 .2rem;
     .link-phone
       overflow: hidden
       margin-bottom: .2rem
       .title
         float: left
         width: 1.4rem
-      .phone  
+        height: .8rem
+        line-height: .8rem
+      .phone
         float: left
         width: 4rem
         font-size: .28rem
-        border: 1px solid #d9d9d9 
+        border: 1px solid #d9d9d9
+        padding: .1rem .2rem
+        margin-top: .2rem
     .chooseCus
       color: $color-main
       float: right

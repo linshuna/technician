@@ -18,8 +18,9 @@
       </div>
       <div class="expect-delivery">
         <div class="title">预计交车</div>
-        <div class="delivery-time" @click="openTimePicker">2018-08-08
-          <mt-datetime-picker v-model="deliveryTime" @confirm="handleConfirm" ref="picker" type="datetime" ></mt-datetime-picker>
+        <div class="delivery-time" @click="openTimePicker">
+          <input placeholder="请选择日期" v-model="deliveryTime"/>
+          <mt-datetime-picker @confirm="handleConfirm" ref="pickerDelivery" type="datetime" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" hour-format="{value} 时" minute-format="{value} 分" ></mt-datetime-picker>
         </div>
       </div>
       <div class="owner-remark">
@@ -39,7 +40,7 @@
 </template>
 
 <script>
-
+  import {format} from 'modules/js/date.js'
   export default {
     name: 'App',
     data () {
@@ -49,21 +50,23 @@
       }
     },
     computed: {
-      
+
     },
     created() {
-      
+
     },
     methods: {
       openTimePicker() {
-        this.$refs.picker.open();
+        this.$refs.pickerDelivery.open();
       },
-      handleConfirm() {
-        this.$refs.picker.close();
+      handleConfirm(value) {
+
+        this.deliveryTime = format(value.toString(),"yyyy-MM-dd hh:mm");
+        this.$refs.pickerDelivery.close();
       }
     },
     components: {
-      
+
     }
   }
 </script>
@@ -75,10 +78,14 @@
     float: right
     margin-top: .1rem
 
+  #app >>> .picker-item
+    padding: 0
+
   #app
     color: #2c3e50
     font-size: .32rem
     margin: 0 .2rem
+    padding-bottom: 1.4rem
     .title
       height: .8rem
       line-height: .8rem
@@ -92,7 +99,7 @@
       .odometer
         display: inline-block
         width: 4rem
-        padding: .1rem .2rem 
+        padding: .1rem .2rem
         margin: .1rem 0 .1rem .2rem
         border: 1px solid #d9d9d9
       .pre-odometer
@@ -107,9 +114,9 @@
         display: inline-block
         width: 4rem
         height: .4rem
-        padding: .1rem .2rem 
+        padding: .1rem .2rem
         margin: .1rem 0 .1rem .2rem
-        border: 1px solid #d9d9d9 
+        border: 1px solid #d9d9d9
     .expect-delivery
       overflow: hidden
       .title
@@ -118,16 +125,16 @@
         display: inline-block
         width: 4rem
         height: .4rem
-        padding: .1rem .2rem 
+        padding: .1rem .2rem
         margin: .1rem 0 .1rem .2rem
-        border: 1px solid #d9d9d9 
+        border: 1px solid #d9d9d9
     .owner-remark
       .remark
         width: 60%
         height: 1rem
         margin-left: .1rem
         vertical-align: middle
-        border: 1px solid #d9d9d9 
+        border: 1px solid #d9d9d9
   .btn-wrapper
       position: fixed
       width: 100%
@@ -146,5 +153,5 @@
         font-size: .28rem
         padding-top: .2rem
       .receive
-        line-height: 1rem            
+        line-height: 1rem
 </style>
