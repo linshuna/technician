@@ -13,7 +13,20 @@
     <div class="item border-bottom-1px" @click="showTimeModal">预约到店时间
       <span class="iconfont icon-right">&#xe66b;</span>
     </div>
-    <mt-picker :slots="slots" @change="onValuesChange" ref="picker"></mt-picker>
+    <div class="item link-phone border-bottom-1px">
+      联系电话
+      <input class="phone" type="number" pattern="[0-9]*" placeholder="请输入"/>
+    </div>
+    <div class="remark-wrapper">
+      <div class="title item">车店备注</div>
+      <textarea class="remark" name="" placeholder="备注" v-model="remark"></textarea>
+    </div>
+    <div class="btn">保存</div>
+
+    <mt-popup position="bottom" v-model="popupVisibleName">
+      <mt-picker class="name-picker" :slots="slots" @change="onValuesChange"></mt-picker>
+    </mt-popup>
+
     <mt-popup class="modal-type" v-model="popupVisibleType" popup-transition="popup-fade" position="right">
       <div class="title">服务类型</div>
       <div class="list" v-for="item in typeData">
@@ -47,10 +60,12 @@ export default {
       popupVisibleType: false,
       popupVisibleTime: false,
       pickerValue: false,
+      popupVisibleName: false,
+      remark:'',
       slots: [
         {
           flex: 1,
-          values: ['aa', 'bb', 'cc'],
+          values: ['a', 'b'],
           className: 'slot2',
           textAlign: 'center'
         }
@@ -75,16 +90,18 @@ export default {
       this.$refs.picker.open();
     },
     showNameModal() {
-      //this.$refs.picker.style['display'] = 'block'
+      this.popupVisibleName = true
     }
   },
   created() {
-    //this.$refs.picker.style.display = 'none'
+    
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+  @import '~modules/css/variable.styl'
+
   #app 
     font-family: PingFangSC-Regular
     font-size: .32rem
@@ -97,6 +114,34 @@ export default {
         font-size: .3rem
         float: right
         margin-right: .2rem
+      .phone
+        display: inline-block
+        //width: 4rem
+        height: 1rem
+        line-height: 1rem
+        text-align: right
+        float: right  
+        margin-right: .2rem
+    .remark-wrapper
+      .remark
+        margin: 0 .4rem
+        width: 90%
+        height: 1.5rem
+        border: 1px solid #f4f4f4
+        border-radius: 5px
+        padding: .1rem
+        box-sizing: border-box
+    .btn
+      position: fixed
+      bottom: 0
+      width: 100% 
+      height: .8rem
+      line-height: .8rem
+      text-align: center
+      color: #fff
+      background: $color-main         
+    .name-picker
+      width: 7.5rem    
     .mint-popup-right
       width: 70%
       height: 100% 
@@ -115,7 +160,7 @@ export default {
           margin: .2rem
           font-size: .24rem
           text-align: center
-          background: #eee   
+          background: #eee
       .btn-wrapper
         position: fixed
         bottom: 0

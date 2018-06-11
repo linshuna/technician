@@ -323,7 +323,7 @@ export default {
             width: .35rem
             height: .35rem
             vertical-align: middle
-        textarea
+        textareatextarea
           width: 100%
           height: 1.5rem
           border: 1px solid #f4f4f4
