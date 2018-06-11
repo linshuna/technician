@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import getRem from 'modules/js/getRem.js'
+import router from './router'
 
 import 'modules/css/reset.styl'
 import 'modules/css/border-1px.css'
@@ -11,14 +12,17 @@ import 'modules/css/iconfont.css'
 
 Vue.use(getRem)
 
-import { Search,Switch } from 'mint-ui';
+import { Search, Switch } from 'mint-ui';
+import { DatetimePicker } from 'mint-ui';
 Vue.component(Search.name, Search);
 Vue.component(Switch.name, Switch);
+Vue.component(DatetimePicker.name, DatetimePicker);
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  router,
   template: '<App/>',
   components: { App }
 })
