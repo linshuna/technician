@@ -2,7 +2,7 @@
   <div class="customerWrap">
     <div class="setBg">
       <div class="searchWrap">
-      <div class="searchLeft">
+        <div class="searchLeft">
             <img src="../modules/images/searchIcon.png" alt="">
             <input type="text" v-model="searchValue" placeholder="搜索姓名、手机号">
         </div> 
@@ -11,7 +11,7 @@
         </div>
       </div>
       <ul class="searchResult">
-          <li class="border-bottom-1px">
+          <li class="border-bottom-1px" @click="linkCusDetial">
               <div class="resultLeft">
                 <img src="../modules/images/defaultLogo.png" alt="">
               </div>
@@ -23,7 +23,7 @@
                 </a>
               </div>
           </li>
-          <li class="border-bottom-1px">
+          <li class="border-bottom-1px" @click="linkCusDetial">
               <div class="resultLeft">
                 <img src="../modules/images/defaultLogo.png" alt="">
               </div>
@@ -50,6 +50,9 @@
     methods:{
       addNewCustom(){
         window.location.href = "addNewCustom.html"
+      },
+      linkCusDetial(){
+        window.location.href = "customerDetail.html"
       }
     }
   }

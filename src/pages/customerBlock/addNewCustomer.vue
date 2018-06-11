@@ -257,12 +257,11 @@ export default {
             box-sizing:border-box
             position: relative
             .btmArrowIcon
-              position: absolute
+              position: absolute 
               top: 50%
-              width: 0.3rem
-              right: 0.1rem
-              margin-top: .03rem
-              transform: translate(0, -50%)
+              width: .45rem
+              right: .1rem
+              transform: translate(0,-50%)
             .isShowPicker
               display: inline-block   
             .mint-radiolist
@@ -324,7 +323,7 @@ export default {
             width: .35rem
             height: .35rem
             vertical-align: middle
-        textareatextarea
+        textarea
           width: 100%
           height: 1.5rem
           border: 1px solid #f4f4f4

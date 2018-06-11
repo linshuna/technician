@@ -1,71 +1,34 @@
 <template>
   <div id="app">
     <div class="customWrap">
-      <div class="logoWrap">
-        <img :src="customerLogo" class="customLogo"/>
-      </div>
       <ul class="fieldWrap border-bottom-1px">
         <li>
           <span class="fieldName">
-            客户类型
-            <span class="redColor">*</span>
+            车牌号
           </span>
           <div class="setCusRight">
-            <mt-radio
-              v-model="cusTypevalue"
-              :options="options">
-            </mt-radio>  
-          </div>
-          
-        </li>
-        <li>
-          <span class="fieldName">
-            客户名称
-            <span class="redColor">*</span>
-          </span>
-          <div class="setCusRight">
-            <input type="text" placeholder="请输入客户名称" class="cusNameInp" v-model="cusName"/>
-            <mt-radio
-              v-model="cusNameValue"
-              :options="cusNameOptions">
-            </mt-radio>
+            <input type="text" v-model="carno"/>
           </div>
         </li>
         <li>
-          <span class="fieldName">
-            手机号码
-            <span class="redColor">*</span>
-          </span>
+          <span class="fieldName">车架号</span>
           <div class="setCusRight">
-            <input type="text" placeholder="请输入客户手机号" v-model="cusPhone"/>
+            <input type="text" placeholder="请输入17位车架号" v-model="carVin"/>
           </div>
         </li>
         <li>
-          <span class="fieldName">
-            客户级别
-          </span>
+          <span class="fieldName">品牌车型</span>
           <div class="setCusRight">
-            <input type="text" placeholder="请选择级别" v-model="cusLabelText" readonly @focus="cusLabel" @blur="comfirmChecked=false"/>
-            <img :src="btmArrowIcon" alt="" class="btmArrowIcon">
-            <mt-popup v-model="popupVisible" position="bottom">
-              <div class="picker-toolbar">  
-                  <span class="mint-datetime-cancel" @click="cancle">取消</span>  
-                  <span class="mint-datetime-confirm" @click="select">确定</span>  
-              </div>  
-              <mt-picker ref='pickerObj' :slots="slots" valueKey="name" ></mt-picker>
-            </mt-popup>
-
+            <input type="text" placeholder="请选择品牌车型" v-model="carType"/>
           </div>
         </li>
         <li>
-          <span class="fieldName">
-            生日
-          </span>
+          <span class="fieldName">注册日期</span>
           <div class="setCusRight">
-            <input type="text" placeholder="请选择日期" v-model="birthDate" readonly @focus="cusBirth('birthPicker')"/>
+            <input type="text" placeholder="请选择日期" v-model="registDate" readonly @focus="cusBirth('registPicker')"/>
             <img :src="birthIcon" alt="" class="btmArrowIcon">
               <mt-datetime-picker
-                ref="birthPicker"
+                ref="registPicker"
                 type="date"
                 :startDate="startDate"
                 :endDate="endDate"
@@ -78,22 +41,85 @@
           </div>
         </li>
         <li>
-          <span class="fieldName">
-            所在单位
-          </span>
+          <p>商业险</p>
+        </li>
+        <li>
+          <span class="fieldName">到期日期</span>
           <div class="setCusRight">
-            <input type="text" placeholder="请输入客户所在单位" v-model="cusAddress"/>
+            <input type="text" placeholder="请选择日期" v-model="bussiDate" readonly @focus="cusBirth('bussiPicker')"/>
+            <img :src="birthIcon" alt="" class="btmArrowIcon">
+              <mt-datetime-picker
+                ref="bussiPicker"
+                type="date"
+                :startDate="startDate"
+                :endDate="endDate"
+                year-format="{value} 年"
+                month-format="{value} 月"
+                date-format="{value} 日"
+                @confirm="handleChange"
+              >
+              </mt-datetime-picker>
+          </div>
+        </li>
+        <li>
+          <span class="fieldName">承保公司</span>
+          <div class="setCusRight">
+            <input type="text" placeholder="请选择级别" v-model="bussiCompanyText" readonly @focus="companyPick('bussi')" @blur="comfirmChecked=false"/>
+            <img :src="btmArrowIcon" alt="" class="btmArrowIcon">
+            <mt-popup v-model="popupVisible" position="bottom">
+              <div class="picker-toolbar">  
+                  <span class="mint-datetime-cancel" @click="cancle">取消</span>  
+                  <span class="mint-datetime-confirm" @click="select">确定</span>  
+              </div>  
+              <mt-picker ref='pickerObj' :slots="slots" valueKey="name" ></mt-picker>
+            </mt-popup>
+
+          </div>
+        </li>
+        <li>
+          <p>交强险</p>
+        </li>
+        <li>
+          <span class="fieldName">到期日期</span>
+          <div class="setCusRight">
+            <input type="text" placeholder="请选择日期" v-model="tranDate" readonly @focus="cusBirth('tranPicker')"/>
+            <img :src="birthIcon" alt="" class="btmArrowIcon">
+              <mt-datetime-picker
+                ref="tranPicker"
+                type="date"
+                :startDate="startDate"
+                :endDate="endDate"
+                year-format="{value} 年"
+                month-format="{value} 月"
+                date-format="{value} 日"
+                @confirm="handleChange"
+              >
+              </mt-datetime-picker>
+          </div>
+        </li>
+        <li>
+          <span class="fieldName">承保公司</span>
+          <div class="setCusRight">
+            <input type="text" placeholder="请选择级别" v-model="tranCompanyText" readonly @focus="companyPick('tran')" @blur="comfirmChecked=false"/>
+            <img :src="btmArrowIcon" alt="" class="btmArrowIcon">
+            <mt-popup v-model="popupVisible" position="bottom">
+              <div class="picker-toolbar">  
+                  <span class="mint-datetime-cancel" @click="cancle">取消</span>  
+                  <span class="mint-datetime-confirm" @click="select">确定</span>  
+              </div>  
+              <mt-picker ref='pickerObj' :slots="slots" valueKey="name" ></mt-picker>
+            </mt-popup>
+
+          </div>
+        </li>
+        <li>
+          <span class="fieldName">发动机号</span>
+          <div class="setCusRight">
+            <input type="text" placeholder="请输入发动机号" v-model="carEniger"/>
           </div>
         </li>
       </ul>
-      <div class="remarkWrap">
-        <p>其他联系人</p>
-        <p class="addLinkerWrap">
-          <img :src="addLinkerIcon" alt="" class="addOtherLinker">
-          <span>添加联系人</span>
-        </p>
-        <textarea name="" placeholder="备注" v-model="remarkTip"></textarea>
-      </div>
+     
       <button class="saveBtn" @click="saveMsg">保存</button>
     </div>
      
@@ -115,43 +141,25 @@ export default {
   name: 'App',
   data(){
     return {
-      cusTypevalue:'1',
-      cusNameValue:'1',
-      cusName:'',
-      cusPhone:'',
-      customerLogo:require("modules/images/defaultLogo.png"),
+      carno:'',
+      carVin:'',
+      carType:'',
       btmArrowIcon: require("modules/images/btmArrow.png"),
       addLinkerIcon: require("modules/images/blueAddIcon.png"),
       birthIcon: require("modules/images/birthIcon.png"),
-      options:[
-          {
-            label: '个人',
-            value: '1'
-          },
-          {
-            label: '单位',
-            value: '0'
-          }
-        ],
-      cusNameOptions:[
-          {
-            label:'先生',
-            value:'1'
-          },
-          {
-            label:'女士',
-            value:'0'
-          },
-      ],
       popupVisible:false,//picker组件显示和关闭
       slots: [{defaultIndex:0}],//picker选择框数据
-      cusLabelText:'',//选中的value值
-      cusTypeStyle:  ['普通', '中级', '高级', 'vip', 'vvip'],
+      companyStyle:  ['中国人寿', '太平洋保险', '永安保险', '平安车险', '中华联合车险'],
       startDate: new Date('1970/1/1'),//开始的生日日期
       endDate: new Date(),//结束的生日日期
-      birthDate: '',//选中的生日日期
-      cusAddress:'',//客户单位地址
-      remarkTip:''//备注
+      currentCheckedDate:'',//选中对应的日期
+      registDate: '',//选中的注册日期
+      bussiDate:'',//商业险日期
+      tranDate:'',//交强险日期
+      currentPickerId:'',//被选中公司id
+      bussiCompanyText:'',//商业险公司
+      tranCompanyText:'',//交强险公司
+      carEniger:''//发动机号
     }
   },
   vuerify:{
@@ -178,12 +186,15 @@ export default {
         picker.setSlotValue(1, values[0]);
       }
     },
-    cusLabel(){//职业类型选择框
+    companyPick(id){//职业类型选择框
         this.popupVisible=true;//激活picker组件
+        // this.currentPicker='careerName';//当前picker内容变量
+        this.currentPickerId=id;//当前picker内容id变量
         this.slots=[{
               defaultIndex:0,
               flex: 1,
-              values: this.cusTypeStyle,//职业类型
+              values: this.companyStyle,//职业类型
+              // className: 'slot1',
               textAlign: 'center'
         }];
     },
@@ -192,14 +203,27 @@ export default {
     },
     select:function(){
       var pickerVal=this.$refs.pickerObj.getValues();
-      this.cusLabelText = pickerVal;
       this.popupVisible=false;
+      if(this.currentPickerId == 'bussi'){
+        this.bussiCompanyText = pickerVal;
+      }else{
+        this.tranCompanyText = pickerVal;
+      }
     },
     cusBirth:function(picker){
       this.$refs[picker].open();//open时间选择器
+      this.currentCheckedDate = picker
     },
     handleChange(value) {
-        this.birthDate = format(value.toString(),"yyyy-MM-dd");
+        let date = value.toString();
+        date = format(date,'yyyy-MM-dd')
+        if(this.currentCheckedDate=='registPicker'){//注册日期
+          this.registDate = date
+        }else if(this.currentCheckedDate=='bussiPicker'){//商业险日期
+          this.bussiDate = date
+        }else{//交强险日期
+          this.tranDate = date
+        }
     },
     saveMsg:function(){
       console.log(this.cusNameVaule)
@@ -235,16 +259,19 @@ export default {
         width: 100% 
         font-size: 0
         padding-bottom:.2rem
+        padding-top: .2rem
         li
           width: 100%
           font-size: 0  
-          padding: .2rem 0
+          padding: .1rem 0
           position: relative
+          p
+            font-size: .28rem
           .fieldName
-            line-height: .7rem
             vertical-align top  
             font-size: .28rem
             width: 20%
+            line-height: .7rem
             display: inline-block
             .redColor
               color: red
@@ -252,17 +279,15 @@ export default {
             display: inline-block
             font-size: .28rem
             width: 80%
-            height: .7rem
             padding-left: .32rem
             box-sizing:border-box
             position: relative
             .btmArrowIcon
-              position: absolute
+              position: absolute 
               top: 50%
-              width: 0.3rem
-              right: 0.1rem
-              margin-top: .03rem
-              transform: translate(0, -50%)
+              width: .45rem
+              right: .1rem
+              transform: translate(0,-50%)
             .isShowPicker
               display: inline-block   
             .mint-radiolist
@@ -324,7 +349,7 @@ export default {
             width: .35rem
             height: .35rem
             vertical-align: middle
-        textareatextarea
+        textarea
           width: 100%
           height: 1.5rem
           border: 1px solid #f4f4f4
@@ -343,6 +368,3 @@ export default {
         color: #ffffff
 
 </style>
-
-
-
