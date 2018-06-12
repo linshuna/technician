@@ -102,18 +102,124 @@
                           <p class="grayColor">1、蜡水快洗</p>
                         </div>
                       </li>
+                      <li>
+                        <div class="searchLeft">
+                          <span class="searchTime">xxx-xx-xx</span>
+                          <span class="ring"></span>
+                          <span class="line"></span>
+                        </div>
+                        <div class="searchRight">
+                          <p>￥50</p>
+                          <p class="grayColor">1、蜡水快洗</p>
+                        </div>
+                      </li>
                     </ul>
                 </div>
             </div>
           </mt-tab-container-item>  
           <mt-tab-container-item id="检车记录">  
-            <!-- 检车记录 -->
-            <div>3</div>
+            <div id="checkedRemark">
+              <ul class="checkedRemarkList">
+                <li>
+                  <p class="checkedTitle border-bottom-1px">
+                    <span class="checkedTime">2018.06.04</span>
+                    <img :src="rightArrowIcon">  
+                  </p>
+                  <p class="clearFloat">
+                    <span class="fl">项目名称</span>
+                    <span class="fr">检测备注</span>
+                  </p>
+                  <ul class="projectList">
+                    <li class="checkedCon clearFloat">
+                      <span class="fl">项目名称</span>
+                      <span class="fr">无</span>
+                    </li>
+                    <li class="checkedCon clearFloat">
+                      <span class="fl">项目名称</span>
+                      <span class="fr">无</span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="checkedTitle border-bottom-1px">
+                    <span class="checkedTime">2018.06.04</span>
+                    <img :src="rightArrowIcon">  
+                  </p>
+                  <p class="clearFloat">
+                    <span class="fl">项目名称</span>
+                    <span class="fr">检测备注</span>
+                  </p>
+                  <ul class="projectList">
+                    <li class="checkedCon clearFloat">
+                      <span class="fl">项目名称</span>
+                      <span class="fr">无</span>
+                    </li>
+                    <li class="checkedCon clearFloat">
+                      <span class="fl">项目名称</span>
+                      <span class="fr">无</span>
+                    </li>
+                  </ul>
+                  
+                </li>
+              </ul>
+            </div>
           </mt-tab-container-item>  
           <mt-tab-container-item id="报价记录">  
             <!-- 报价记录 -->
-            <div>  
-              4
+            <div id="quotedRemark">  
+              <ul class="checkedRemarkList">
+                <li>
+                  <p class="checkedTitle border-bottom-1px">
+                    <span class="checkedTime">2018.06.04</span>
+                    <img :src="rightArrowIcon">  
+                  </p>
+                  <p class="clearFloat">
+                    <span class="fl">服务名称</span>
+                  </p>
+                  <ul class="projectList">
+                    <li class="checkedCon clearFloat">
+                      <span class="fl">服务名称</span>
+                      <span class="fr quotedMsg">
+                        <span class="smallFont">x1</span>
+                        <span class="orangeColor">￥250</span>
+                      </span>
+                    </li>
+                    <li class="checkedCon clearFloat">
+                      <span class="fl">服务名称</span>
+                      <span class="fr quotedMsg">
+                        <span class="smallFont">x1</span>
+                        <span class="orangeColor">￥250</span>
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="checkedTitle border-bottom-1px">
+                    <span class="checkedTime">2018.06.04</span>
+                    <img :src="rightArrowIcon">  
+                  </p>
+                  <p class="clearFloat">
+                    <span class="fl">服务名称</span>
+                  </p>
+                  <ul class="projectList">
+                    <li class="checkedCon clearFloat">
+                      <span class="fl">服务名称</span>
+                      <span class="fr quotedMsg">
+                        <span class="smallFont">x1</span>
+                        <span class="orangeColor">￥250</span>
+                      </span>
+                    </li>
+                    <li class="checkedCon clearFloat">
+                      <span class="fl">服务名称</span>
+                      <span class="fr quotedMsg">
+                        <span class="smallFont">x1</span>
+                        <span class="orangeColor">￥250</span>
+                      </span>
+                    </li>
+                  </ul>
+                  
+                </li>
+              </ul>
             </div>   
           </mt-tab-container-item>  
         </mt-tab-container>  
@@ -137,11 +243,13 @@ export default {
   name: 'App',
   data(){
     return {
-      selected: '消息记录',
+      selected: '车辆信息',
+      searchValue:'',
       editorIcon:require("modules/images/editorIcon.png"),
       defaultIcon:require("modules/images/defaultLogo.png"),
       girlIcon: require("modules/images/girlIcon.png"),
-      searchIcon:require("modules/images/searchIcon.png")
+      searchIcon:require("modules/images/searchIcon.png"),
+      rightArrowIcon:require("modules/images/rightArrow.png")
     }
   },
   mounted: function(){
@@ -249,30 +357,32 @@ export default {
         width: 100%
         margin-top: .2rem
         background: #ffffff
-        .consumeTitle
+        ul
           width: 100%
-          font-size: 0
-          span 
-            display: inline-block
-            width: 49%
-            text-align: right   
-            font-size: .28rem
-            color: #333
-          .setCenter
-            text-align: center   
-        li 
-          width: 100%
-          font-size: 0
-          padding: .2rem 0
-          .grayColor
-            display: inline-block
-            color: gray 
-            width: 23%
-          span
-            display: inline-block
-            font-size: .26rem
-            width: 34%
-            text-align: center
+          .consumeTitle
+            width: 100%
+            font-size: 0
+            span 
+              display: inline-block
+              width: 49%
+              text-align: right   
+              font-size: .28rem
+              color: #333
+            .setCenter
+              text-align: center      
+          li 
+            width: 100%
+            font-size: 0
+            padding: .2rem 0
+            .grayColor
+              display: inline-block
+              color: gray 
+              width: 23%
+            span
+              display: inline-block
+              font-size: .26rem
+              width: 34%
+              text-align: center
         .searchWrap
           display: inline-block
           font-size: .28rem
@@ -295,15 +405,16 @@ export default {
         .searchResult
           width: 100%
           font-size: 0
-          background: #e0e0e0
+          background: #f4f4f4
           ul
             width: 100%
-            padding: 0 .2rem
+            padding: .2rem .2rem 0
             box-sizing: border-box 
           li
             font-size: 0
             text-align: right
             width: 100%
+            padding: 0
             .searchLeft
               display: inline-block
               width: 25%
@@ -330,25 +441,61 @@ export default {
                 display: inline-block
                 width: .02rem
                 height: 1.2rem
-                background: #f4f4f4
+                background: #d4d4d4
                 margin-right: .1rem
             .searchRight
               display: inline-block
               width: 75%  
-              height: 1.5rem
+              height: 1.3rem
               vertical-align: top
               padding: .2rem
               box-sizing: border-box
               text-align: left
               font-size: .28rem
               background: #ffffff
+              margin-top: .08rem
               p
                 width: 100%
                 line-height: .45rem
               .grayColor
                 color: gray
-
-
+      #checkedRemark,#quotedRemark
+        width: 100%  
+        .checkedRemarkList
+          width: 100%
+          li
+            width: 100%
+            padding: 0 .32rem
+            box-sizing: border-box
+            background: #ffffff
+            margin-top: .2rem
+            p
+              line-height .7rem
+            .checkedTitle
+              line-height .7rem
+              position: relative
+              img 
+                display: inline-block
+                width: .15rem
+                line-height .7rem
+                position: absolute
+                right: 0
+                top: 50%
+                transform: translate(0,-50%)
+            .projectList
+              width: 100%
+              color: gray
+              li
+                line-height: .7rem
+                margin-top: 0
+                padding: 0
+                .quotedMsg
+                  .smallFont
+                    font-size: .2rem
+                    padding:0 .2rem
+                  .orangeColor
+                    font-size: .28rem
+                    color: #FA9E15
 
 
 </style>

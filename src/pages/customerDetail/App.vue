@@ -21,7 +21,7 @@
         <ul class="carMsgList">
           <li class="carMsgTitle clearFloat border-bottom-1px">
             <p class="fl">车辆清单</p>
-            <p class="fr bindCar">绑定车辆</p>
+            <p class="fr bindCar" @click="bindNewCar">绑定车辆</p>
           </li>
           <li class="border-bottom-1px" @click="carDetailMsg(1)">
             <p>
@@ -71,8 +71,10 @@ export default {
   methods:{
     carDetailMsg:function(e){
       this.$router.push({path:"/carDetailMsg/"+e})
+    },
+    bindNewCar: function(){
+      this.$router.push({path:"/bindNewCar"})
     }
-    
   }
 }
 </script>
@@ -178,6 +180,7 @@ export default {
             color: gray 
           .smallFont
             font-size: .2rem  
+            color: gray
           .rightArrow
             display: inline-block
             width: .15rem

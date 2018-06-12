@@ -119,7 +119,7 @@
           </div>
         </li>
       </ul>
-     
+      <!-- <carKeyCode></carKeyCode> -->
       <button class="saveBtn" @click="saveMsg">保存</button>
     </div>
      
@@ -137,6 +137,7 @@
   Vue.component(Picker.name, Picker);
   Vue.component(DatetimePicker.name, DatetimePicker);
   import {format} from 'modules/js/date.js'
+import carKeyCodeVue from '../../../components/carKeyCode.vue';
 export default {
   name: 'App',
   data(){
@@ -285,7 +286,7 @@ export default {
             .btmArrowIcon
               position: absolute 
               top: 50%
-              width: .45rem
+              width: .35rem
               right: .1rem
               transform: translate(0,-50%)
             .isShowPicker

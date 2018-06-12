@@ -172,6 +172,10 @@ export default {
       return this.$vuerify.invalid
     }
   },
+  mounted: function(){
+    this.$nextTick(function(){
+    })
+  },
   methods:{
     onValuesChange(picker, values) {
       if (values[0] > values[1]) {
@@ -324,13 +328,14 @@ export default {
             width: .35rem
             height: .35rem
             vertical-align: middle
-        textareatextarea
+        textarea
           width: 100%
           height: 1.5rem
           border: 1px solid #f4f4f4
           border-radius: 5px
           padding: .1rem
-          box-sizing: border-box    
+          box-sizing: border-box   
+          margin-bottom: .2rem 
       .saveBtn
         width: 100%
         height: .7rem
