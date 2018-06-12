@@ -89,6 +89,7 @@
         border: 1px solid #d9d9d9
         padding: .1rem .2rem
         margin-top: .2rem
+        border-radius: 4px;
     .brand-wrapper
       overflow: hidden
       margin-bottom: .2rem
@@ -104,6 +105,7 @@
         border: 1px solid #d9d9d9
         padding: .1rem .2rem
         margin-top: .2rem
+        border-radius: 4px;
     .name-wrapper
       overflow: hidden
       margin-bottom: .2rem
@@ -117,7 +119,8 @@
         font-size: .28rem
         line-height: .8rem
         border: 1px solid #d9d9d9
-        padding: 0 .2rem;
+        padding-left: .2rem;
+        border-radius: 4px;
     .link-phone
       overflow: hidden
       margin-bottom: .2rem
@@ -133,6 +136,7 @@
         border: 1px solid #d9d9d9
         padding: .1rem .2rem
         margin-top: .2rem
+        border-radius: 4px;
     .chooseCus
       color: $color-main
       float: right

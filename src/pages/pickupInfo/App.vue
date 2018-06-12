@@ -60,9 +60,9 @@
         this.$refs.pickerDelivery.open();
       },
       handleConfirm(value) {
-
-        this.deliveryTime = format(value.toString(),"yyyy-MM-dd hh:mm");
-        this.$refs.pickerDelivery.close();
+        console.log(value)
+        //this.deliveryTime = format(value.toString(),"yyyy-MM-dd hh:mm");
+        //this.$refs.pickerDelivery.close();
       }
     },
     components: {
@@ -106,6 +106,7 @@
         font-size: .24rem
         float: left
         margin-left: 1.4rem
+        border-radius: 4px;
     .oil-wrapper
       overflow: hidden
       .title
@@ -117,6 +118,7 @@
         padding: .1rem .2rem
         margin: .1rem 0 .1rem .2rem
         border: 1px solid #d9d9d9
+        border-radius: 4px;
     .expect-delivery
       overflow: hidden
       .title
@@ -128,6 +130,7 @@
         padding: .1rem .2rem
         margin: .1rem 0 .1rem .2rem
         border: 1px solid #d9d9d9
+        border-radius: 4px;
     .owner-remark
       .remark
         width: 60%
@@ -135,6 +138,7 @@
         margin-left: .1rem
         vertical-align: middle
         border: 1px solid #d9d9d9
+        border-radius: 4px
   .btn-wrapper
       position: fixed
       width: 100%
