@@ -205,7 +205,7 @@ export default {
       width: 100%
       background: #FA9E15
       color: #ffffff
-     
+      font-size: .28rem
 </style>
 
 

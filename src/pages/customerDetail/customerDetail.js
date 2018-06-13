@@ -145,7 +145,7 @@ import 'modules/css/border-1px.css'
 //           this.txtboardshow = true;
 //           this.numboardshow = false;
 //           this.$emit('transferplate',{carno:this.plate});
-//         //   this.$emit('update:isShow', false);//隐藏键盘
+//           this.$emit('update:isShow', false);//隐藏键盘
           
 //       }
 //   },

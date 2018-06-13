@@ -4,7 +4,7 @@
         <section class="pkey-contain">
             <section class="pkey-keyboard">
                 <header class="pkey-header2">
-                    <label class="pkey-chacelbtn" @click="closewin">取消</label><label class="pkey-okbtn" @click="checkplate">完成</label>
+                    <label class="pkey-chacelbtn" @click.stop="closewin">取消</label><label class="pkey-okbtn" @click="checkplate">完成</label>
                 </header>
                 <section class="pkey-keyscontain">
                     <ul>
@@ -132,7 +132,6 @@
             
         },
         checkplate : function(){
-            
             if(this.plate==''){
                 this.tips = '请输入车牌号码';
                 //车牌号位空，在显示车牌文字
@@ -157,14 +156,14 @@
             this.plate=this.plate.substr(0, this.plate.length-1);
             this.$emit('transferplate',{carno:this.plate});
         },
-        closewin : function(){
+        closewin: function(){
+            this.$emit('update:isShow', false);//隐藏键盘 
             this.tips = '';    
-            //   this.$emit('transferclose',false);
             this.plate='';
             this.txtboardshow = true;
             this.numboardshow = false;
             this.$emit('transferplate',{carno:this.plate});
-            //   this.$emit('update:isShow', false);//隐藏键盘
+            
             
         }
     }
