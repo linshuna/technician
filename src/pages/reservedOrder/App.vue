@@ -3,13 +3,16 @@
     <Calendar
       @choseDay="clickDay"
       @changeMonth="changeDate" @isToday="isToday"></Calendar>
-    <div class="add-order-btn"></div>  
+    <div class="look" @click="goOrder">查看</div>
+    <div class="add-wrapper"> 
+      <div class="add-order-btn"></div>  
+    </div>
     <div class="noData" v-if="!orderData.length">
       <img class="noDataImg" :src="noDataImg" />
       <div class="text">无数据</div>
     </div>
     <div class="order-wrapper" v-if="orderData.length">
-      <div class="item" v-for="item in orderData">
+      <div class="item" v-for="item in orderData" @click="goOrderDetail">
         <div class="type">已确认(<span>1</span>)</div>
         <div class="carInfo">
           <div class="time">{{item.time}}</div>
@@ -85,6 +88,12 @@
       },
       isToday(data) {
         console.log(data);
+      },
+      goOrder() {
+        window.location.href = 'order.html'
+      },
+      goOrderDetail() {
+        window.location.href = 'reservedOrderDetail.html'
       }
     },
     components: {
@@ -115,17 +124,28 @@
       .wh_isToday
         color: #fff
         background-color: $color-main
+    .wh_top_changge .wh_content_li
+        flex: 1    
 body
   background: #f9f9f9        
   #app
     font-family: PingFangSC-Regular
     background: #F9F9F9
-    .add-order-btn
-      width: 1rem
-      height: .6rem
-      float: right
-      background: url('../../modules/images/add-icon.png') no-repeat
-      background-size: contain;
+    .look
+      position: absolute
+      right: 0.2rem
+      top: 0.34rem
+      font-size: .28rem
+      color: $color-main
+    .add-wrapper
+      overflow: hidden
+      margin-top: .2rem
+      .add-order-btn
+        width: 1rem
+        height: .6rem
+        float: right
+        background: url('../../modules/images/add-icon.png') no-repeat
+        background-size: contain
     .noData
       margin: 2rem
       text-align: center

@@ -1,28 +1,29 @@
 <template>
   <div class="addSever">
-    <input class="search" placeholder="搜索服务名称/编码"/>
+    <input class="search" placeholder="搜索商品名称"/>
+    <span class="filter">筛选</span>
     <div class="item-wrapper">
       <div class="item border-bottom-1px">
-        <div class="name">代办提档费</div>
-        <div class="code">编码: 23232</div>
+        <div class="name">主气囊</div>
+        <div class="code">商品编码: 23232</div>
         <div class="account">¥300</div>
         <div class="add">+</div>
       </div>
       <div class="item border-bottom-1px">
-        <div class="name">更换氧传送器</div>
-        <div class="code">编码: 23232</div>
+        <div class="name">副气囊</div>
+        <div class="code">商品编码: 23232</div>
         <div class="account">¥300</div>
         <div class="add">+</div>
       </div>
       <div class="item border-bottom-1px">
         <div class="name">仪表台修复</div>
-        <div class="code">编码: 23232</div>
+        <div class="code">商品编码: 23232</div>
         <div class="account">¥300</div>
         <div class="add">+</div>
       </div>
       <div class="item border-bottom-1px">
         <div class="name">代理违章服务费</div>
-        <div class="code">编码: 23232</div>
+        <div class="code">商品编码: 23232</div>
         <div class="account">¥300</div>
         <div class="add">+</div>
       </div>
@@ -38,7 +39,7 @@
   export default {
     methods: {
       newSever() {
-        this.$router.push('/newSever')
+
       }
     }
   }
@@ -56,7 +57,7 @@
     font-size: .28rem
     background: #fff
     .search
-      width: 90%
+      width: 80%
       height: .8rem
       padding: .1rem
       padding-left: .8rem
@@ -68,6 +69,11 @@
       background: url('../../../modules/images/searchIcon.png') no-repeat
       background-size: .5rem .5rem
       background-position: .2rem
+    .filter
+      position: absolute
+      right: .2rem
+      top: .2rem  
+      line-height: .8rem
     .item-wrapper
       padding: 0 .2rem
       margin-top: 1.4rem  

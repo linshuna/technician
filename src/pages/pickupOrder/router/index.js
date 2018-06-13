@@ -7,6 +7,7 @@ import Edit from '../components/edit.vue'
 import Check from '../components/check.vue'
 import Quotation from '../components/quotation.vue'
 import AddSever from '../components/addSever.vue'
+import AddPro from '../components/addPro.vue'
 import Dispath from '../components/dispath.vue'
 import Bill from '../components/bill.vue'
 import NewSever from '../components/newSever.vue'
@@ -15,6 +16,7 @@ import NewPro from '../components/newPro.vue'
 Vue.use(Router)
 
 export default new Router({
+  //mode: 'history',
   routes: [
     {
       path: '/path',
@@ -45,6 +47,11 @@ export default new Router({
       path: '/addSever',
       name: 'addSever',
       component: AddSever
+    },
+    {
+      path: '/addPro',
+      name: 'addPro',
+      component: AddPro
     },
     {
       path: '/dispath',

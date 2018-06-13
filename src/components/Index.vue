@@ -52,12 +52,12 @@
             name:'预约单'
           },
           {
-            link:'',
+            link:'./pickupOrder.html',
             className:'nav-icon-pickup',
             name:'接车单'
           },
           {
-            link:'',
+            link:'./quote.html',
             className:'nav-icon-quote',
             name:'快速报价'
           },
@@ -77,7 +77,7 @@
             name:'车辆管理'
           },
           {
-            link:'',
+            link:'./store.html',
             className:'nav-icon-storeManage',
             name:'仓库管理'
           },

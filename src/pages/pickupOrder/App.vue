@@ -18,7 +18,7 @@
     <!-- tab-container -->
     <mt-tab-container v-model="type">
       <mt-tab-container-item id="atServe">
-        <div class="item border-bottom-1px" v-for="item in atServeOrder">
+        <div class="item border-bottom-1px" v-for="item in atServeOrder" @click="goOrderDetail">
           <img class="carImg" :src="item.carImg"/>
           <div class="main-c">
             <div class="carno">{{item.carno}}</div>
@@ -68,6 +68,11 @@
             account: '16,866'
           }
         ]
+      }
+    },
+    methods: {
+      goOrderDetail() {
+        this.$router.push('/path')
       }
     }
   }

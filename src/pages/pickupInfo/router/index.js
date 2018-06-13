@@ -10,17 +10,17 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/type/1',
+      path: '/type1',
       name: 'pickup1',
       component: pickup1
     },
     {
-      path: '/type/2',
+      path: '/type2',
       name: 'pickup2',
       component: pickup2
     },
     {
-      path: '/type/3',
+      path: '/type3',
       name: 'pickup3',
       component: pickup3
     }
