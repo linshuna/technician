@@ -19,29 +19,33 @@
         <div class="item">
           <div>前保险杠</div>
           <div class="main-c">无凹凸、刮花、氧化</div>
-          <div>
-            <mt-switch v-model="value"></mt-switch>
+          <div class="main-r">
+            <span class="bad border-1px">不良</span>
+            <span class="normal border-1px active">正常</span>
           </div>
         </div>
         <div class="item">
           <div>后保险杠</div>
           <div class="main-c">无凹凸、刮花、氧化</div>
-          <div>
-            <mt-switch v-model="value"></mt-switch>
+          <div class="main-r">
+            <span class="bad border-1px">不良</span>
+            <span class="normal border-1px active">正常</span>
           </div>
         </div>
         <div class="item">
           <div>左前叶子板</div>
           <div class="main-c">无凹凸、刮花、氧化</div>
-          <div>
-            <mt-switch v-model="value"></mt-switch>
+          <div class="main-r">
+            <span class="bad border-1px">不良</span>
+            <span class="normal border-1px active">正常</span>
           </div>
         </div>
         <div class="item">
           <div>左前门</div>
           <div class="main-c">无凹凸、刮花、氧化</div>
-          <div>
-            <mt-switch v-model="value"></mt-switch>
+          <div class="main-r">
+            <span class="bad border-1px">不良</span>
+            <span class="normal border-1px active">正常</span>
           </div>
         </div>
       </mt-tab-container-item>
@@ -66,6 +70,9 @@
         selected:'1',
         value:''
       }
+    },
+    methods: {
+      
     }
   } 
 </script>
@@ -92,6 +99,15 @@
         text-align: center
       .main-c
         flex: 2
+      .main-r
+        text-align: left
+        font-size: 0
+        span
+          padding: .1rem
+          font-size: .24rem
+          &.active
+            color: #446eea
+            background: #a2cbe0
     .tabContainer
       margin-bottom: .2rem
       background: #fff

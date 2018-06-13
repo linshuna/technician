@@ -19,10 +19,12 @@
     <div class="chooseCus">
       选择客户<span class="iconfont">&#xe66b;</span>
     </div>
+
   </div>
 </template>
 <script>
   import Vue from 'vue';
+
 
   export default {
     data() {
@@ -41,6 +43,9 @@
           },
         ]
       }
+    },
+    components: {
+      
     }
   }
 </script>
@@ -79,6 +84,9 @@
         font-size: .28rem
         line-height: .8rem
         border: 1px solid #d9d9d9
+        border-radius: 4px
+        padding: 0 .1rem
+        box-sizing: border-box
     .link-phone
       overflow: hidden
       margin-bottom: .2rem
@@ -94,6 +102,8 @@
         border: 1px solid #d9d9d9
         padding: .1rem .2rem
         margin-top: .2rem
+        border-radius: 4px
     .chooseCus
-      float: right
+      text-align: right
+      color: $color-main
 </style>

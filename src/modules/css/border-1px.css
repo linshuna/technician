@@ -3,7 +3,7 @@
 }
 /*线条颜色 黑色*/
 .border-1px::after, .border-bottom-1px::after, .border-top-1px::after, .border-left-1px::after, .border-right-1px::after {
-    background-color: #eae7e7;
+    background-color: transparent;
 
 }
 
@@ -61,7 +61,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    border: 1px solid red;
+    border: 1px solid #eee;
 }
 
 /*设备像素比*/

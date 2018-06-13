@@ -20,7 +20,7 @@
         <div class="title">预计交车</div>
         <div class="delivery-time" @click="openTimePicker">
           <input placeholder="请选择日期" v-model="deliveryTime"/>
-          <mt-datetime-picker @confirm="handleConfirm" ref="pickerDelivery" type="datetime" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" hour-format="{value} 时" minute-format="{value} 分" ></mt-datetime-picker>
+          <mt-datetime-picker @confirm="handleConfirm" ref="pickerDelivery" type="datetime" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" hour-format="{value} 时" minute-format="{value} 分"></mt-datetime-picker>
         </div>
       </div>
       <div class="owner-remark">
@@ -62,7 +62,7 @@
       handleConfirm(value) {
         console.log(value)
         //this.deliveryTime = format(value.toString(),"yyyy-MM-dd hh:mm");
-        //this.$refs.pickerDelivery.close();
+        this.$refs.pickerDelivery.close();
       }
     },
     components: {
@@ -102,6 +102,7 @@
         padding: .1rem .2rem
         margin: .1rem 0 .1rem .2rem
         border: 1px solid #d9d9d9
+        box-sizing: border-box;
       .pre-odometer
         font-size: .24rem
         float: left

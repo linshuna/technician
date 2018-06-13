@@ -14,7 +14,7 @@
 				<p class="setFontPadding">拍照</p>
 			</div>
 			
-			<div class="logoWrap" style="border: 8px solid rgb(238, 238, 238);border-radius: 20px;width: 50%;padding: .4rem 0;margin: 0 auto;">
+			<div class="logoWrap" style="border: 8px solid rgb(238, 238, 238);border-radius: 20px;width: 50%;padding: .4rem 0;margin: 0 auto;" @click="manualImport">
 				<p class="setLogoImg">
 					<img :src="imgOpt_sec">
 				</p>
@@ -30,6 +30,11 @@
       return {
         imgOpt_first: require('../modules/images/saoma.png'),
         imgOpt_sec: require('../modules/images/entryWrite.png')
+      }
+    },
+    methods: {
+      manualImport() {
+        window.location.href='search.html'
       }
     }
   }
