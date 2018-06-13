@@ -70,10 +70,11 @@ export default {
   },
   methods:{
     carDetailMsg:function(e){
-      this.$router.push({path:"/carDetailMsg/"+e})
+      this.$router.push({path:"/customerDetail/carDetailMsg/"+e})
+      // this.$router.push({name:"carDetailMsg",params: { userId: e }})
     },
     bindNewCar: function(){
-      this.$router.push({path:"/bindNewCar"})
+      this.$router.push({path:"/customerDetail/bindNewCar"})
     }
   }
 }
@@ -116,7 +117,7 @@ export default {
             vertical-align: top
           .logoRight
             display: inline-block
-            width: 85%
+            width: 84%
             padding-left: .2rem
             box-sizing: border-box
             text-align:left

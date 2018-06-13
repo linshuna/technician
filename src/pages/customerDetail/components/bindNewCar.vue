@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="bindNewCarWrap">
     <div class="customWrap">
       <ul class="fieldWrap border-bottom-1px">
         <li>
@@ -7,7 +7,7 @@
             车牌号
           </span>
           <div class="setCusRight">
-            <input type="text" v-model="carno"/>
+            <input type="text" v-model="carno" @focus="isShow=true" placeholder="请输入车牌号">
           </div>
         </li>
         <li>
@@ -119,7 +119,7 @@
           </div>
         </li>
       </ul>
-      <!-- <carKeyCode></carKeyCode> -->
+      <carKeyCode v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></carKeyCode>
       <button class="saveBtn" @click="saveMsg">保存</button>
     </div>
      
@@ -129,6 +129,7 @@
 
 <script>
   import Vue from 'vue';
+  
   import { Toast,Radio,Popup ,Picker,DatetimePicker   } from 'mint-ui';
   import Vuerify from 'vuerify'
   Vue.use(Vuerify)
@@ -137,7 +138,6 @@
   Vue.component(Picker.name, Picker);
   Vue.component(DatetimePicker.name, DatetimePicker);
   import {format} from 'modules/js/date.js'
-import carKeyCodeVue from '../../../components/carKeyCode.vue';
 export default {
   name: 'App',
   data(){
@@ -160,7 +160,9 @@ export default {
       currentPickerId:'',//被选中公司id
       bussiCompanyText:'',//商业险公司
       tranCompanyText:'',//交强险公司
-      carEniger:''//发动机号
+      carEniger:'',//发动机号
+      isShow: false,
+      tips:''
     }
   },
   vuerify:{
@@ -226,6 +228,14 @@ export default {
           this.tranDate = date
         }
     },
+    gainCarno:function(value){//子组件传给当前组件（父组件）
+      this.carno = value.carno
+      this.tips = value.tips
+      if(this.tips&&this.tips!=''){
+          Toast(this.tips)
+      }
+    },
+    
     saveMsg:function(){
       console.log(this.cusNameVaule)
     }
@@ -235,7 +245,7 @@ export default {
 </script>
 
 <style lang="stylus">
-  #app
+  .bindNewCarWrap
     width: 100%
     height: 100%
     font-size: .28rem

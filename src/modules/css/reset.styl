@@ -87,8 +87,36 @@ input,textarea
 .pkey-okbtn{
   float: right;
 }
+<<<<<<< Updated upstream
 
 .fr
   float: right
 .fl
   float: left  
+=======
+.delIcon{
+  position: relative;
+  width: 15px!important;
+  height: 15px;
+  background: #bfbfbf!important;
+  border-radius: 50%!important;
+  box-shadow: none!important;
+  top: 2px;
+}
+.delIcon::before,.delIcon::after{
+  position: absolute;
+  top: 50%;
+  left:1.5px;
+  margin-top: -1px;
+  background: #fff;
+  width: 75%;
+  height:2px;
+  content: '';
+}
+.delIcon::before{
+  transform: rotate(45deg);
+}
+.delIcon::after{
+  transform: rotate(-45deg);
+}
+>>>>>>> Stashed changes

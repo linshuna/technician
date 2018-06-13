@@ -6,6 +6,8 @@ import Customer from 'components/Customer.vue'
 import PickupCar from 'components/PickupCar.vue'
 import Order from 'components/Order.vue'
 import User from 'components/User.vue'
+import SelfCenter from 'components/userChildren/SelfCenter.vue'
+import Setting from 'components/userChildren/Setting.vue'
 
 
 Vue.use(Router)
@@ -24,7 +26,14 @@ export default new Router({
         { path: '/customer', component: Customer, name: '客户' },
         { path: '/pickupCar', component: PickupCar, name: '接车' },
         { path: '/order', component: Order, name: '订单' },
-        { path: '/user', component: User, name: '我的' }
+        { path: '/user', 
+          component: User, 
+          name: '我的',
+          children:[
+            { path:'/user/selfCenter',component: SelfCenter,name: 'selfCenter' },
+            { path:'/user/setting',component: Setting,name: 'setting' } 
+          ]
+        }
       ]
     }
   ]
