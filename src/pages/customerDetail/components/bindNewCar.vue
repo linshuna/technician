@@ -234,6 +234,7 @@ export default {
       this.carno = value.carno
       this.tips = value.tips
       if(this.tips&&this.tips!=''){
+          Toast('').close();
           Toast(this.tips)
       }
     },

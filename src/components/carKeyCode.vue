@@ -9,16 +9,16 @@
                 <section class="pkey-keyscontain">
                     <ul>
                         <li v-show="txtboardshow" v-for="(item,index) in cartxt">
-                            <span v-show="index==cartxt.length-1" @click="txtboardshow=false,numboardshow=true">ABC</span>
-                            <label v-for="(items,indexi) in item" @click="txtclick(items,indexi,item.length)">{{items}}</label>
-                            <span v-show="index==cartxt.length-1" @click="deleteCode()">
+                            <span v-show="index==cartxt.length-1" @click.stop="txtboardshow=false,numboardshow=true">ABC</span>
+                            <label v-for="(items,indexi) in item" @click.stop="txtclick(items,indexi,item.length)">{{items}}</label>
+                            <span v-show="index==cartxt.length-1" @click.stop="deleteCode()">
                                 <span class="delIcon"></span>
                             </span>
                         </li>
                         <li v-show="numboardshow" v-for="(item,index) in numtxt">
-                            <span v-show="index==cartxt.length-1" @click="txtboardshow=true,numboardshow=false">字</span>
-                            <label v-for="(items,indexi) in item" @click="numclick(items,indexi,item.length)">{{items}}</label>
-                            <span v-show="index==cartxt.length-1" @click="deleteCode()">
+                            <span v-show="index==cartxt.length-1" @click.stop="txtboardshow=true,numboardshow=false">字</span>
+                            <label v-for="(items,indexi) in item" @click.stop="numclick(items,indexi,item.length)">{{items}}</label>
+                            <span v-show="index==cartxt.length-1" @click.stop="deleteCode()">
                                 <span class="delIcon"></span>
                             </span>
                         </li>
