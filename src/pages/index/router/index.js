@@ -8,6 +8,7 @@ import Order from 'components/Order.vue'
 import User from 'components/User.vue'
 import SelfCenter from 'components/userChildren/SelfCenter.vue'
 import Setting from 'components/userChildren/Setting.vue'
+import Guide from 'components/userChildren/Guide.vue'
 
 
 Vue.use(Router)
@@ -31,7 +32,8 @@ export default new Router({
           name: '我的',
           children:[
             { path:'/user/selfCenter',component: SelfCenter,name: 'selfCenter' },
-            { path:'/user/setting',component: Setting,name: 'setting' } 
+            { path:'/user/setting',component: Setting,name: 'setting' },
+            { path:'/user/guide',component: Guide,name: 'Guide' },
           ]
         }
       ]

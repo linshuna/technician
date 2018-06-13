@@ -79,7 +79,7 @@
                 <img :src="rightArrowIcon" alt="" rightArrowIcon>
               </span>
             </router-link>
-            <router-link to="/user/selfCenter" tag="li" class="border-bottom-1px">
+            <router-link to="/user/guide" tag="li" class="border-bottom-1px">
               <span class="settingLeft">
                 <img :src="helpIcon" alt="" class="selfIcon">
                 <span>帮助中心</span>

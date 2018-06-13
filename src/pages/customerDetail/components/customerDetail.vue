@@ -43,9 +43,7 @@
         <p class="setPadding">地址：联系人地址</p>
       </div>
       <button class="editorBtn">编辑</button>
-    </div>  
-    <router-view></router-view>
-  
+    </div>
   </div>
   
 </template>
@@ -71,12 +69,11 @@ export default {
   },
   methods:{
     carDetailMsg:function(e){
-      this.$router.push({path:"/carDetailMsg/"+e})
+      this.$router.push({path:"/customerDetail/carDetailMsg/"+e})
       // this.$router.push({name:"carDetailMsg",params: { userId: e }})
     },
     bindNewCar: function(){
-      // window.open("/customerDetail/bindNewCar")
-      this.$router.push({path:"/bindNewCar"})
+      this.$router.push({path:"/customerDetail/bindNewCar"})
     }
   }
 }
