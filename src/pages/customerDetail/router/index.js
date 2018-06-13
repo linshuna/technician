@@ -12,7 +12,6 @@ let bindNewCar = r => require.ensure([], () => r(require('../bindNewCar')), 'bin
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
   routes: [
     {
       path:"/",
