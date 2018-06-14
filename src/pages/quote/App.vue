@@ -46,10 +46,10 @@
         background-position: .2rem
         box-sizing: border-box
       .add-btn
-        width: .4rem
-        height: .4rem
+        width: 0.5rem
+        height: 0.5rem
         float: right
-        margin: .3rem .2rem 0 0
+        margin: 0.3rem 0.4rem 0 0
         background: url('../../modules/images/add-icon.png') no-repeat
         background-size: 100% 100%
     .result

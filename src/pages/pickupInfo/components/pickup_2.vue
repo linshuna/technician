@@ -56,6 +56,8 @@
     padding: 0
   .wrapper >>> .mint-radiolist
     float: left
+    height: .8rem
+    line-height: .8rem
   .wrapper >>> .mint-cell
     float: left
     min-height: auto
@@ -68,6 +70,7 @@
       width: 1rem
       height: 1rem
       float: left
+      margin-right: .2rem
     .carInfo
       float: left
       margin-top: .2rem

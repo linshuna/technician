@@ -20,32 +20,32 @@
           <div>前保险杠</div>
           <div class="main-c">无凹凸、刮花、氧化</div>
           <div class="main-r">
-            <span class="bad border-1px">不良</span>
-            <span class="normal border-1px active">正常</span>
+            <span class="bad">不良</span>
+            <span class="normal active">正常</span>
           </div>
         </div>
         <div class="item">
           <div>后保险杠</div>
           <div class="main-c">无凹凸、刮花、氧化</div>
           <div class="main-r">
-            <span class="bad border-1px">不良</span>
-            <span class="normal border-1px active">正常</span>
+            <span class="bad">不良</span>
+            <span class="normal active">正常</span>
           </div>
         </div>
         <div class="item">
           <div>左前叶子板</div>
           <div class="main-c">无凹凸、刮花、氧化</div>
           <div class="main-r">
-            <span class="bad border-1px">不良</span>
-            <span class="normal border-1px active">正常</span>
+            <span class="bad">不良</span>
+            <span class="normal active">正常</span>
           </div>
         </div>
         <div class="item">
           <div>左前门</div>
           <div class="main-c">无凹凸、刮花、氧化</div>
           <div class="main-r">
-            <span class="bad border-1px">不良</span>
-            <span class="normal border-1px active">正常</span>
+            <span class="bad">不良</span>
+            <span class="normal active">正常</span>
           </div>
         </div>
       </mt-tab-container-item>
@@ -79,6 +79,10 @@
 <style lang="stylus" scoped>
    @import '~modules/css/variable.styl'
 
+  .check >>>.mint-navbar .mint-tab-item.is-selected
+    border-bottom: 3px solid $color-main
+    color: $color-main
+    margin-bottom: 0
   .check
     position: fixed
     top: 0
@@ -105,6 +109,7 @@
         span
           padding: .1rem
           font-size: .24rem
+          border: 1px solid #eee
           &.active
             color: #446eea
             background: #a2cbe0

@@ -85,6 +85,7 @@
       .vin
         float: left
         width: 4rem
+        height: .4rem
         font-size: .28rem
         border: 1px solid #d9d9d9
         padding: .1rem .2rem
@@ -101,11 +102,12 @@
       .brand
         float: left
         width: 4rem
+        height: .4rem
         font-size: .28rem
         border: 1px solid #d9d9d9
         padding: .1rem .2rem
         margin-top: .2rem
-        border-radius: 4px;
+        border-radius: 4px
     .name-wrapper
       overflow: hidden
       margin-bottom: .2rem
@@ -132,11 +134,12 @@
       .phone
         float: left
         width: 4rem
-        font-size: .28rem
+        height: 0.4rem
+        font-size: 0.28rem
         border: 1px solid #d9d9d9
-        padding: .1rem .2rem
-        margin-top: .2rem
-        border-radius: 4px;
+        padding: 0.1rem 0.2rem
+        margin-top: 0.2rem
+        border-radius: 4px
     .chooseCus
       color: $color-main
       float: right

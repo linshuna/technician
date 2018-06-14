@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <mt-navbar v-model="type">
-      <mt-tab-item id="atServe" class="item">
+      <mt-tab-item id="atServe" class="">
         <div>服务中(22)</div>
         <div>¥25,7878</div>
       </mt-tab-item>

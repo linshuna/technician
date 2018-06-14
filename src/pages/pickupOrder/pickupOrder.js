@@ -5,11 +5,11 @@ import App from './App'
 import getRem from 'modules/js/getRem.js'
 import router from './router'
 
-import { Navbar, TabItem, TabContainer, TabContainerItem  } from 'mint-ui';
+import { Navbar, TabItem, TabContainer, TabContainerItem,Popup,Picker   } from 'mint-ui';
 
 import 'modules/css/reset.styl'
 import 'modules/css/border-1px.css'
-
+import 'modules/css/iconfont.css'
 import 'mint-ui/lib/style.css'
 
 import { Search, Switch } from 'mint-ui';
@@ -22,6 +22,8 @@ Vue.component(TabItem.name, TabItem);
 Vue.component(TabContainer.name, TabContainer);
 Vue.component(TabContainerItem.name, TabContainerItem);
 Vue.component(Radio.name, Radio);
+Vue.component(Popup.name, Popup);
+Vue.component(Picker.name, Picker)
 Vue.use(getRem)
 
 Vue.config.productionTip = false

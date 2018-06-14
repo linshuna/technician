@@ -3,7 +3,7 @@
 }
 /*线条颜色 黑色*/
 .border-1px::after, .border-bottom-1px::after, .border-top-1px::after, .border-left-1px::after, .border-right-1px::after {
-    background-color: transparent;
+    background-color: #eae7e7;
 
 }
 

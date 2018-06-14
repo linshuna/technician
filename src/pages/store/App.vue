@@ -11,7 +11,7 @@
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
         <ul>
-          <li class="item border-bottom-1px">
+          <li class="item border-bottom-1px" @click="openPicker">
             <img class="proImg" src="../../modules/images/defaultLogo.png"/>
             <div class="main-c">
               <div>小型轿车雨刮器</div>
@@ -79,6 +79,7 @@
         </ul>
       </mt-tab-container-item>
     </mt-tab-container>
+
   </div>
 </template>
 
@@ -90,6 +91,9 @@
       return {
         selected: '1'
       }
+    },
+    methods: {
+      
     }
   }
 </script>

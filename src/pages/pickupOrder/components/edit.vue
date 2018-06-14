@@ -13,13 +13,15 @@
       </div>
       <div class="oil-wrapper">
         <div class="title">进店油表</div>
-        <div class="oil">1/2</div>
+        <div class="oil" @click="openOilPicker">{{this.oil}}
+          <span class="iconfont fr">&#xe60d;</span>
+        </div>
       </div>
       <div class="expect-delivery">
         <div class="title">预计交车</div>
         <div class="delivery-time" @click="openTimePicker">
           <input placeholder="请选择日期" v-model="deliveryTime"/>
-          <mt-datetime-picker @confirm="handleConfirm" ref="pickerDelivery" type="datetime" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" hour-format="{value} 时" minute-format="{value} 分" ></mt-datetime-picker>
+          <span class="iconfont fr">&#xe60d;</span>
         </div>
       </div>
       <div class="owner-remark">
@@ -27,6 +29,16 @@
         <textarea class="remark" placeholder="请输入车主嘱咐"></textarea>
       </div>
     </div>
+
+    <mt-datetime-picker @confirm="handleConfirm" ref="pickerDelivery" type="datetime" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" hour-format="{value} 时" minute-format="{value} 分" ></mt-datetime-picker>
+
+    <mt-popup v-model="popupVisible" position="bottom" popup-transition="popup-fade">
+      <div class="picker-toolbar picker-toolbar-oil">  
+          <span class="mint-datetime-cancel" @click="cancle">取消</span>  
+          <span class="mint-datetime-confirm" @click="select">确定</span>  
+      </div>  
+      <mt-picker ref="oil" :slots="slots" @change="onValuesChange"></mt-picker>
+    </mt-popup>
     <div class="btn">保存</div>
   </div>
 </template>
@@ -35,16 +47,33 @@
     data() {
       return {
         value:'',
-        deliveryTime:''
-
+        deliveryTime:'',
+        popupVisible: false,
+        oil: '',
+        slots: [
+          {
+            values: ['1/2','1/3','1/4','满']
+          }
+        ]
       }
     },
     methods: {
       openTimePicker() {
         this.$refs.pickerDelivery.open();
       },
+      openOilPicker() {
+        this.popupVisible = true
+      },
+      cancle() {
+        this.popupVisible = false;
+      },
+      select() {
+        this.popupVisible = false;
+        this.oil = this.$refs.oil.getValues().toString();
+      },
+      onValuesChange() {},
       handleConfirm() {
-
+        
       }
     }
   }
@@ -56,6 +85,15 @@
     position: absolute
     top: .1rem
     right: 0
+  .edit >>> .picker-item
+    font-size: .28rem 
+  .edit >>> .mint-popup-bottom
+    width: 100% 
+  .edit >>> .picker-toolbar-oil
+      width: 100%
+      padding: 15px 10px
+      box-sizing: border-box
+      color: #26a2ff  
 
   .edit
     position: fixed
@@ -117,12 +155,15 @@
         border-radius: 4px;
     .owner-remark
       .remark
-        width: 60%
+        width: 4rem
         height: 1rem
         margin-left: .1rem
         vertical-align: middle
         border: 1px solid #d9d9d9
         border-radius: 4px
+        font-family: PingFangSC-Regular
+        font-size: .28rem
+        padding: 0 .2rem
     .btn
       position: fixed
       bottom: 0

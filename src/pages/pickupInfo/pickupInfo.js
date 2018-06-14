@@ -13,10 +13,12 @@ import 'modules/css/iconfont.css'
 Vue.use(getRem)
 
 import { Search, Switch } from 'mint-ui';
-import { DatetimePicker } from 'mint-ui';
+import { DatetimePicker,Popup,Picker } from 'mint-ui';
 Vue.component(Search.name, Search);
 Vue.component(Switch.name, Switch);
 Vue.component(DatetimePicker.name, DatetimePicker);
+Vue.component(Popup.name, Popup);
+Vue.component(Picker.name, Picker)
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */
