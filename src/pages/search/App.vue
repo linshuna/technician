@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="search">
-      <mt-search v-model="value" class="search-input"></mt-search>
+      <input v-model="carno" class="search-input" placeholder="请输入车牌号" @click="showCarKeyCode"/>
       <div class="add-wrapper" @click="addCar">
         <div class="iconfont">&#xe60c;</div>
         <div class="">新增车辆</div>
@@ -25,16 +25,22 @@
         
       </li>
     </ul>
+
+    <carKeyCode v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></carKeyCode>
+    
   </div>
 </template>
 
 <script>
-  
+  import carKeyCode from "components/CarKeyCode"
+  import { Toast} from 'mint-ui';
   export default {
     name: 'App',
     data () {
       return {
-        value: ''
+        carno: '',
+        isShow: false,
+        tip: ''
       }
     },
     methods: {
@@ -43,8 +49,21 @@
       },
       addCar() {
         window.location.href='pickupInfo.html#/type1'
+      },
+      gainCarno:function(value){//子组件传给当前组件（父组件）
+        this.carno = value.carno
+        this.tips = value.tips
+        if(this.tips&&this.tips!=''){
+            Toast(this.tips)
+        }
+      },
+      showCarKeyCode() {
+        this.isShow = true
       }
-    }
+    },
+    components:{
+      carKeyCode
+    },
   }
 </script>
 
@@ -69,7 +88,16 @@
     font-size: .28rem
     .search
       .search-input
-        height: 1rem
+        width: 74%
+        border: 1px solid #eee
+        padding: 0 .8rem
+        margin: .2rem
+        height: .8rem
+        line-height: .8rem
+        box-sizing: border-box
+        background: url('../../modules/images/searchIcon.png') no-repeat
+        background-size: .5rem
+        background-position: .2rem
       .add-wrapper
         position: absolute
         right: .2rem

@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="carno-wrapper">
       <div class="title">车牌号</div>
-      <div class="carno">粤A686868</div>
+      <input class="carno" placeholder="请输入车牌号" @click="showCarKeyCode" v-model="carno"/>
     </div>
     <div class="vin-wrapper">
       <div class="title">车架号</div>
@@ -10,7 +10,7 @@
     </div>
     <div class="brand-wrapper">
       <div class="title">车型</div>
-      <div class="brand">奔驰</div>
+      <div class="brand" @click="selectBrand">奔驰</div>
     </div>
     <div class="name-wrapper">
       <div class="title">客户名称</div>
@@ -24,18 +24,28 @@
     <div class="chooseCus">
       选择系统客户<span class="iconfont">&#xe66b;</span>
     </div>
+
+    <carKeyCode v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></carKeyCode>
+    <brand :popBrand.sync="popBrand" @show="toggleShow"></brand>
   </div>
 </template>
 <script>
   import Vue from 'vue';
+  import CarKeyCode from "components/CarKeyCode"
+  import Brand from "components/brand.vue"
+  import { Toast} from 'mint-ui';
   import { Radio} from 'mint-ui';
   Vue.component(Radio.name, Radio);
 
   export default {
     data() {
       return {
+        carno: '',
+        isShow: false,
+        tip: '',
         cusName:'',
-        cusNameValue: '',
+        cusNameValue: '1',
+        popBrand: false,
         cusNameOptions:[
           {
             label:'先生',
@@ -47,6 +57,28 @@
           },
         ],
       }
+    },
+    methods: {
+      gainCarno:function(value){//子组件传给当前组件（父组件）
+        this.carno = value.carno
+        this.tips = value.tips
+        if(this.tips&&this.tips!=''){
+            Toast(this.tips)
+        }
+      },
+      showCarKeyCode() {
+        this.isShow = true
+      },
+      selectBrand() {
+        this.popBrand = true
+      },
+      toggleShow(val){
+        console.log(val)
+      }
+    },
+    components:{
+      CarKeyCode,
+      Brand
     }
   }
 </script>
@@ -69,19 +101,30 @@
     .carno-wrapper
       height: .8rem
       line-height: .8rem
+      margin-top: .2rem
+      display: flex
       .title
         float: left
         width: 1.4rem
+        line-height: .6rem
       .carno
         float: left
+        width: 4rem
+        height: 0.4rem
+        line-height: .4rem
+        font-size: 0.28rem
+        border: 1px solid #d9d9d9
+        padding: 0.1rem 0.2rem
+        border-radius: 4px
+        flex: 1
     .vin-wrapper
       overflow: hidden
       margin-bottom: .2rem
+      display: flex
       .title
         float: left
         width: 1.4rem
-        height: .8rem
-        line-height: .8rem
+        line-height: .6rem
       .vin
         float: left
         width: 4rem
@@ -89,16 +132,16 @@
         font-size: .28rem
         border: 1px solid #d9d9d9
         padding: .1rem .2rem
-        margin-top: .2rem
-        border-radius: 4px;
+        border-radius: 4px
+        flex: 1
     .brand-wrapper
       overflow: hidden
       margin-bottom: .2rem
+      display: flex
       .title
         float: left
         width: 1.4rem
-        height: .8rem
-        line-height: .8rem
+        line-height: .6rem
       .brand
         float: left
         width: 4rem
@@ -106,8 +149,8 @@
         font-size: .28rem
         border: 1px solid #d9d9d9
         padding: .1rem .2rem
-        margin-top: .2rem
         border-radius: 4px
+        flex: 1
     .name-wrapper
       overflow: hidden
       margin-bottom: .2rem
@@ -126,11 +169,11 @@
     .link-phone
       overflow: hidden
       margin-bottom: .2rem
+      display: flex
       .title
         float: left
         width: 1.4rem
-        height: .8rem
-        line-height: .8rem
+        line-height: .6rem
       .phone
         float: left
         width: 4rem
@@ -138,8 +181,8 @@
         font-size: 0.28rem
         border: 1px solid #d9d9d9
         padding: 0.1rem 0.2rem
-        margin-top: 0.2rem
         border-radius: 4px
+        flex: 1
     .chooseCus
       color: $color-main
       float: right

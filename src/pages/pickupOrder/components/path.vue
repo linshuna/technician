@@ -1,126 +1,126 @@
 <template>
   <div id="path">
-    <div class="nav-section commen-width">
-      <ul class="nav-section-list">
-        <li v-for="(nav,index) in navData" :key="index">
-          <a :href="nav.link">
-            <div class="nav-icon" :class="nav.className"></div>
-            <p>{{nav.name}}</p>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="arrow"></div>
-    <div class="path-wrapper">
-      <ul>
-        <li>
-          <div class="searchLeft">
-            <span class="searchTime">接车</span>
-            <span class="ring"></span>
-            <span class="line"></span>
-          </div>
-          <div class="searchRight">
-            <p class="grayColor">名字 2018-09-09 15:15</p>
-            <p class="grayColor">预计交车时间:2018-09-9</p>
-            <p class="grayColor">嘱咐: 无</p>
-            <div class="btn-wrapper">
-              <div class="btn check" @click="look">查看</div>
-              <div class="btn" @click="edit">编辑</div>
+      <div class="nav-section commen-width">
+        <ul class="nav-section-list">
+          <li v-for="(nav,index) in navData" :key="index">
+            <a :href="nav.link">
+              <div class="nav-icon" :class="nav.className"></div>
+              <p>{{nav.name}}</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="arrow"></div>
+      <div class="path-wrapper">
+        <ul>
+          <li>
+            <div class="searchLeft">
+              <span class="searchTime">接车</span>
+              <span class="ring"></span>
+              <span class="line"></span>
             </div>
-          </div>
-        </li>
-        <li>
-          <div class="searchLeft">
-            <span class="searchTime">检车</span>
-            <span class="ring"></span>
-            <span class="line"></span>
-          </div>
-          <div class="searchRight">
-            <p class="grayColor">检测时间 2018-09-09 15:15</p>
-            <p class="grayColor">结论: 无</p>
-            <div class="btn-wrapper">
-              <div class="btn check" @click="check">检测</div>
+            <div class="searchRight">
+              <p class="grayColor">名字 2018-09-09 15:15</p>
+              <p class="grayColor">预计交车时间:2018-09-9</p>
+              <p class="grayColor">嘱咐: 无</p>
+              <div class="btn-wrapper">
+                <div class="btn check" @click="look">查看</div>
+                <div class="btn" @click="edit">编辑</div>
+              </div>
             </div>
-          </div>
-        </li>
-        <li>
-          <div class="searchLeft">
-            <span class="searchTime">报价</span>
-            <span class="ring"></span>
-            <span class="line"></span>
-          </div>
-          <div class="searchRight">
-            <p class="grayColor">项目: 维修、美容</p>
-            <p class="grayColor">金额: ¥22</p>
-            <div class="btn-wrapper">
-              <div class="btn check" @click="addSever">添加服务</div>
+          </li>
+          <li>
+            <div class="searchLeft">
+              <span class="searchTime">检车</span>
+              <span class="ring"></span>
+              <span class="line"></span>
             </div>
-          </div>
-        </li>
-        <li>
-          <div class="searchLeft">
-            <span class="searchTime">材料</span>
-            <span class="ring"></span>
-            <span class="line"></span>
-          </div>
-          <div class="searchRight">
-            <p class="grayColor">刹车片<span>×2</span></p>
-            <div class="btn-wrapper">
-              <div class="btn check">添加材料</div>
+            <div class="searchRight">
+              <p class="grayColor">检测时间 2018-09-09 15:15</p>
+              <p class="grayColor">结论: 无</p>
+              <div class="btn-wrapper">
+                <div class="btn check" @click="check">检测</div>
+              </div>
             </div>
-          </div>
-        </li>
-        <li>
-          <div class="searchLeft">
-            <span class="searchTime">派工</span>
-            <span class="ring"></span>
-            <span class="line"></span>
-          </div>
-          <div class="searchRight">
-            <p class="grayColor">技师: 名字</p>
-            <div class="btn-wrapper">
-              <div class="btn check" @click="dispath">派工</div>
+          </li>
+          <li>
+            <div class="searchLeft">
+              <span class="searchTime">报价</span>
+              <span class="ring"></span>
+              <span class="line"></span>
             </div>
-          </div>
-        </li>
-        <li>
-          <div class="searchLeft">
-            <span class="searchTime">确认</span>
-            <span class="ring"></span>
-            <span class="line"></span>
-          </div>
-          <div class="searchRight">
-            <div class="btn-wrapper">
-              <div class="btn check" @click="bill">提交结账</div>
+            <div class="searchRight">
+              <p class="grayColor">项目: 维修、美容</p>
+              <p class="grayColor">金额: ¥22</p>
+              <div class="btn-wrapper">
+                <div class="btn check" @click="addSever">添加服务</div>
+              </div>
             </div>
-          </div>
-        </li>
-        <li>
-          <div class="searchLeft">
-            <span class="searchTime">结账</span>
-            <span class="ring"></span>
-            <span class="line"></span>
-          </div>
-          <div class="searchRight">
-            <p class="grayColor">实收:¥22 </p>
-            <div class="btn-wrapper">
-              <div class="btn check">结账</div>
+          </li>
+          <li>
+            <div class="searchLeft">
+              <span class="searchTime">材料</span>
+              <span class="ring"></span>
+              <span class="line"></span>
             </div>
-          </div>
-        </li>
-         <li>
-          <div class="searchLeft">
-            <span class="searchTime">提车</span>
-            <span class="ring"></span>
-            <span class="line"></span>
-          </div>
-          <div class="searchRight" style="border: none;
-    padding: 1rem 0;">
-            
-          </div>
-        </li>
-      </ul>
-    </div>
+            <div class="searchRight">
+              <p class="grayColor">刹车片<span>×2</span></p>
+              <div class="btn-wrapper">
+                <div class="btn check">添加材料</div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="searchLeft">
+              <span class="searchTime">派工</span>
+              <span class="ring"></span>
+              <span class="line"></span>
+            </div>
+            <div class="searchRight">
+              <p class="grayColor">技师: 名字</p>
+              <div class="btn-wrapper">
+                <div class="btn check" @click="dispath">派工</div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="searchLeft">
+              <span class="searchTime">确认</span>
+              <span class="ring"></span>
+              <span class="line"></span>
+            </div>
+            <div class="searchRight">
+              <div class="btn-wrapper">
+                <div class="btn check" @click="bill">提交结账</div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="searchLeft">
+              <span class="searchTime">结账</span>
+              <span class="ring"></span>
+              <span class="line"></span>
+            </div>
+            <div class="searchRight">
+              <p class="grayColor">实收:¥22 </p>
+              <div class="btn-wrapper">
+                <div class="btn check">结账</div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="searchLeft">
+              <span class="searchTime">提车</span>
+              <span class="ring"></span>
+              <span class="line"></span>
+            </div>
+            <div class="searchRight" style="border: none;
+      padding: 1rem 0;">
+              
+            </div>
+          </li>
+        </ul>
+      </div>
   </div>
 </template>
 <script>

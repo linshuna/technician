@@ -78,8 +78,8 @@
         this.$refs.pickerDelivery.open();
       },
       handleConfirm(value) {
-        console.log(value)
-        //this.deliveryTime = format(value.toString(),"yyyy-MM-dd hh:mm");
+        console.log(format(value.toString(),"yyyy-MM-dd hh:mm"))
+        this.deliveryTime = format(value.toString(),"yyyy-MM-dd HH:mm");
       },
       openOilPicker() {
         this.popupVisible = true
@@ -94,7 +94,7 @@
       onValuesChange() {}
     },
     components: {
-
+      
     }
   }
 </script>
