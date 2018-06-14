@@ -11,7 +11,7 @@
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
         <ul>
-          <li class="item border-bottom-1px" @click="openPicker">
+          <li class="item border-bottom-1px">
             <img class="proImg" src="../../modules/images/defaultLogo.png"/>
             <div class="main-c">
               <div>小型轿车雨刮器</div>
