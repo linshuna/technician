@@ -9,6 +9,8 @@ import User from 'components/User.vue'
 import SelfCenter from 'components/userChildren/SelfCenter.vue'
 import Setting from 'components/userChildren/Setting.vue'
 import Guide from 'components/userChildren/Guide.vue'
+import Coupon from 'components/userChildren/Coupon.vue'
+import Wallet from 'components/userChildren/Wallet.vue'
 
 
 Vue.use(Router)
@@ -30,10 +32,14 @@ export default new Router({
         { path: '/user', 
           component: User, 
           name: '我的',
+          meta:{index:0},
           children:[
-            { path:'/user/selfCenter',component: SelfCenter,name: 'selfCenter' },
-            { path:'/user/setting',component: Setting,name: 'setting' },
-            { path:'/user/guide',component: Guide,name: 'Guide' },
+            { path:'/user/selfCenter',component: SelfCenter,name: 'selfCenter',meta:{index:1} },
+            { path:'/user/setting',component: Setting,name: 'setting',meta:{index:2} },
+            { path:'/user/guide',component: Guide,name: 'Guide',meta:{index:3} },
+            { path:'/user/coupon',component: Coupon,name: 'Coupon',meta:{index:4} },
+            { path:'/user/wallet',component: Wallet,name: 'Wallet',meta:{index:5} },
+            
           ]
         }
       ]

@@ -23,7 +23,7 @@
         <button id="registerBtn" @click="register" :class="{'isRegister': !invalid}">重置密码</button>
       </div>
       <p class="derictLogin">
-        <a href="login.html">通过账号密码登录></a>
+        <a href="login.html">通过账号密码登录 ></a>
       </p>
 
   </div>
@@ -148,11 +148,12 @@ export default {
         background: #a1a1a1
         border:none
         color: #ffffff  
+        font-size: .28rem
       .isRegister
         background: #FA9E15!important
     .derictLogin
       text-align: center
-      font-size: .2rem
+      font-size: .24rem
       margin-top: .3rem
       a
         color: #FA9E15            

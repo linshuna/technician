@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="wrap">
     <div class="customWrap">
       <div class="logoWrap">
         <img :src="customerLogo" class="customLogo"/>
@@ -45,7 +45,8 @@
             客户级别
           </span>
           <div class="setCusRight">
-            <input type="text" placeholder="请选择级别" v-model="cusLabelText" readonly @focus="cusLabel" @blur="comfirmChecked=false"/>
+            <!-- <input type="text" style="ime-mode:disabled" placeholder="请选择级别" v-model="cusLabelText" readonly @focus="cusLabel" @blur="comfirmChecked=false"/> -->
+            <span @click="cusLabel" class="inp" :class="{'blackColor':cusLabelText!=''}">{{cusLabelText==''?'请选择级别':cusLabelText}}</span>
             <img :src="btmArrowIcon" alt="" class="btmArrowIcon">
             <mt-popup v-model="popupVisible" position="bottom">
               <div class="picker-toolbar">  
@@ -62,7 +63,8 @@
             生日
           </span>
           <div class="setCusRight">
-            <input type="text" placeholder="请选择日期" v-model="birthDate" readonly @focus="cusBirth('birthPicker')"/>
+            <!-- <input type="text" style="ime-mode:disabled" placeholder="请选择日期" v-model="birthDate" readonly @focus="cusBirth('birthPicker')"/> -->
+            <span class="inp" :class="{'blackColor':birthDate!=''}"  @click="cusBirth('birthPicker')">{{birthDate==''?'请选择日期':birthDate}}</span>
             <img :src="birthIcon" alt="" class="btmArrowIcon">
               <mt-datetime-picker
                 ref="birthPicker"
@@ -196,7 +198,7 @@ export default {
     },
     select:function(){
       var pickerVal=this.$refs.pickerObj.getValues();
-      this.cusLabelText = pickerVal;
+      this.cusLabelText = pickerVal[0];
       this.popupVisible=false;
     },
     cusBirth:function(picker){
@@ -214,14 +216,15 @@ export default {
 </script>
 
 <style lang="stylus">
-  #app
+  .wrap
     width: 100%
     height: 100%
     font-size: .28rem
-    position: fixed
+    position: absolute
     left: 0
     top: 0
     background: #f4f4f4
+    padding-bottom: 2rem
     .customWrap
       width: 100%
       padding:0 .32rem
@@ -263,9 +266,8 @@ export default {
             .btmArrowIcon
               position: absolute
               top: 50%
-              width: 0.3rem
+              width: 0.35rem
               right: 0.1rem
-              margin-top: .03rem
               transform: translate(0, -50%)
             .isShowPicker
               display: inline-block   
@@ -289,20 +291,24 @@ export default {
                   background-color: #26a2ff
                 .mint-cell-wrapper
                   background: transparent!important
-                  padding-left: 10px
+                  padding-left: 8px
                   padding-right: 0
                   font-size: .24rem
                   .mint-radiolist-label
                     padding: 0
               .mint-cell:last-child
                 background: transparent!important
-            input[type="text"]
+            input[type="text"],span.inp
               display: inline-block
               width: 100%
               border:1px solid #f4f4f4
               border-radius: 5px 
               padding: .2rem 0 .2rem .1rem
               box-sizing:border-box    
+            span.inp  
+              color: gray 
+            .blackColor
+              color: #000!important  
             .cusNameInp
               width: 50%!important
             .mint-popup
@@ -336,6 +342,7 @@ export default {
           padding: .1rem
           box-sizing: border-box   
           margin-bottom: .2rem 
+          font-size: .28rem
       .saveBtn
         width: 100%
         height: .7rem
@@ -346,6 +353,7 @@ export default {
         width: 100%
         background: #FA9E15
         color: #ffffff
+        font-size: .28rem
 
 </style>
 

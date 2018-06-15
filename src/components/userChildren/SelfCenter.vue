@@ -49,6 +49,11 @@
         rightArrowIcon: require("modules/images/rightArrow.png"),
       }
     },
+    mounted: function(){
+      this.$nextTick(function(){
+        document.title = '个人中心'
+      })
+    },
     methods:{
 
       
@@ -68,14 +73,14 @@
     width: 100%
     height: 100%
     font-size: .28rem
-    position: fixed
-    left: 0
-    top: 0
     background: #f4f4f4!important
     overflow: hidden
     z-index: 100
     padding: 0!important
     border-radius: 0!important
+    position: fixed
+    top: 0
+    left: 0
     ul
       width: 100%
       background: #ffffff

@@ -212,13 +212,14 @@ export default {
   .clearFloat
     overflow: hidden
   .grayColor 
-    font-size: .22rem
+    font-size: .24rem
     color: #bfbfbf  
 
   #carDetailMsgWrap
-    width:100%;  
+    width:100%
+    font-size: .28rem
     .mint-tabbar
-      height: .6rem
+      height: .7rem
       top: 0
       backgound-image: none
       background:#ffffff
@@ -228,11 +229,11 @@ export default {
       border-bottom: 1px solid #FA9E15
       color: #FA9E15
     .mint-tab-item
-      height: .6rem
-      line-height: .6rem
+      height: .7rem
+      line-height: .7rem
       padding: 0  
       .mint-tab-item-label
-        line-height: .6rem
+        line-height: .7rem
     .tabCon  
       width: 100%
       .carStatelist
@@ -262,7 +263,7 @@ export default {
                 line-height .45rem
                 text-align: left 
                 .orangeColor
-                  font-size: .22rem
+                  font-size: .24rem
                   color: #FA9E15
                 .blueColor
                   font-size: .28rem
@@ -274,6 +275,7 @@ export default {
                     color: #FA9E15
                     border: none
                     font-size: .28rem
+                    padding: 0 0 0 .1rem;
 
 
 </style>

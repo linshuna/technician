@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <div class="customDetailWrap">
       <div class="setMsg">
         <div class="logoWrap border-bottom-1px">
@@ -42,11 +42,11 @@
         <p class="setPadding border-bottom-1px">生日：日期</p>
         <p class="setPadding">地址：联系人地址</p>
       </div>
-      <button class="editorBtn">编辑</button>
+      <button class="editorBtn" @click="editorFn">编辑</button>
     </div>  
-    <router-view></router-view>
-  
+    <router-view></router-view>  
   </div>
+
   
 </template>
 
@@ -60,26 +60,29 @@
   Vue.component(Picker.name, Picker);
   Vue.component(DatetimePicker.name, DatetimePicker);
   import {format} from 'modules/js/date.js'
-export default {
-  name: 'App',
-  data(){
-    return {
-      customerLogo:require("modules/images/defaultLogo.png"),
-      sexTypeIcon:require("modules/images/girlIcon.png"),
-      rightArrowIcon: require("modules/images/rightArrow.png")
-    }
-  },
-  methods:{
-    carDetailMsg:function(e){
-      this.$router.push({path:"/carDetailMsg/"+e})
-      // this.$router.push({name:"carDetailMsg",params: { userId: e }})
+  export default {
+    name: 'App',
+    data(){
+      return {
+        customerLogo:require("modules/images/defaultLogo.png"),
+        sexTypeIcon:require("modules/images/girlIcon.png"),
+        rightArrowIcon: require("modules/images/rightArrow.png")
+      }
     },
-    bindNewCar: function(){
-      // window.open("/customerDetail/bindNewCar")
-      this.$router.push({path:"/bindNewCar"})
+    methods:{
+      carDetailMsg:function(e){
+        this.$router.push({path:"/carDetailMsg/"+e})
+        // this.$router.push({name:"carDetailMsg",params: { userId: e }})
+      },
+      bindNewCar: function(){
+        // window.open("/customerDetail/addNewCar")
+        this.$router.push({path:"/addNewCar"})
+      },
+      editorFn(){
+        window.location.href = "addNewCustom.html?customerId=1"
+      }
     }
   }
-}
 </script>
 
 <style lang="stylus">
@@ -89,7 +92,8 @@ export default {
     float: right 
   .clearFloat
     overflow: hidden  
-  #app
+    
+  .customDetailWrap
     width: 100%
     height: 100%
     font-size: .28rem
@@ -97,115 +101,113 @@ export default {
     left: 0
     top: 0
     background: #f4f4f4
-    .customDetailWrap
-      width: 100%
-      .setMsg
-        margin-top: .2rem;
-        background: #ffffff
-        .setPadding
-          width: 100%
-          padding: .4rem 0
-          padding-left: .32rem
-          box-sizing: border-box
-        .logoWrap
-          width: 100%
-          padding: .2rem 0 .2rem .6rem
-          box-sizing: border-box
-          font-size:0
-          .customLogo
-            display: inline-block
-            width: 1rem
-            height: 1rem
-            vertical-align: top
-          .logoRight
-            display: inline-block
-            width: 84%
-            padding-left: .2rem
-            box-sizing: border-box
-            text-align:left
-            vertical-align: top
-            font-size: .28rem
-            position: relative
-            .customerName
-              width: 100%
-              span 
-                vertical-align: middle
-              img   
-                display: inline-block
-                width: .35rem
-                height: .35rem
-                vertical-align: middle
-                padding-left:.1rem
-            .remark
-              padding-top: .2rem
-              font-size: .24rem
-            .grayColor
-              color: gray
-            .orangeColor
-              color: #FA9E15
-            .customerTel
-              position: absolute
-              top: 0
-              right: .4rem  
-              color: #FA9E15
-        .wechatWrap
-          width: 100%
-          padding: .2rem 0
-          box-sizing: border-box
-          text-align: center
-          .bindWechat
-            display: inline-block
-            border: 1px solid #FA9E15
-            color: #FA9E15  
-            width: 80%
-            background: transparent
-            height: .7rem
-            font-size: .28rem
-            border-radius: 8px
-      .carMsgList
+    .setMsg
+      margin-top: .2rem;
+      background: #ffffff
+      .setPadding
         width: 100%
-        background: #ffffff
+        padding: .4rem 0
         padding-left: .32rem
         box-sizing: border-box
-        li.carMsgTitle
-          padding: .4rem .4rem .4rem 0;
+      .logoWrap
+        width: 100%
+        padding: .2rem 0 .2rem .6rem
+        box-sizing: border-box
+        font-size:0
+        .customLogo
+          display: inline-block
+          width: 1rem
+          height: 1rem
+          vertical-align: top
+        .logoRight
+          display: inline-block
+          width: 84%
+          padding-left: .2rem
           box-sizing: border-box
-          .bindCar
-            color: #fa9e15
-        li
-          width: 100%
-          padding: .2rem 0
-          box-sizing: border-box       
+          text-align:left
+          vertical-align: top
+          font-size: .28rem
           position: relative
-          p
-            line-height: .45rem
-          .grayColor
-            color: gray 
-          .smallFont
-            font-size: .2rem  
-            color: gray
-          .rightArrow
-            display: inline-block
-            width: .15rem
-            position: absolute
-            right: .32rem
-            top: 50%
-            transform: translate(0,-50%)  
-            img 
+          .customerName
+            width: 100%
+            span 
+              vertical-align: middle
+            img   
               display: inline-block
-              width: 100%
-              height: 100%     
-    .editorBtn
+              width: .35rem
+              height: .35rem
+              vertical-align: middle
+              padding-left:.1rem
+          .remark
+            padding-top: .2rem
+            font-size: .24rem
+          .grayColor
+            color: gray
+          .orangeColor
+            color: #FA9E15
+          .customerTel
+            position: absolute
+            top: 0
+            right: .4rem  
+            color: #FA9E15
+      .wechatWrap
+        width: 100%
+        padding: .2rem 0
+        box-sizing: border-box
+        text-align: center
+        .bindWechat
+          display: inline-block
+          border: 1px solid #FA9E15
+          color: #FA9E15  
+          width: 80%
+          background: transparent
+          height: .7rem
+          font-size: .28rem
+          border-radius: 8px
+    .carMsgList
       width: 100%
-      height: .7rem
-      border: none
-      position: fixed
-      bottom:0
-      left: 0
-      width: 100%
-      background: #FA9E15
-      color: #ffffff
-      font-size: .28rem
+      background: #ffffff
+      padding-left: .32rem
+      box-sizing: border-box
+      li.carMsgTitle
+        padding: .4rem .4rem .4rem 0;
+        box-sizing: border-box
+        .bindCar
+          color: #fa9e15
+      li
+        width: 100%
+        padding: .2rem 0
+        box-sizing: border-box       
+        position: relative
+        p
+          line-height: .45rem
+        .grayColor
+          color: gray 
+        .smallFont
+          font-size: .24rem  
+          color: gray
+        .rightArrow
+          display: inline-block
+          width: .15rem
+          position: absolute
+          right: .32rem
+          top: 50%
+          transform: translate(0,-50%)  
+          img 
+            display: inline-block
+            width: 100%
+            height: 100%     
+  .editorBtn
+    width: 100%
+    height: .7rem
+    border: none
+    position: fixed
+    bottom:0
+    left: 0
+    width: 100%
+    background: #FA9E15
+    color: #ffffff
+    font-size: .28rem
 </style>
 
 

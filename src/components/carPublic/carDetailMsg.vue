@@ -284,8 +284,9 @@ export default {
     top: 0
     left: 0
     background: #f4f4f4
+    font-size: .28rem
     .mint-tabbar
-      height: .6rem
+      height: .7rem
       top: 0
       backgound-image: none
       background:#ffffff
@@ -294,11 +295,11 @@ export default {
       border-bottom: 1px solid #FA9E15
       color: #FA9E15
     .mint-tab-item
-      height: .6rem
-      line-height: .6rem
+      height: .7rem
+      line-height: .7rem
       padding: 0  
       .mint-tab-item-label
-        line-height: .6rem
+        line-height: .7rem
     .tabCon
       margin-top: .7rem
       #carMsg
@@ -425,7 +426,7 @@ export default {
               .searchTime
                 display: inline-block
                 width: 75%
-                color: #ffffff
+                color: gray
                 font-size: .24rem
                 vertical-align: middle
                 text-align: right
@@ -442,7 +443,7 @@ export default {
                 width: .02rem
                 height: 1.2rem
                 background: #d4d4d4
-                margin-right: .1rem
+                margin-right: .18rem
             .searchRight
               display: inline-block
               width: 75%  

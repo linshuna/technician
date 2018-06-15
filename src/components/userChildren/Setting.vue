@@ -28,6 +28,11 @@
 
       }
     },
+    mounted: function(){
+      this.$nextTick(function(){
+        document.title = '设置'
+      })
+    },
     methods:{
 
       
@@ -105,6 +110,7 @@
         background: #FA9E15
         color: #ffffff
         border-radius : 2px
+        font-size: .28rem
 
 
 </style>

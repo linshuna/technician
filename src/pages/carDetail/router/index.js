@@ -8,7 +8,7 @@ import Router from 'vue-router'
 
 let App = r => require.ensure([], () => r(require('../App')), 'App')
 let carDetailMsg = r => require.ensure([], () => r(require('components/carPublic/carDetailMsg')), 'carDetailMsg')
-let addNewCar = r => require.ensure([], () => r(require('../components/addNewCar')), 'addNewCar')
+let addCarMsg = r => require.ensure([], () => r(require('../components/addCarMsg')), 'addCarMsg')
 Vue.use(Router)
 
 export default new Router({
@@ -23,9 +23,9 @@ export default new Router({
           component: carDetailMsg
         },
         {
-          path: '/addNewCar',
-          name: 'addNewCar',
-          component: addNewCar
+          path: '/addCarMsg',
+          name: 'addCarMsg',
+          component: addCarMsg
         }
       ]
     }

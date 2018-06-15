@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import getRem from 'modules/js/getRem.js'
 
-import { Tabbar, TabItem, TabContainer, TabContainerItem } from 'mint-ui';
+import { Tabbar, TabItem, TabContainer, TabContainerItem,Cell } from 'mint-ui';
 import { Swipe, SwipeItem } from 'mint-ui';
 
 Vue.component(Tabbar.name, Tabbar);
@@ -14,6 +14,7 @@ Vue.component(TabContainer.name, TabContainer);
 Vue.component(TabContainerItem.name, TabContainerItem);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
+Vue.component(Cell.name, Cell);
 
 import 'modules/css/reset.styl'
 import 'mint-ui/lib/style.css'

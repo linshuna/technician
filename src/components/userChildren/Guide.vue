@@ -45,6 +45,11 @@
         rightArrowIcon: require("modules/images/rightArrow.png"),
       }
     },
+    mounted: function(){
+      this.$nextTick(function(){
+        document.title = '指南'
+      })
+    },
     methods:{
 
       
@@ -79,7 +84,7 @@
       color: #999999
       background: #f4f4f4
       text-align: left 
-      font-size: .24rem
+      font-size: .26rem
     ul
       width: 100%
       background: #ffffff

@@ -72,7 +72,7 @@
             name:'我的客户'
           },
           {
-            link:'',
+            link:'./carDetail.html',
             className:'nav-icon-carManage',
             name:'车辆管理'
           },

@@ -11,7 +11,11 @@
                 <span>可提现</span>
                 <span class="orangeColor">0.00</span>
               </p>
-              <button class="fr">我的钱包</button>
+              <router-link to="/user/wallet">
+                <button class="fr">
+                  我的钱包
+                </button>
+              </router-link>
             </div>
             <div class="orderMsg">
               <span>
@@ -28,89 +32,37 @@
               </span>
             </div>
         </div>
+
         <div class="userType">
-          <span>
+          <router-link v-for="(linkItem,index) in userTypeData" :to="linkItem.linkUrl" tag="span">
             <p>
-              <img :src="firendIcon" alt="">
+              <img :src="linkItem.icon" alt="">
             </p>
-            <p class="userTypeTitle">推荐好友</p>
-          </span>
-          <span>
-            <p>
-              <img :src="myOrderIcon" alt="">
-            </p>
-            <p class="userTypeTitle">我的账单</p>
-          </span>
-          <span>
-            <p>
-              <img :src="cordIcon" alt="">
-            </p>
-            <p class="userTypeTitle">优惠券</p>
-          </span>
+            <p class="userTypeTitle">{{linkItem.linkName}}</p>
+          </router-link>
         </div>
+
+        
         <div class="userSettingType">
           <ul>
-            <!-- <li class="border-bottom-1px" @click="userCenterClick"> </li>-->
-            <router-link to="/user/selfCenter" tag="li" class="border-bottom-1px">
+            <router-link v-for="(linkItem,index) in userSettingTypeData" :to="linkItem.linkUrl" tag="li" :class="{'border-bottom-1px':index!=(userSettingTypeData.length-1)}">
               <span class="settingLeft">
-                <img :src="selfCenterIcon" alt="" class="selfIcon">
-                <span>个人中心</span>
+                <img :src="linkItem.icon" alt="" class="selfIcon">
+                <span>{{linkItem.linkName}}</span>
               </span>
               <span class="settingRight">
                 <img :src="rightArrowIcon" alt="" rightArrowIcon>
-              </span>   
+              </span> 
             </router-link>
-          
-            <router-link to="/user/selfCenter" tag="li" class="border-bottom-1px">
-              <span class="settingLeft">
-                <img :src="rewardIcon" alt="" class="selfIcon">
-                <span>我的打赏</span>
-              </span>
-              <span class="settingRight">
-                <img :src="rightArrowIcon" alt="" rightArrowIcon>
-              </span>
-            </router-link>
-            <router-link to="/user/selfCenter" tag="li" class="border-bottom-1px">
-              <span class="settingLeft">
-                <img :src="recommendIcon" alt="" class="selfIcon">
-                <span>我的评价</span>
-              </span>
-              <span class="settingRight">
-                <img :src="rightArrowIcon" alt="" rightArrowIcon>
-              </span>
-            </router-link>
-            <router-link to="/user/guide" tag="li" class="border-bottom-1px">
-              <span class="settingLeft">
-                <img :src="helpIcon" alt="" class="selfIcon">
-                <span>帮助中心</span>
-              </span>
-              <span class="settingRight">
-                <img :src="rightArrowIcon" alt="" rightArrowIcon>
-              </span>
-            </router-link>
-            <router-link to="/user/selfCenter" tag="li" class="border-bottom-1px">
-              <span class="settingLeft">
-                <img :src="customerIcon" alt="" class="selfIcon">
-                <span>客户</span>
-              </span>
-              <span class="settingRight">
-                <img :src="rightArrowIcon" alt="" rightArrowIcon>
-              </span>
-            </router-link>
-            <router-link to="/user/setting" tag="li" class="border-bottom-1px">
-              <span class="settingLeft">
-                <img :src="settingIcon" alt="" class="selfIcon">
-                <span>设置</span>
-              </span>
-              <span class="settingRight">
-                <img :src="rightArrowIcon" alt="" rightArrowIcon>
-              </span>
-            </router-link>
-            <router-view></router-view>
+            
           </ul>
           
         </div>
-        
+        <transition name="slide-fade">
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
+        </transition>
     </div>
   </div>
 </template>
@@ -129,23 +81,71 @@
         myOrderIcon: require("modules/images/myOrderIcon.png"),
         cordIcon: require("modules/images/cordIcon.png"),
         rightArrowIcon: require("modules/images/rightArrow.png"),
-        selfCenterIcon: require("modules/images/selfCenterIcon.png"),
-        rewardIcon: require("modules/images/rewardIcon.png"),
-        recommendIcon: require("modules/images/recommendIcon.png"),
-        helpIcon: require("modules/images/helpIcon.png"),
-        customerIcon: require("modules/images/customerIcon.png"),
-        settingIcon: require("modules/images/settingIcon.png"),
+        transitionName:'',
+        userTypeData:[{
+          'linkUrl':'/user/coupon',
+          'icon': require("modules/images/firendIcon.png"),
+          'linkName': '推荐好友'
+        },{
+          'linkUrl':'/user/coupon',
+          'icon': require("modules/images/myOrderIcon.png"),
+          'linkName': '我的账单'
+        },{
+          'linkUrl':'/user/coupon',
+          'icon': require("modules/images/cordIcon.png"),
+          'linkName': '优惠券'
+        }],
+        userSettingTypeData:[{
+          'linkUrl':'/user/selfCenter',
+          'icon': require("modules/images/selfCenterIcon.png"),
+          'linkName': '个人中心'
+        },{
+          'linkUrl':'/user/selfCenter',
+          'icon': require("modules/images/rewardIcon.png"),
+          'linkName': '我的打赏'
+        },{
+          'linkUrl':'/user/selfCenter',
+          'icon': require("modules/images/recommendIcon.png"),
+          'linkName': '我的评价'
+        },{
+          'linkUrl':'/user/guide',
+          'icon': require("modules/images/helpIcon.png"),
+          'linkName': '帮助中心'
+        },{
+          'linkUrl':'/user/selfCenter',
+          'icon': require("modules/images/customerIcon.png"),
+          'linkName': '客户'
+        },{
+          'linkUrl':'/user/setting',
+          'icon': require("modules/images/settingIcon.png"),
+          'linkName': '设置'
+        }]
       }
     },
+    mounted: function(){
+      this.$nextTick(function(){
+        document.title = '我的'
+      })
+    },
+    watch:{
+      // $route(to,from){
+      //   if(to.meta.index>from.meta.index){//子页面到当前页面
+      //       this.transitionName  = 'vux-pop-in'
+      //   }else{
+      //       this.transitionName  = 'vux-pop-out'
+      //   }
+      //   console.log(this.transitionName)
+      // }
+    },
     methods:{
-      userCenterClick: function(){
-        this.$router.push({path:"/user/selfCenter"})
+      jumpCom: function(){
+        this.$router.push({path:"/user/coupon"})
       }
       
     }
   }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
   .fl
     float: left
   .fr 
@@ -154,13 +154,88 @@
     overflow: hidden 
   .orangeColor
     color: #FA9E15  
+  // .slide-right-enter-active,
+  // .slide-right-leave-active,
+  // .slide-left-enter-active,
+  // .slide-left-leave-active{
+  //   will-change: transform;
+  //   transition: all 250ms;
+  //   height: 100%;
+  //   backface-visibility: hidden;
+  //   perspective: 1000;
+  //   position: absolute;
+  //   top:0;
+  // }
+  // .slide-right-enter {
+  //   opacity: 0;
+  //   transform: translate3d(-100%, 0, 0);
+  // }
+  // .slide-right-leave-active {
+  //   opacity: 0;
+  //   transform: translate(100%, 0, 0);
+  // }
+  // .slide-left-enter {
+  //   opacity: 0;
+  //   transform: translate3d(100%, 0, 0);
+  // }
+  // .slide-left-leave-active {
+  //   opacity: 0;
+  //   transform: translate(-100%, 0, 0);
+  // }
+
+  .slide-fade{
+    position: absolute;
+    width:100%;
+    top: 0;
+    left:0;
+    opacity: 0;
+  }
+  .slide-fade-enter-active {
+    transition: all .2s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(100%);
+    opacity: 1;
+  }
+
+  .vux-pop-out-enter-active,
+  .vux-pop-out-leave-active,
+  .vux-pop-in-enter-active,
+  .vux-pop-in-leave-active {
+    will-change: transform;
+    transition: all 500ms;
+    height: 100%;
+    top: 0;
+    position: absolute;
+    backface-visibility: hidden;
+    perspective: 1000;
+  }
+  .vux-pop-out-enter {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+  .vux-pop-out-leave-active {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  .vux-pop-in-enter {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  .vux-pop-in-leave-active {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
   .userWrap
     width: 100%
     height:100%
     background: #f4f4f4
-    position:fixed
-    left: 0
-    top: 0
+    position: absolute
+    padding-bottom: 2.3rem
     .userHeader
       width: 100%
       height: 3rem

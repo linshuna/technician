@@ -18,8 +18,9 @@
       <div class="btnWrap">
         <button id="registerBtn" @click="login" :class="{'isRegister': !invalid}">登录</button>
       </div>
-      <p class="textRight">
-        <a href="forgetpwd.html">忘记密码？</a>
+      <p class="textRight clearFloat">
+        <a href="register.html" class="fl">注册</a>
+        <a href="forgetpwd.html" class="fr">忘记密码？</a>
       </p>
   </div>
 </template>
@@ -112,6 +113,7 @@ export default {
           width: 80%
           height: 100%
           margin-left: .2rem
+          vertical-align: middle
         #gainCodeBtn
           display: inline-block
           width: 25%
@@ -131,6 +133,7 @@ export default {
         background: #a1a1a1
         border:none
         color: #ffffff      
+        font-size: .28rem
       .isRegister
         background: #FA9E15!important       
     .tip
@@ -145,7 +148,7 @@ export default {
         color: #3c3c3c  
     .textRight
       text-align: right   
-      font-size: .2rem
+      font-size: .24rem
       margin-top:.3rem
       a
         color: #FA9E15   
