@@ -33,7 +33,7 @@
     <div class="btn-wrapper">
       <div class="btn pickup-btn border-right-1px">立即接车</div>
       <div class="btn cancel-btn border-right-1px" @click="cancelReseved">取消预约</div>
-      <div class="btn edit-btn">编辑预约</div>
+      <div class="btn edit-btn" @click="editReseved">编辑预约</div>
     </div>
   </div>
 </template>
@@ -56,6 +56,9 @@
     methods: {
       cancelReseved() {
         window.location.href='reason.html'
+      },
+      editReseved() {
+        window.location.href='editReservedOrder.html'
       }
     },
     components: {

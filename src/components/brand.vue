@@ -1,13 +1,14 @@
 <template>
-  <mt-popup v-model="show" position="right" class="pop-wrapper" closeOnClickModal=false>
+  <mt-popup v-model="show" position="right" class="pop-wrapper" :closeOnClickModal=false>
     <div ref="wrapper" style="height: 100%">
       <div>
         <div class="brand-wrapper" v-for="(item,key) of brandArr" :key="key" :ref="key">
           <div class="title border-bottom-1px">{{key}}</div>
           <ul class="item-list">
-            <li class="brand border-bottom-1px" v-for="innerItem of item" :key="innerItem.id" @click="">
+            <li class="brand border-bottom-1px" v-for="(innerItem,index) of item" :key="innerItem.id" @click="selected(index,key,innerItem.name)">
               <img :src="innerItem.pic"/>
               <span class="text">{{innerItem.name}}</span>
+              <span class="iconfont selected-icon icon-xuanzhong" v-show="activeIndex===index&&activeKey===key"></span>
             </li>
           </ul>
         </div>
@@ -19,6 +20,11 @@
         <li class="item" v-for="item of letters" :key="item" :ref="item" @click="handleLetterClick">{{item}}</li>
       </ul>
     </div>
+
+    <div class="btn-wrapper">
+        <div class="btn reset" @click="reset">重置</div>
+        <div class="btn confirm" @click="confirm">确定</div>
+      </div>
   </mt-popup>
 </template>
 <script>
@@ -38,6 +44,9 @@
         popupVisible: false,
         show: false,
         currentLetter: '',
+        activeKey: '',
+        activeIndex: '-1',
+        activeBrand: '',
         brandArr:{
           A:[
             {id:'0',name:'奥迪',pic:'http://mb.hhqccar.cn/Public/icon/aodi.jpg'}
@@ -103,13 +112,28 @@
       initScroll() {
         this.$nextTick(() => {  
         if (!this.scroll) {  
-          this.scroll = new BScroll(this.$refs.wrapper, {})  
+          this.scroll = new BScroll(this.$refs.wrapper, {
+            click: true
+          })  
           console.log(this.scroll)  
           }  
         })  
       },
       handleLetterClick(e) {
         this.currentLetter = e.target.innerText;
+      },
+      selected(index,key,brandName) {
+        this.activeKey = key;
+        this.activeIndex = index;
+        this.activeBrand = brandName;
+      },
+      reset() {
+        this.activeKey='';
+        this.activeIndex= '-1'
+      },
+      confirm() {
+        this.$emit('closePop')
+        this.$emit('selectedBrand',this.activeBrand);
       }
     }
   }
@@ -138,6 +162,12 @@
         line-height: 1rem
         vertical-align: top
         font-size: .28rem
+      .selected-icon
+        font-size: 0.3rem
+        line-height: 1rem
+        float: right
+        margin-right: .4rem 
+        color: #408dde
   .alphabet-wrapper
     .alphabet-list
       font-size: .24rem
@@ -152,4 +182,20 @@
         line-height: .4rem
         text-align: center
         color: $color-main
+  .btn-wrapper
+        position: fixed
+        bottom: 0
+        width:100%
+        height: 1rem
+        line-height: 1rem
+        .btn
+          width: 50%
+          float: left 
+          text-align: center
+        .reset
+          color: #4a93f1
+          background: #cae9ff
+        .confirm
+          color: #fff
+          background: #4a93f1        
 </style>

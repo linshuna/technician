@@ -10,7 +10,7 @@
     </div>
     <div class="brand-wrapper">
       <div class="title">车型</div>
-      <div class="brand" @click="selectBrand">奔驰</div>
+      <div class="brand" @click="selectBrand">{{this.selectedBrand}}</div>
     </div>
     <div class="name-wrapper">
       <div class="title">客户名称</div>
@@ -26,7 +26,7 @@
     </div>
 
     <carKeyCode v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></carKeyCode>
-    <brand :popBrand.sync="popBrand" @show="toggleShow"></brand>
+    <brand :popBrand.sync="popBrand" @selectedBrand="activedBrand" @closePop="closePop"></brand>
   </div>
 </template>
 <script>
@@ -46,6 +46,7 @@
         cusName:'',
         cusNameValue: '1',
         popBrand: false,
+        selectedBrand: '奥迪',
         cusNameOptions:[
           {
             label:'先生',
@@ -72,8 +73,12 @@
       selectBrand() {
         this.popBrand = true
       },
-      toggleShow(val){
-        console.log(val)
+      activedBrand(brand) {
+        this.selectedBrand = brand;
+        console.log(brand)
+      },
+      closePop() {
+        this.popBrand = false
       }
     },
     components:{
@@ -146,6 +151,7 @@
         float: left
         width: 4rem
         height: .4rem
+        line-height: .4rem
         font-size: .28rem
         border: 1px solid #d9d9d9
         padding: .1rem .2rem

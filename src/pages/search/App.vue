@@ -12,11 +12,11 @@
         粤A686868
         <div class="name-wrapper">名字<img class="typeImg" src="../../modules/images/stystem-icon.png" /></div>
       </li>
-      <li class="item border-bottom-1px">
+      <li class="item border-bottom-1px" @click="goPath">
         粤A686868
         <div class="name-wrapper">名字22<img class="typeImg" src="../../modules/images/reserve-icon.png" /></div>
       </li>
-      <li class="item border-bottom-1px" @click="">
+      <li class="item border-bottom-1px" @click="goAdd">
         粤A686868
         
       </li>
@@ -46,6 +46,12 @@
     methods: {
       goDetail() {
         window.location.href='pickupInfo.html#/type3'
+      },
+      goPath() {
+        window.location.href= './pickupOrder.html#/path'
+      },
+      goAdd() {
+        window.location.href= './pickupInfo.html#/type2'
       },
       addCar() {
         window.location.href='pickupInfo.html#/type1'

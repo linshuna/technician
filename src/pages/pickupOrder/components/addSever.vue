@@ -6,25 +6,41 @@
         <div class="name">代办提档费</div>
         <div class="code">编码: 23232</div>
         <div class="account">¥300</div>
-        <div class="add">+</div>
+        <div class="countBtn-wrapper">
+          <div class="reduce">-</div>
+          <input class="count-input" type="number" />
+          <div class="add">+</div>
+        </div>
       </div>
       <div class="item border-bottom-1px">
         <div class="name">更换氧传送器</div>
         <div class="code">编码: 23232</div>
         <div class="account">¥300</div>
-        <div class="add">+</div>
+        <div class="countBtn-wrapper">
+          <div class="reduce">-</div>
+          <input class="count-input" type="number" />
+          <div class="add">+</div>
+        </div>
       </div>
       <div class="item border-bottom-1px">
         <div class="name">仪表台修复</div>
         <div class="code">编码: 23232</div>
         <div class="account">¥300</div>
-        <div class="add">+</div>
+        <div class="countBtn-wrapper">
+          <div class="reduce">-</div>
+          <input class="count-input" type="number" />
+          <div class="add">+</div>
+        </div>
       </div>
       <div class="item border-bottom-1px">
         <div class="name">代理违章服务费</div>
         <div class="code">编码: 23232</div>
         <div class="account">¥300</div>
-        <div class="add">+</div>
+        <div class="countBtn-wrapper">
+          <div class="reduce">-</div>
+          <input class="count-input" type="number" />
+          <div class="add">+</div>
+        </div>
       </div>
     </div>
 
@@ -79,10 +95,25 @@
           font-size: .32rem
         .account
           color: #0087ff
-        .add
+        .countBtn-wrapper
           position: absolute
           right: 0  
           bottom: .2rem
+          height: .4rem
+          line-height: .4rem
+          .reduce
+            float: left
+          .count-input
+            float: left
+            width: .48rem
+            border: 1px solid #eee
+            margin: 0 .2rem
+            text-align: center
+            padding: 0 .2rem
+            font-size: .24rem
+            line-height: .4rem
+          .add
+            float: left  
     .btn-wrapper
       position: fixed
       bottom: 0
