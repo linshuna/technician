@@ -60,7 +60,7 @@
       }
     },
     methods: {
-      gainCarno:function(value){//子组件传给当前组件（父组件）
+      gainCarno:function(value){
         this.carno = value.carno
         this.tips = value.tips
         if(this.tips&&this.tips!=''){

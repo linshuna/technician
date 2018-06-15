@@ -2,11 +2,9 @@
   <div id="path">
       <div class="nav-section commen-width">
         <ul class="nav-section-list">
-          <li v-for="(nav,index) in navData" :key="index">
-            <a :href="nav.link">
-              <div class="nav-icon" :class="nav.className"></div>
-              <p>{{nav.name}}</p>
-            </a>
+          <li v-for="(nav,index) in navData" :key="index" @click="handleNavClick(nav.tag)">
+            <div class="nav-icon" :class="nav.className"></div>
+            <p>{{nav.name}}</p>
           </li>
         </ul>
       </div>
@@ -66,7 +64,7 @@
             <div class="searchRight">
               <p class="grayColor">刹车片<span>×2</span></p>
               <div class="btn-wrapper">
-                <div class="btn check">添加材料</div>
+                <div class="btn check" @click="addPro">添加材料</div>
               </div>
             </div>
           </li>
@@ -129,32 +127,29 @@
       return {
         navData: [
           {
-            link: '',
             className:'nav-icon-report',
-            name:'检测单'
+            name:'检测单',
+            tag: 'check'
           },
           {
-            link: '',
             className:'nav-icon-quotation',
-            name:'报价'
+            name:'报价',
+            tag: 'quotation'
           },
           {
-            link: '',
             className:'nav-icon-material',
-            name:'材料单'
+            name:'材料单',
+            tag: 'addPro'
           },
           {
-            link: '',
             className:'nav-icon-history',
             name:'进店历史'
           },
           {
-            link: '',
             className:'nav-icon-file',
             name:'客户档案'
           },
           {
-            link: '',
             className:'nav-icon-carMsg',
             name:'车辆信息'
           }
@@ -174,11 +169,17 @@
       addSever() {
         this.$router.push('/quotation')
       },
+      addPro() {
+        this.$router.push('/addPro')
+      },
       dispath() {
         this.$router.push('/dispath')
       },
       bill() {
         this.$router.push('/bill')
+      },
+      handleNavClick(val) {
+        this.$router.push('/'+val)
       }
     }
   }

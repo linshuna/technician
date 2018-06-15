@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="search">
-      <input v-model="carno" class="search-input" placeholder="请输入车牌号" @click="showCarKeyCode"/>
+      <input v-model="carno" class="search-input" placeholder="请输入车牌号" @click.prevent="showCarKeyCode"/>
       <div class="add-wrapper" @click="addCar">
         <div class="iconfont">&#xe60c;</div>
         <div class="">新增车辆</div>

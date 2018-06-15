@@ -21,7 +21,7 @@
       <div class="expect-delivery">
         <div class="title">预计交车</div>
         <div class="delivery-time" @click="openTimePicker">
-          <input placeholder="请选择日期" v-model="deliveryTime"/>
+         {{this.deliveryTime}}
         </div>
       </div>
       <div class="owner-remark">
@@ -142,10 +142,12 @@
         margin-left: .2rem
         border-radius: 4px
       .pre-odometer
-        font-size: .24rem
+        font-size: 0.24rem
         float: left
-        margin-left: 1.6rem
+        margin-left: 1.5rem
         border-radius: 4px
+        height: .4rem
+        line-height: .4rem
     .oil-wrapper
       overflow: hidden
       .title
