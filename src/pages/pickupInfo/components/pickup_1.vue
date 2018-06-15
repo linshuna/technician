@@ -30,12 +30,12 @@
   </div>
 </template>
 <script>
-  import Vue from 'vue';
+  import Vue from 'vue'
   import CarKeyCode from "components/CarKeyCode"
   import Brand from "components/brand.vue"
-  import { Toast} from 'mint-ui';
-  import { Radio} from 'mint-ui';
-  Vue.component(Radio.name, Radio);
+  import { Toast } from 'mint-ui'
+  import { Radio } from 'mint-ui'
+  Vue.component(Radio.name, Radio)
 
   export default {
     data() {
@@ -74,7 +74,7 @@
         this.popBrand = true
       },
       activedBrand(brand) {
-        this.selectedBrand = brand;
+        this.selectedBrand = brand
         console.log(brand)
       },
       closePop() {
