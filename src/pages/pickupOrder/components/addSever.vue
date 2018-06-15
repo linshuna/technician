@@ -7,9 +7,9 @@
         <div class="code">编码: 23232</div>
         <div class="account">¥300</div>
         <div class="countBtn-wrapper">
-          <div class="reduce">-</div>
-          <input class="count-input" type="number" />
-          <div class="add">+</div>
+          <div class="reduce" @click="reduceCount">-</div>
+          <input class="count-input" type="number" v-model="sevQty"/>
+          <div class="add" @click="addCount">+</div>
         </div>
       </div>
       <div class="item border-bottom-1px">
@@ -52,9 +52,27 @@
 </template>
 <script>
   export default {
+    data() {
+      return {
+        sevQty:'1'
+      }
+    },
     methods: {
       newSever() {
         this.$router.push('/newSever')
+      },
+      addCount() {
+        this.sevQty ++;
+      },
+      reduceCount() {
+        this.sevQty --;
+      }
+    },
+    watch:{
+    'sevQty': function(newVal,oldVal){
+        if(newVal <= 0){
+          this.sevQty = 1
+        }
       }
     }
   }
@@ -97,12 +115,13 @@
           color: #0087ff
         .countBtn-wrapper
           position: absolute
-          right: 0  
+          right: .2rem  
           bottom: .2rem
           height: .4rem
           line-height: .4rem
           .reduce
             float: left
+            font-size: .32rem
           .count-input
             float: left
             width: .48rem
@@ -113,7 +132,8 @@
             font-size: .24rem
             line-height: .4rem
           .add
-            float: left  
+            float: left
+            font-size: .32rem  
     .btn-wrapper
       position: fixed
       bottom: 0

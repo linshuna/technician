@@ -7,25 +7,41 @@
         <div class="name">主气囊</div>
         <div class="code">商品编码: 23232</div>
         <div class="account">¥300</div>
-        <div class="add">+</div>
+        <div class="countBtn-wrapper">
+          <div class="reduce" @click="reduceCount">-</div>
+          <input class="count-input" type="number" v-model="prodQty">
+          <div class="add" @click="addCount">+</div>
+        </div>
       </div>
       <div class="item border-bottom-1px">
         <div class="name">副气囊</div>
         <div class="code">商品编码: 23232</div>
         <div class="account">¥300</div>
-        <div class="add">+</div>
+        <div class="countBtn-wrapper">
+          <div class="reduce">-</div>
+          <input class="count-input" type="number"/>
+          <div class="add">+</div>
+        </div>
       </div>
       <div class="item border-bottom-1px">
         <div class="name">仪表台修复</div>
         <div class="code">商品编码: 23232</div>
         <div class="account">¥300</div>
-        <div class="add">+</div>
+        <div class="countBtn-wrapper">
+          <div class="reduce">-</div>
+          <input class="count-input" type="number" />
+          <div class="add">+</div>
+        </div>
       </div>
       <div class="item border-bottom-1px">
         <div class="name">代理违章服务费</div>
         <div class="code">商品编码: 23232</div>
         <div class="account">¥300</div>
-        <div class="add">+</div>
+        <div class="countBtn-wrapper">
+          <div class="reduce">-</div>
+          <input class="count-input" type="number" />
+          <div class="add">+</div>
+        </div>
       </div>
     </div>
 
@@ -37,9 +53,27 @@
 </template>
 <script>
   export default {
+    data() {
+      return {
+        prodQty: '1'
+      }
+    },
     methods: {
       newSever() {
-
+        this.$router.push('/newPro')
+      },
+      addCount() {
+        this.prodQty ++;
+      },
+      reduceCount() {
+        this.prodQty --;
+      }
+    },
+    watch:{
+    'prodQty': function(newVal,oldVal){
+        if(newVal <= 0){
+          this.prodQty = 1
+        }
       }
     }
   }
@@ -85,10 +119,27 @@
           font-size: .32rem
         .account
           color: #0087ff
-        .add
+        .countBtn-wrapper
           position: absolute
-          right: 0  
+          right: .2rem 
           bottom: .2rem
+          height: .4rem
+          line-height: .4rem
+          .reduce
+            float: left
+            font-size: .32rem
+          .count-input
+            float: left
+            width: .48rem
+            border: 1px solid #eee
+            margin: 0 .2rem
+            text-align: center
+            padding: 0 .2rem
+            font-size: .24rem
+            line-height: .4rem
+          .add
+            float: left 
+            font-size: .32rem 
     .btn-wrapper
       position: fixed
       bottom: 0

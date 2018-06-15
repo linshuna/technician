@@ -16,7 +16,7 @@ export default function getRem() {
         }
     }
   }
-  auto();                                  //  1rem=100px
+  auto();                                  
   /*浏览器横屏坚屏改变时也运行函数*/
   window.onorientationchange = function() {
       auto();
