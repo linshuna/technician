@@ -113,7 +113,6 @@ export default {
     overflow: hidden
   .grayColor 
     font-size: .24rem
-    line-height: .55rem
   .orangeColor 
     font-size: .36rem
     color: #FA9E15    
