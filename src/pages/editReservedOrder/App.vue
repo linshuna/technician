@@ -121,7 +121,9 @@ export default {
       this.popupVisibleType = false
     },
     resetType() {
-      this.selectTypeIndex = '-1'
+      this.project.forEach((item,index)=>{
+        item.active=false
+      })
     },
     cancle() {
       this.popupVisibleName = false
