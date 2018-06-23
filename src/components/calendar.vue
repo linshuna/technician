@@ -25,30 +25,34 @@
     <!-- 日期 -->
     <ul class="days">
         <!-- 核心 v-for循环 每一次循环用<li>标签创建一天 -->
-        <li  v-for="(dayobject,index) in days">
+        <li  v-for="(dayobject,index) in days" 
+            :key="index" 
+            :class="{'active':dayobject.checked,
+            'betweenActive':gainSelectedType=='月'&&dayobject.day>firstDay&&dayobject.day<lastDay}"
+            @click="dayobject.day.getMonth()+1 != currentMonth?change:pick(index,dayobject)">
             <!--本月-->
             <!--如果不是本月  改变类名加灰色-->
             <span v-if="dayobject.day.getMonth()+1 != currentMonth" class="other-month">{{ dayobject.day.getDate() }}</span>
-
             <!--如果是本月  还需要判断是不是这一天-->
-            <span v-else @click="pick(index,dayobject)">
-          <!--今天  同年同月同日-->
-                <span :class="{'active':dayobject.checked}" >{{dayobject.day.getDate()}}</span>
-                <!-- <span v-if="dayobject.day.getFullYear()==nowYear&&dayobject.day.getMonth()==nowMonth&&dayobject.day.getDate()==nowDay" class="active">{{dayobject.day.getDate()}}</span>
-                <span v-else @click="pick(dayobject)" :class="{'active':dayobject.checked}">{{dayobject.day.getDate()}}</span> -->
-                <!-- <span v-if=" dayobject.isSign===true">{{ dayobject.day.getDate() }}</span>
-                <span v-else>{{ dayobject.day.getDate() }}</span> -->
+            <span v-else>
+                <!--今天  同年同月同日-->
+                <span>{{dayobject.day.getDate()}}</span>
             </span>
 
         </li>
     </ul>
-
+    <div class="sureWrap">
+        <button @click="makeSure">确定</button>
+    </div>
   </div>
 </template>
 <script>
   export default {
     props:{
-        'showCalendar':{type: Boolean}
+        'showCalendar':{type: Boolean},
+        'gainSelectedType':{type: String},
+        'gainStartDate':{type: String},
+        'gainEndDate':{type: String}
     },
     data() {
       return{
@@ -60,11 +64,51 @@
         arrDate: [10,15],
         nowDay:new Date().getDate(),
         nowMonth: new Date().getMonth(),
-        nowYear:new Date().getFullYear()
+        nowYear:new Date().getFullYear(),
+        checkedArr:[],
+        firstDay:'',
+        lastDay:'',
+        makeSureDate:''
       }
     },
     created: function() {  //在vue初始化时调用
         this.initData(null);
+        this.makeSureDate = this.gainStartDate;//数九初始化
+    },
+    watch:{
+        gainSelectedType(newVal,oldVal){
+            this.gainSelectedType = newVal
+            if(this.gainSelectedType=='月'){
+                this.days.forEach((item,timeInd)=>{
+                    if(new Date(item.day).getDate()==1&&timeInd<30){
+                    this.$set(this.checkedArr,0,timeInd) 
+                    this.firstDay = item.day
+                    this.$set(this.days[timeInd],'checked',true)
+                    }
+                    if(item.checked){
+                        this.$set(this.checkedArr,1,timeInd)
+                        this.lastDay = item.day
+                    }
+                })    
+            }else{
+                this.days.forEach((item,timeInd)=>{
+                    if(new Date(item.day).getDate()==1&&timeInd<30){
+                        this.$set(this.days[timeInd],'checked',false)
+                    }
+                })
+            }
+        },
+        gainStartDate(newVal,oldVal){
+            this.gainStartDate = newVal
+            this.initData(null)
+        },
+        gainEndDate(newVal,oldVal){
+            this.gainEndDate = newVal
+            this.initData(null)
+        }
+    },
+    mounted: function(){
+
     },
     methods: {
         initData: function(cur) {
@@ -91,12 +135,22 @@
             this.days.length = 0;
             // 今天是周日，放在第一行第7个位置，前面6个
             //初始化本周
+            let getStartDate = '',getEndDate='';
+            if(this.gainStartDate){
+                let startArr = this.gainStartDate.split("-")
+                getStartDate = startArr[2]
+            }
+            if(this.gainEndDate){
+                let endArr = this.gainEndDate.split("-")
+                getEndDate = endArr[2]
+            }
             for (var i = this.currentWeek - 1; i >= 0; i--) {
                 var d = new Date(str);
                 d.setDate(d.getDate() - i);
                 var dayobject={}; //用一个对象包装Date对象  以便为以后预定功能添加属性
                 dayobject.day=d;
-                dayobject.checked=(d.getDate()==this.nowDay?true:false);
+                // dayobject.checked=(d.getDate()==this.nowDay?true:false);
+                dayobject.checked=(d.getDate()==getStartDate||d.getDate()==getEndDate?true:false);
                 this.days.push(dayobject);//将日期放入data 中的days数组 供页面渲染使用
             }
             //其他周
@@ -106,7 +160,7 @@
                 var dayobject={};
                 dayobject.day=d;
                 // dayobject.isSign = this.isVerDate(d.getDate());
-                dayobject.checked=(d.getDate()==this.nowDay?true:false);
+                dayobject.checked=(d.getDate()==getStartDate||d.getDate()==getEndDate?true:false);
                 this.days.push(dayobject);
             }
 
@@ -131,23 +185,69 @@
         pickYear: function(year, month) {
             // alert(year + "," + month);
         },
+        change:function(){
+            return false;
+        },
         pick: function(index,date){
-            this.days.forEach((item,timeInd)=>{
-              // this.$set(this.days,'checked',index==timeInd?true:false)
-              this.days[timeInd].checked = (index==timeInd?true:false)
-            })
+            if(this.gainSelectedType=='日'){
+                this.days.forEach((item,timeInd)=>{
+                    this.days[timeInd].checked = (index==timeInd?true:false)
+                })
+                var checkedDate = new Date(date.day)
+                checkedDate = this.formatDate(checkedDate.getFullYear(),checkedDate.getMonth()+1,checkedDate.getDate())  
+            }else{
+                //将所有的
+                this.days.forEach((item,timeInd)=>{
+                    this.days[timeInd].checked = false;
+                })
+                this.$set(this.checkedArr,0,this.checkedArr[1])
+                this.$set(this.checkedArr,1,index)
+                this.days[index].checked = true;
+                this.checkedArr.forEach((item,index)=>{
+                    let i = this.checkedArr[index];
+                    this.days[i].checked = true;
+                }) 
+                //比较起始值
+                let checkedArrFirst = this.days[this.checkedArr[0]].day;
+                let checkedArrLast = this.days[this.checkedArr[1]].day;
+                let first = checkedArrFirst,last = checkedArrLast;
+                
+                if(checkedArrFirst>checkedArrLast){
+                    first = checkedArrLast;
+                    last = checkedArrFirst;
+                }
+                this.firstDay = first
+                this.lastDay = last
+                let startDate = new Date(first)
+                let startDay = this.formatDate(startDate.getFullYear(),startDate.getMonth()+1,startDate.getDate())
+                let endDate = new Date(last)
+                let endDay = this.formatDate(endDate.getFullYear(),endDate.getMonth()+1,endDate.getDate()) 
+                var checkedDate = startDay+"~"+endDay
+            }
+            this.makeSureDate = checkedDate
+        },
+        makeSure: function(){
+            this.$emit("gainCheckedDate",this.makeSureDate);
+            this.$emit('update:showCalendar', false)
+            var start = '',end = '';
+            if(this.makeSureDate.indexOf("~")>-1){
+                let makeSureDateArr = this.makeSureDate.split("~");
+                start = makeSureDateArr[0];
+                end = makeSureDateArr[1];
+            }else{
+                start = end = this.makeSureDate
+            }
+            this.$emit('update:gainStartDate', start)
+            this.$emit('update:gainEndDate', end)
 
-            var checkedDate = new Date(date.day)
-            checkedDate = this.formatDate(checkedDate.getFullYear(),checkedDate.getMonth()+1,checkedDate.getDate())
-            this.$emit("gainCheckedDate",checkedDate)
         },
         // 返回 类似 2016-01-02 格式的字符串
         formatDate: function(year,month,day){
             var y = year;
             var m = month;
-            if(m<10) m = "0" + m;
+            // if(m<10) m = "0" + m;
             var d = day;
-            if(d<10) d = "0" + d;
+            // if(d<10) d = "0" + d;
             return y+"-"+m+"-"+d
         },
 
@@ -254,17 +354,24 @@
   }
 
   .days li {
-      list-style-type: none;
-      display: inline-block;
-      width: 14.2%;
-      text-align: center;
-      padding-bottom: 10px;
-      padding-top: 10px;
-      font-size: 12px;
-      line-height: 16px;
-      color: #000;
+        list-style-type: none;
+        display: inline-block;
+        width: 14%;
+        text-align: center;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        font-size: 12px;
+        line-height: 16px;
+        margin-top: 1px;
   }
-
+  .betweenActive{
+      background: #b0e4f3!important;
+      color: #fff!important;
+  }
+  .active {
+      background: #00B8EC!important;
+      color: #fff!important;
+  }
   .days li .active {
       padding: 2px 3px;
       border-radius: 0;
@@ -282,4 +389,16 @@
   .days li:hover {
       background: #e1e1e1;
   }
+    .sureWrap{
+        background: #fff;
+        text-align: right;
+        width: 100%;
+        padding: 4px;
+    }
+    .sureWrap button{
+        border: 1px solid #00b8ec;
+        background: transparent;
+        border-radius: 2px;
+        color: #00b8ec;
+    }
 </style>

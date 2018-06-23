@@ -19,46 +19,63 @@
         <mt-tab-container class="page-tabbar-container" v-model="selected">  
           <mt-tab-container-item id="车辆信息"> 
              <!--车辆信息内容  -->
-
-            <div id="carMsg">
+            <div id="carMsg" v-if="carinfo">
               <div class="carBaseMsg setMsg">
                 <p>
-                  <img :src="defaultIcon" alt="" class="carLogo">
-                  <span>本田</span>
+                  <img :src="carinfo.icon?carinfo.icon:defaultIcon" alt="" class="carLogo">
+                  <span>
+                    <span v-if="carinfo.carplate">{{carinfo.carplate}}</span>
+                    <span v-else class="grayColor">暂无</span>
+                  </span>
                 </p>
-                <p class="setPadding">车架号：xxx</p>
-                <img :src="editorIcon" alt="" class="editIcon">  
+                <p class="setPadding">车架号：
+                  <span v-if="carinfo.vin">{{carinfo.vin}}</span>
+                  <span v-else class="grayColor">暂无</span>
+                </p>
+                <img :src="editorIcon" alt="" class="editIcon" @click="carEditorFn">  
               </div>
               <ul class="carMsgList setMsg">
                 <li class="clearFloat border-bottom-1px">
                   <span class="fl">注册时间</span>
-                  <span class="fr">xxxx-xx-xx</span>
+                  <span class="fr">
+                    <span v-if="carinfo.regtime">{{carinfo.regtime}}</span>
+                    <span v-else class="grayColor">暂无</span>
+                  </span>
                 </li>
                 <li class="clearFloat border-bottom-1px">
                   <span class="fl">车价</span>
-                  <span class="fr">xxxx-xx-xx</span>
+                  <span class="fr">
+                    <span v-if="carinfo.carnat">{{carinfo.carnat}}</span>
+                    <span v-else class="grayColor">暂无</span>
+                  </span>
                 </li>
                 <li class="clearFloat border-bottom-1px">
                   <span class="fl">商业险到期</span>
-                  <span class="fr">xxxx-xx-xx</span>
+                  <span class="fr">
+                    <span v-if="carinfo.cominsurance">{{carinfo.cominsurance}}</span>
+                    <span v-else class="grayColor">暂无</span>
+                  </span>
                 </li>
                 <li class="clearFloat">
                   <span class="fl">交强险到期</span>
-                  <span class="fr">xxxx-xx-xx</span>
+                  <span class="fr">
+                    <span v-if="carinfo.daninsurance">{{carinfo.daninsurance}}</span>
+                    <span class="grayColor" v-else>暂无</span>
+                  </span>
                 </li>
               </ul>    
-              <div class="carByCustom setMsg">
+              <div class="carByCustom setMsg" v-if="info">
                 <ul>
                   <li class="border-bottom-1px clearFloat">
                     <span class="fl">所属客户</span>
-                    <button class="fr">解绑</button>
+                    <button class="fr" @click="unbindUser">解绑</button>
                   </li>
                   <li>
                     <p>
-                      <span>李小姐</span>
-                      <img :src="girlIcon" alt="">
+                      <span>{{info.uname}}</span>
+                      <img :src="info.sex==1?boyIcon:girlIcon" alt="">
                     </p>
-                    <p class="orangeColor">15217117111</p>
+                    <p class="orangeColor">{{info.phone}}</p>
                   </li>
                 </ul>
                 
@@ -232,13 +249,13 @@
 
 <script>
   import Vue from 'vue';
-  import { Tabbar, TabItem,TabContainer, TabContainerItem,Cell  } from 'mint-ui';
+  import { Tabbar, TabItem,TabContainer, TabContainerItem,Cell,Toast,MessageBox  } from 'mint-ui';
   Vue.component(Tabbar.name, Tabbar);
   Vue.component(TabItem.name, TabItem);
   Vue.component(TabContainer.name, TabContainer);
   Vue.component(TabContainerItem.name, TabContainerItem);
   Vue.component(Cell.name, Cell);
-  // import {format} from 'modules/js/date.js'
+  import {GetQueryString} from 'modules/js/config.js'
 export default {
   name: 'App',
   data(){
@@ -248,16 +265,54 @@ export default {
       editorIcon:require("modules/images/editorIcon.png"),
       defaultIcon:require("modules/images/defaultLogo.png"),
       girlIcon: require("modules/images/girlIcon.png"),
+      boyIcon: require("modules/images/boyIcon.png"),
       searchIcon:require("modules/images/searchIcon.png"),
-      rightArrowIcon:require("modules/images/rightArrow.png")
+      rightArrowIcon:require("modules/images/rightArrow.png"),
+      carId:null,
+      clientvid: null,
+      info:null,
+      carinfo:null
     }
   },
   mounted: function(){
+    let clientvid = GetQueryString('cusId');
+    this.clientvid = clientvid;
+    let carId = this.$route.params.carId;
+    this.carId = carId;
+    this.init(carId);//初始化信息
     this.$nextTick(function(){
       document.title = '车辆详情'
     })
   },
   methods:{
+    init(carId){
+      this.$http.get('/api.php/TechSysClient/usercar?carvid='+carId)
+      .then((response)=>{
+        let res = response.data;
+        if(res.errorCode == 200){
+          this.info = res.data.info;
+          this.carinfo = res.data.carinfo;
+        }
+      })
+    },
+    unbindUser(){
+      MessageBox.confirm('是否确定解绑该车辆','').then(action => { 
+        this.$http.post('/api.php/TechSysClient/unbindUser',{carvid:this.carId,clientvid:this.clientvid})
+        .then((response)=>{
+          let res = response.data;
+          if(res.errorCode == 200){
+            Toast('解绑成功')
+            this.init(this.carId)
+          }else{
+            Toast(res.data.message)
+          }
+        }) 
+
+      })  
+    },
+    carEditorFn(){
+      this.$router.push({path:"/addNewCar/"+this.carId})
+    }
 
     
   }
@@ -277,6 +332,8 @@ export default {
     padding: 0 .32rem
     box-sizing: border-box
     background: #ffffff     
+  .grayColor
+    color: gray  
   #carDetailMsgWrap
     width: 100%
     height: 100%

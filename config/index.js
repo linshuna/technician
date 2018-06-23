@@ -10,7 +10,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/': {
+        target: 'http://w.hhqccar.cn',//接口域名
+        changeOrigin: true,//是否跨域
+        pathRewrite: {
+              '^/': ''   //需要rewrite重写的,
+        } 
+      }
+    },
 
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST

@@ -1,84 +1,160 @@
 <template>
-  <div class="customerWrap">
+  <div class="customerWrap" :style="{'padding-bottom':customerList.length>3?'1.5rem':''}">
     <div class="setBg">
-      <div class="searchWrap">
+      <div class="searchWrap" :class="{'changeFixed':changePosi}">
         <div class="searchLeft">
             <img src="../modules/images/searchIcon.png" alt="">
-            <input type="text" v-model="searchValue" placeholder="搜索姓名、手机号">
+            <input type="text" v-model="searchValue" placeholder="搜索姓名、手机号" @keyup.enter="searchData(searchValue)">
         </div>  
         <div class="searchRight">
           <img src="../modules/images/add-icon.png" alt="" class="addIcon" @click="addNewCustom">
         </div>
       </div>
-      <ul class="searchResult">
-          <li class="border-bottom-1px" @click="linkCusDetial">
-              <div class="resultLeft">
-                <img src="../modules/images/defaultLogo.png" alt="">
-              </div>
-              <div class="resultRight">
-                <p class="customMsg">李小姐<img src="../modules/images/girlIcon.png" alt="" class="sexType"></p>
-                <p class="remark">备注</p>
-                <a href="tel:15217141012">
-                  <img src="../modules/images/telIcon.png" alt="" class="telIcon">
-                </a>
-              </div>
-          </li>
-          <li class="border-bottom-1px" @click="linkCusDetial">
-              <div class="resultLeft">
-                <img src="../modules/images/defaultLogo.png" alt="">
-              </div>
-              <div class="resultRight">
-                <p class="customMsg">李小姐<img src="../modules/images/girlIcon.png" alt="" class="sexType"></p>
-                <p class="remark">备注</p>
-                <a href="tel:15217141012">
-                  <img src="../modules/images/telIcon.png" alt="" class="telIcon">
-                </a>
-              </div>
-          </li>
-      </ul>      
+      <template v-if="getStorage">
+        <div v-if="customerList.length>0">
+          <ul class="searchResult">
+              <li class="border-bottom-1px" v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)">
+                  <div class="resultLeft">
+                    <img :src="item.headimg" alt="">
+                  </div>
+                  <div class="resultRight">
+                    <p class="customMsg">
+                      {{item.uname}}
+                      <img :src="item.sex==1?boyIcon:girlIcon" alt="" class="sexType"></p>
+                    <p class="remark" :class="{'grayColor':!item.remark,'orangeColor':item.remark}">{{item.remark?item.remark:'暂无'}}</p>
+                    <a :href="'tel:'+item.phone">
+                      <img src="../modules/images/telIcon.png" alt="" class="telIcon">
+                    </a>
+                  </div>
+              </li>
+          </ul> 
+        </div>
+        <div class="noData" v-else>
+          <no-data-tip :tipData="{typeTipe:0,titleTip:'客户',conTip:'暂无客户'}"></no-data-tip>
+        </div>  
+      </template>
+      <template v-else>
+        <div class="loginMsg">
+          <img :src="defaultIcon" alt="">
+          <a :href="'login.html?returnUrl='+returnUrl">登录/注册</a>
+        </div>
+      </template>
+           
     </div>
 
   </div>
 </template>
 <script>
+  import { Toast } from 'mint-ui';
+  import noDataTip from './noDataTip';
   export default {
     data(){
       return{
-          searchValue:''
+        techvid:null,
+        searchValue:'',
+        customerList: [],
+        title: '',
+        defaultIcon: require("modules/images/isLoginIcon.png"),
+        girlIcon: require("modules/images/girlIcon.png"),
+        boyIcon: require("modules/images/boyIcon.png"),
+        changePosi: false,
+        returnUrl: window.location.href
+      }
+    },
+    components:{
+      'no-data-tip': noDataTip
+    },
+    computed:{
+      getStorage(){
+        return this.$store.getters.getStorage;
+      }
+    },
+    created: function(){
+      let gainTecherData = JSON.parse(this.getStorage);
+      if(gainTecherData){
+        this.techvid = gainTecherData.vid;
       }
     },
     mounted: function(){
+      this.title = '客户';//获取标题名称
+      this.searchData();
       this.$nextTick(function(){
-        document.title = '客户'
+        document.title = '客户';
+        let bignav  = this.$refs.searchObj//获取到导航栏id
+        let _this = this;
+        window.addEventListener('scroll',function(){
+          var topScroll = document.documentElement.scrollTop||document.body.scrollTop;//滚动的距离,距离顶部的距离          
+          if(topScroll > 100){  //当滚动距离大于250px时执行下面的东西
+              _this.changePosi = true
+          }else{//当滚动距离小于250的时候执行下面的内容，也就是让导航栏恢复原状
+              _this.changePosi = false
+          }
+        })
+
       })
     },
     methods:{
       addNewCustom(){
         window.location.href = "addNewCustom.html"
       },
-      linkCusDetial(){
-        window.location.href = "customerDetail.html"
+      linkCusDetial(id){
+        window.location.href = "customerDetail.html?cusId="+id
+      },
+      searchData(value){
+        let gainValue = value?value:'';
+        if(this.techvid){
+          this.$http.post('/api.php/TechSysClient/index',{techvid: this.techvid,search:gainValue})
+          .then((response)=>{
+            let res = response.data
+            if(res.errorCode == 200){
+              this.customerList = res.data
+            }else{
+              Toast(res.message)
+            }
+          })
+        }
+       
       }
     }
   }
 </script>
 <style lang="stylus">
+  .orangeColor
+    color: #fa9e15
+  .grayColor
+    color: #999  
   .customerWrap
     width: 100%
-    height 100%
-    position fixed
-    top 0
-    left 0
-    background #f4f4f4
+    min-height: 100%
+    position: absolute
+    left: 0
+    top: 0
+    background: #f4f4f4
+    .loginMsg
+      text-align: center
+      margin-top: 30%
+      img
+        display: inline-block
+        width: 1.5rem
+      a
+        display: inline-block
+        width: 100%
+        line-height: .45rem
     .setBg
       width: 100%
-      background #ffffff
+      .changeFixed
+        position: fixed!important
+        top: 0!important
+        z-index: 999999!important
       .searchWrap 
         width:100%
-        padding-left: .2rem
+        padding: .2rem
         font-size: 0
         padding-top: .2rem
         box-sizing: border-box
+        background #ffffff
+        position: static
+        z-index:2
         .searchLeft,.searchRight
           display: inline-block
           font-size: .28rem
@@ -105,49 +181,61 @@
           img 
             width: .6rem
             height: .6rem
-      .searchResult
+      .noData
         width: 100%
-        width:100%
-        padding-left:.32rem
-        box-sizing: border-box
-        li
-          font-size: 0
-          padding: .32rem 0
-          .resultLeft,.resultRight
-            display: inline-block
-            font-size: .28rem
-            vertical-align: top
-          .resultLeft
-            width: 15%
-            img
+        text-align: center    
+        margin-top: 2rem  
+        color: #fa9e15
+        .noDataLogo
+          display: inline-block
+          width: 2.5rem
+        p
+          line-height: .45rem
+      div
+        width: 100%      
+        .searchResult
+          width: 100%
+          width:100%
+          padding-left:.32rem
+          box-sizing: border-box
+          background #ffffff
+          li
+            font-size: 0
+            padding: .32rem 0
+            .resultLeft,.resultRight
               display: inline-block
-              width: 1rem
-              height: 1rem
-          .resultRight
-            width: 85%
-            position: relative
-            color: #999
-            text-align: left
-            padding-left: .32rem
-            box-sizing: border-box
-            .customMsg
-              width: 100%
-              .sexType 
+              font-size: .28rem
+              vertical-align: top
+            .resultLeft
+              width: 15%
+              img
                 display: inline-block
-                width: .3rem
-                height: .3rem
-                margin-left: .15rem
-            .remark
-              color: #FA9E15
-              margin-top: .3rem
-            a
-              position: absolute
-              top: 0
-              right: .32rem
-              img.telIcon
-                display: inline-block
-                width: .5rem
-                height: .5rem
+                width: 1rem
+                height: 1rem
+            .resultRight
+              width: 85%
+              position: relative
+              color: #999
+              text-align: left
+              padding-left: .32rem
+              box-sizing: border-box
+              .customMsg
+                width: 100%
+                .sexType 
+                  display: inline-block
+                  width: .3rem
+                  height: .3rem
+                  margin-left: .15rem
+              .remark
+                margin-top: .3rem
+              a
+                position: absolute
+                top: 0
+                right: .32rem
+                img.telIcon
+                  display: inline-block
+                  width: .5rem
+                  height: .5rem
 
 
 

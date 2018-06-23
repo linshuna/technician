@@ -91,8 +91,9 @@
       <div class="remarkWrap">
         <p>其他联系人</p>
         <p class="addLinkerWrap">
-          <img :src="addLinkerIcon" alt="" class="addOtherLinker">
-          <span>添加联系人</span>
+          <!-- <img :src="addLinkerIcon" alt="" class="addOtherLinker">
+          <span>添加联系人</span> -->
+          <input type="tel" placeholder="请输入其他联系人电话号码" v-model="contact">
         </p>
         <textarea name="" placeholder="备注" v-model="remarkTip"></textarea>
       </div>
@@ -104,20 +105,14 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import { Toast,Radio,Popup ,Picker,DatetimePicker   } from 'mint-ui';
-  import Vuerify from 'vuerify'
-  Vue.use(Vuerify)
-  Vue.component(Radio.name, Radio);
-  Vue.component(Popup.name, Popup);
-  Vue.component(Picker.name, Picker);
-  Vue.component(DatetimePicker.name, DatetimePicker);
+  import { Toast,MessageBox   } from 'mint-ui';
   import {format} from 'modules/js/date.js'
+  import {GetQueryString} from 'modules/js/config.js'
 export default {
   name: 'App',
   data(){
     return {
-      cusTypevalue:'1',
+      cusTypevalue:'2',
       cusNameValue:'1',
       cusName:'',
       cusPhone:'',
@@ -132,7 +127,7 @@ export default {
           },
           {
             label: '单位',
-            value: '0'
+            value: '2'
           }
         ],
       cusNameOptions:[
@@ -142,29 +137,23 @@ export default {
           },
           {
             label:'女士',
-            value:'0'
+            value:'2'
           },
       ],
       popupVisible:false,//picker组件显示和关闭
       slots: [{defaultIndex:0}],//picker选择框数据
       cusLabelText:'',//选中的value值
-      cusTypeStyle:  ['普通', '中级', '高级', 'vip', 'vvip'],
+      cusLabelValue:0,
+      cusTypeStyle:  [{name:'新客户',value:0}, {name:'普通',vlaue:1}, {name:'金牌',value:2}, {name:'钻石',vlaue:3}],
       startDate: new Date('1970/1/1'),//开始的生日日期
       endDate: new Date(),//结束的生日日期
       birthDate: '',//选中的生日日期
       cusAddress:'',//客户单位地址
-      remarkTip:''//备注
+      contact:'',
+      remarkTip:'',//备注
+      techvid: '',
+      clientvid: null
     }
-  },
-  vuerify:{
-    phone: {
-      test: /^1[3|5|8]\d{9}$/,
-      message: '请输入正确的手机号码'
-    },
-    password: {
-      test: /^[\w!@#$%^&*.]{6,16}$/,
-      message: '密码至少6位'
-    },
   },
   computed: {
     errors () {
@@ -172,13 +161,65 @@ export default {
     },
     invalid () {
       return this.$vuerify.invalid
+    },
+    getStorage(){
+      return this.$store.getters.getStorage;
+    }
+  },
+  vuerify:{
+    cusPhone: {
+      test: /^1[3|5|8]\d{9}$/,
+      message: '请输入正确的手机号码'
+    },
+    cusName: {
+      test: /^([\u4E00-\u9FFF]|\w){2,11}$/,
+      message: '请输入正确的姓名格式'
     }
   },
   mounted: function(){
+    let gainTecherData = JSON.parse(this.getStorage);//获取技师登录的信息
+    if(gainTecherData){
+      this.techvid = gainTecherData.vid
+    }
+    let gainClientvid = GetQueryString("cusId")
+    if(gainClientvid){
+      this.clientvid = gainClientvid
+    }
+    if(this.clientvid&&this.techvid){
+      this.init(this.clientvid,this.techvid)
+    }
     this.$nextTick(function(){
     })
   },
   methods:{
+    init:function(clientvid,techvid){
+      this.$http.get('/api.php/TechSysClient/edits?clientvid='+clientvid+'&techvid='+techvid)
+      .then((response)=>{
+        let res = response.data
+        if(res.errorCode == 200){
+          this.$nextTick(function(){
+            let cusItem = res.data;
+            this.cusPhone = cusItem.phone;
+            this.cusName = cusItem.uname;
+            this.cusNameValue = cusItem.sex;//性别
+            this.cusTypevalue = cusItem.types;//客户类型
+
+            let level = cusItem.level;
+            this.cusLabelValue = level
+            this.cusLabelText = level==0?'新客户'
+                                  :(level==1?'普通':(level==2?'金牌':level==3?'钻石':''))
+            this.birthDate = cusItem.birthday
+            this.cusAddress = cusItem.address
+            this.remarkTip = cusItem.remark
+            this.contact = cusItem.contact
+          })
+          
+        
+        }else{
+          Toast(res.message)
+        }
+      })
+    },
     onValuesChange(picker, values) {
       if (values[0] > values[1]) {
         picker.setSlotValue(1, values[0]);
@@ -198,7 +239,8 @@ export default {
     },
     select:function(){
       var pickerVal=this.$refs.pickerObj.getValues();
-      this.cusLabelText = pickerVal[0];
+      this.cusLabelText = pickerVal[0].name;
+      this.cusLabelValue = pickerVal[0].value;
       this.popupVisible=false;
     },
     cusBirth:function(picker){
@@ -208,7 +250,72 @@ export default {
         this.birthDate = format(value.toString(),"yyyy-MM-dd");
     },
     saveMsg:function(){
-      console.log(this.cusNameVaule)
+      if(!this.cusName){
+        Toast('请输入客户名称');
+        return false
+      }else{
+        if(this.errors.cusName){
+          Toast(this.errors.cusName)
+          return false;
+        }
+      }
+
+      if(!this.cusPhone){
+        Toast('请输入手机号码')
+        return false;
+      }else{
+        if(this.errors.cusPhone){
+            Toast(this.errors.cusPhone);
+            return false;
+        }
+      } 
+      
+      let gainNewCarData = {
+        phone: this.cusPhone,
+        uname: this.cusName,
+        sex: this.cusNameValue,//性别
+        types: this.cusTypevalue,//客户类型
+        level: this.cusLabelValue,
+        birthday: this.birthDate,
+        address: this.cusAddress,
+        remark: this.remarkTip,
+        contact:this.contact,
+        techvid: this.techvid||''
+      }
+      let tip = '',httpUrl = ''
+      if(this.clientvid&&this.techvid){
+        tip = '是否确定修改客户信息?'
+        httpUrl = '/api.php/TechSysClient/edits'
+        gainNewCarData.clientvid = this.clientvid;//编辑多一个客户的字段
+      }else{
+        tip = '是否确定新增客户?'
+        httpUrl = '/api.php/TechSysClient/adds'
+      }
+      MessageBox.confirm(tip,'').then(action => {
+        this.$http.post(httpUrl,gainNewCarData)
+          .then((response)=>{
+            let res = response.data
+            if(res.errorCode == 200){
+              Toast(res.message)
+              if(this.clientvid){
+                let clientvid = this.clientvid;
+                setTimeout(function(){
+                  window.location.href = "customerDetail.html?cusId="+clientvid
+                },1000)  
+              }else{
+                setTimeout(function(){
+                  window.location.href = "index.html#/customer"
+                },1000)
+              }
+              
+            }else{
+              Toast(res.message)
+            }
+            
+          })
+
+      });
+      
     }
     
   }
@@ -323,10 +430,17 @@ export default {
                   line-height: 12px;  
       .remarkWrap        
         width: 100%
-        margin-top: .2rem
+        margin-top: .5rem
         .addLinkerWrap
           width: 100%
-          margin: .35rem 0 .2rem 0
+          margin: .2rem 0
+          input
+            display: inline-block
+            width: 100%
+            border:1px solid #f4f4f4
+            border-radius: 5px 
+            padding: .2rem 0 .2rem .1rem
+            box-sizing:border-box    
           span
             vertical-align: middle
           img 

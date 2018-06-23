@@ -8,6 +8,7 @@ import Router from 'vue-router'
 
 let App = r => require.ensure([], () => r(require('../App')), 'App')
 let carDetailMsg = r => require.ensure([], () => r(require('components/carPublic/carDetailMsg')), 'carDetailMsg')
+let customerDetailIndex = r => require.ensure([], () => r(require('../components/customerDetailIndex')), 'customerDetailIndex')
 let addNewCar = r => require.ensure([], () => r(require('../components/addNewCar')), 'addNewCar')
 Vue.use(Router)
 
@@ -16,14 +17,20 @@ export default new Router({
     {
       path:"/",
       component:App,
+      redirect: '/customerDetailIndex',
       children:[
+        {
+          path: '/customerDetailIndex',
+          name: 'customerDetailIndex',
+          component: customerDetailIndex
+        },
         {
           path: '/carDetailMsg/:carId',
           name: 'carDetailMsg',
           component: carDetailMsg
         },
         {
-          path: '/addNewCar',
+          path: '/addNewCar/:carId',
           name: 'addNewCar',
           component: addNewCar
         }

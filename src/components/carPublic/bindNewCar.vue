@@ -15,13 +15,13 @@
         <li>
           <span class="fieldName">车架号</span>
           <div class="setCusRight">
-            <input type="text" placeholder="请输入17位车架号" v-model="carVin" v-on:input="gainCarMsg"/>
+            <input type="text" placeholder="请输入17位车架号" v-model="carVin" maxlength="17"/>
           </div>
         </li>
         <li>
           <span class="fieldName">品牌车型</span>
           <div class="setCusRight">
-            <input type="text" placeholder="请选择品牌车型" v-model="selectedBrand" v-on:input="gainCarMsg" @focus="popBrand=true"/>
+            <input type="text" placeholder="请选择品牌车型" v-model="selectedBrand" @focus="popBrand=true"/>
           </div>
         </li>
         <li>
@@ -66,22 +66,6 @@
           </div>
         </li>
         <li>
-          <span class="fieldName">承保公司</span>
-          <div class="setCusRight">
-            <!-- <input type="text" placeholder="请选择级别" v-model="bussiCompanyText" readonly @focus="companyPick('bussi')" @blur="comfirmChecked=false" /> -->
-            <span class="inp" :class="{'blackColor':bussiCompanyText!=''}"  @click="companyPick('bussi')">{{bussiCompanyText==''?'请选择级别':bussiCompanyText}}</span>
-            <img :src="btmArrowIcon" alt="" class="btmArrowIcon">
-            <mt-popup v-model="popupVisible" position="bottom">
-              <div class="picker-toolbar">  
-                  <span class="mint-datetime-cancel" @click="cancle">取消</span>  
-                  <span class="mint-datetime-confirm" @click="select">确定</span>  
-              </div>  
-              <mt-picker ref='pickerObj' :slots="slots" valueKey="name" ></mt-picker>
-            </mt-popup>
-
-          </div>
-        </li>
-        <li>
           <p>交强险</p>
         </li>
         <li>
@@ -107,7 +91,7 @@
           <span class="fieldName">承保公司</span>
           <div class="setCusRight">
             <!-- <input type="text" placeholder="请选择级别" v-model="tranCompanyText" readonly @focus="companyPick('tran')" @blur="comfirmChecked=false"/> -->
-            <span class="inp" :class="{'blackColor':tranCompanyText!=''}"  @click="companyPick('tran')">{{tranCompanyText==''?'请选择级别':tranCompanyText}}</span>
+            <span class="inp" :class="{'blackColor':companyText!=''}"  @click="companyPick()">{{companyText==''?'请选择级别':companyText}}</span>
             <img :src="btmArrowIcon" alt="" class="btmArrowIcon">
             <mt-popup v-model="popupVisible" position="bottom">
               <div class="picker-toolbar">  
@@ -122,7 +106,7 @@
         <li>
           <span class="fieldName">发动机号</span>
           <div class="setCusRight">
-            <input type="text" placeholder="请输入发动机号" v-model="carEniger" v-on:input="gainCarMsg"/>
+            <input type="text" placeholder="请输入发动机号" v-model="carEniger"/>
           </div>
         </li>
       </ul>
@@ -148,6 +132,9 @@
   import brand from "components/brand"
 export default {
   name: 'App',
+  props:{
+    'routeCarId': {type: String}
+  },
   data(){
     return {
       carno:'',
@@ -159,14 +146,14 @@ export default {
       slots: [{defaultIndex:0}],//picker选择框数据
       companyStyle:  ['中国人寿', '太平洋保险', '永安保险', '平安车险', '中华联合车险'],
       startDate: new Date('1970/1/1'),//开始的生日日期
-      endDate: new Date(),//结束的生日日期
+      endDate: new Date(new Date().getFullYear()+5+"/12/31"),//结束的生日日期
       currentCheckedDate:'',//选中对应的日期
       registDate: '',//选中的注册日期
       bussiDate:'',//商业险日期
       tranDate:'',//交强险日期
       currentPickerId:'',//被选中公司id
-      bussiCompanyText:'',//商业险公司
-      tranCompanyText:'',//交强险公司
+      companyText:'',//保险公司
+      // tranCompanyText:'',//交强险公司
       carEniger:'',//发动机号
       isShow: false,
       tips:'',
@@ -174,19 +161,6 @@ export default {
       popBrand: false,
       selectedBrand: '',//选中车辆类型的参数
     }
-  },
-  created:function(){
-      let gainCarData = {};
-      gainCarData.carno = this.carno;
-      gainCarData.carVin = this.carVin;
-      gainCarData.carType = this.selectedBrand;
-      gainCarData.registDate = this.registDate;
-      gainCarData.bussiDate = this.bussiDate;
-      gainCarData.bussiCompanyText = this.bussiCompanyText;
-      gainCarData.tranDate = this.tranDate;
-      gainCarData.tranCompanyText = this.tranCompanyText;
-      gainCarData.carEniger = this.carEniger;
-      this.gainCarData = gainCarData
   },
   vuerify:{
     phone: {
@@ -202,29 +176,69 @@ export default {
     'car-key-code':carKeyCode,
     'brand':brand
   },
+  created:function(){
+      let gainCarData = {};
+      gainCarData.carNo = this.carno;
+      gainCarData.vin = this.carVin;
+      gainCarData.modelid = this.selectedBrand;
+      gainCarData.regtime = this.registDate;
+      gainCarData.insurance = this.companyText;
+      gainCarData.cominsurance = this.bussiDate;
+      gainCarData.daninsurance = this.tranDate;
+      gainCarData.engine = this.carEniger;
+
+      this.gainCarData = gainCarData
+  },
+  mounted: function(){
+    if(this.routeCarId&&this.routeCarId!=0){
+      this.$http.get('/api.php/TechSysClient/editcar?carvid='+this.routeCarId)
+      .then((response)=>{
+        let res = response.data;
+        if(res.errorCode == 200){
+          let gainData = res.data;
+          this.carno = gainData.carNo;
+          this.carVin = gainData.vin;
+          this.selectedBrand = gainData.modelid;
+          this.registDate = gainData.regtime;
+          this.companyText = gainData.insurance;
+          this.bussiDate = gainData.cominsurance;
+          this.tranDate = gainData.daninsurance;
+          this.carEniger = gainData.engine;
+          
+        }else{
+          Toast(res.message)
+        }
+      })
+    }
+  },
+  
   watch:{
     carno:function(newValue,oldValue){
-      this.gainCarData["carno"] = newValue
+      this.gainCarData["carNo"] = newValue
+      this.$emit("gainCarMsg",this.gainCarData)
+    },
+    carVin: function(newValue,oldValue){
+      this.gainCarData["vin"] = newValue;
       this.$emit("gainCarMsg",this.gainCarData)
     },
     registDate:function(newValue,oldValue){
-      this.gainCarData["registDate"] = newValue
+      this.gainCarData["regtime"] = newValue
       this.$emit("gainCarMsg",this.gainCarData)
     },
     bussiDate:function(newValue,oldValue){
-      this.gainCarData["bussiDate"] = newValue
+      this.gainCarData["cominsurance"] = newValue
       this.$emit("gainCarMsg",this.gainCarData)
     },
-    bussiCompanyText:function(newValue,oldValue){
-      this.gainCarData["bussiCompanyText"] = newValue
+    companyText:function(newValue,oldValue){
+      this.gainCarData["insurance"] = newValue
       this.$emit("gainCarMsg",this.gainCarData)
     },
     tranDate:function(newValue,oldValue){
-      this.gainCarData["tranDate"] = newValue
+      this.gainCarData["daninsurance"] = newValue
       this.$emit("gainCarMsg",this.gainCarData)
     },
-    tranCompanyText:function(newValue,oldValue){
-      this.gainCarData["tranCompanyText"] = newValue
+    carEniger:function(newValue,oldValue){
+      this.gainCarData["engine"] = newValue
       this.$emit("gainCarMsg",this.gainCarData)
     }
   },
@@ -260,11 +274,7 @@ export default {
     select:function(){
       var pickerVal=this.$refs.pickerObj.getValues();
       this.popupVisible=false;
-      if(this.currentPickerId == 'bussi'){
-        this.bussiCompanyText = pickerVal[0];
-      }else{
-        this.tranCompanyText = pickerVal[0];
-      }
+      this.companyText = pickerVal[0];
     },
     cusBirth:function(picker){
       this.$refs[picker].open();//open时间选择器
@@ -294,10 +304,6 @@ export default {
     },
     closePop() {
       this.popBrand = false
-    },
-    gainCarMsg(){
-      
-      this.$emit("gainCarMsg",this.gainCarMsg)
     },
     saveMsg:function(){
       console.log(this.cusNameVaule)

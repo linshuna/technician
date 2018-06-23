@@ -1,27 +1,27 @@
 <template>
   <div id="walletWrap">
     <mt-tabbar v-model="selected" fixed>  
-      <mt-tab-item id="日">  
+      <mt-tab-item id="日" @click.native="changeTime('日')">  
         日  
       </mt-tab-item>  
-      <mt-tab-item id="月">  
+      <mt-tab-item id="月" @click.native="changeTime('月')">  
         月  
       </mt-tab-item>  
     </mt-tabbar>  
     <div class="tabCon">
         <mt-tab-container class="page-tabbar-container" v-model="selected">  
           <mt-tab-container-item id="日"> 
-            <div class="timeCon" @click="isShow=true">
-              <img :src="leftArrowIcon" alt="">
-              <span>{{checkedDate}}</span>
-              <img :src="rightArrowIcon" alt="">
+            <div class="timeCon">
+              <img @click="reduceDate" :src="leftArrowIcon" alt="">
+              <span @click="changeIsShow('日')">{{checkedDate}}</span>
+              <img @click="addDate" :src="rightArrowIcon" alt="">
             </div>
           </mt-tab-container-item>  
           <mt-tab-container-item id="月">  
-            <div class="timeCon" @click="isShow=true">
-              <img :src="leftArrowIcon" alt="">
-              <span>5.1-5.30号</span>
-              <img :src="rightArrowIcon" alt="">
+            <div class="timeCon">
+              <img @click="reduceDate" :src="leftArrowIcon" alt="">
+              <span @click="changeIsShow('月')">{{checkedMonthDate}}</span>
+              <img @click="addDate" :src="rightArrowIcon" alt="">
             </div>
           </mt-tab-container-item>  
           
@@ -68,8 +68,13 @@
         </li>
       </ul>
     </div>
-    <div class="marsk" v-show="isShow" @click="isShow=false">
-        <Calendar v-on:gainCheckedDate="gainDate" v-bind:showCalendar.sync="isShow"></Calendar>
+    <div class="marsk" v-show="isShow">
+        <Calendar v-on:gainCheckedDate="gainDate" 
+            v-bind:showCalendar.sync="isShow" 
+            v-bind:gainSelectedType="selectedType"
+            v-bind:gainStartDate.sync="startDate"
+            v-bind:gainEndDate.sync="endDate"
+        ></Calendar>
     </div>
     
   </div>
@@ -86,18 +91,61 @@ export default {
       leftArrowIcon:require("modules/images/leftArrow.png"),
       rightArrowIcon:require("modules/images/rightArrow.png"),
       isShow: false,
-      checkedDate:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate()
+      firstDate:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+1,
+      currentDate:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),
+      startDate: '',
+      endDate:'',
+      checkedDate: '',
+      checkedMonthDate:'',
+      selectedType:'日'
+      
     }
+  },
+  created: function(){
+    this.$emit('getIsLink',true)
+    this.checkedDate = this.currentDate;
+    this.checkedMonthDate = this.firstDate+"~"+this.currentDate
+    this.startDate = this.currentDate;
+    this.endDate = this.currentDate;//初始化数据
   },
   components:{Calendar},
   mounted: function(){
     this.$nextTick(function(){
       document.title = '钱包'
     })
+   
   },
   methods:{
     gainDate(value){
-      this.checkedDate = value
+      
+      if(value.indexOf("~")>-1){
+        this.checkedMonthDate = value
+      }else{
+        this.checkedDate = value
+      }
+      
+    },
+    changeIsShow(str){
+      this.selectedType = str
+      this.isShow = true
+    },
+    changeTime(str){
+      if(str=='月'){//改变日期
+        var date = new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+1;
+        let dateArr = this.checkedMonthDate.split("~");
+
+        this.checkedMonthDate = this.firstDate+"~"+this.endDate
+
+      }else{
+        this.checkedDate = this.startDate
+      }
+      this.isShow = false
+    },
+    reduceDate(){
+
+    },
+    addDate(){
+
     }
     
   }
@@ -113,6 +161,7 @@ export default {
     overflow: hidden
   .grayColor 
     font-size: .24rem
+    line-height: .45rem
   .orangeColor 
     font-size: .36rem
     color: #FA9E15    

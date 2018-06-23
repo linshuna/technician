@@ -49,7 +49,11 @@
         rightArrowIcon: require("modules/images/rightArrow.png"),
       }
     },
+    created: function(){
+      this.$emit('getIsLink',true)
+    },
     mounted: function(){
+
       this.$nextTick(function(){
         document.title = '个人中心'
       })

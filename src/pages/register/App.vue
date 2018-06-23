@@ -7,23 +7,25 @@
       <ul class="loginWrap">
         <li class="border-bottom-1px">
           <span>手机号</span>
-          <input type="tel" v-model.trim="phone" placeholder="请输入手机号">
-          <button id="gainCodeBtn">获取验证码</button>
-        </li>
-        <li class="border-bottom-1px">
-          <span>密码</span>
-          <input type="password" v-model.trim="password" placeholder="请输入注册密码">
+          <input type="tel" v-model.trim="phone" placeholder="请输入手机号" maxlength="11">
+          <button id="gainCodeBtn" @click="gainCode" v-if="!isCode">获取验证码</button>
+          <button id="code" v-else>{{countDown}}秒后重新发送</button>
         </li>
         <li class="border-bottom-1px">
           <span>验证码</span>
-          <input type="text" v-model.trim="code" placeholder="请输入短信验证码">
+          <input type="text" v-model.trim="code" placeholder="请输入短信验证码" maxlength="10">
         </li>
+        <li class="border-bottom-1px">
+          <span>密码</span>
+          <input type="password" v-model.trim="password" placeholder="请输入注册密码" maxlength="26">
+        </li>
+        
       </ul>
       <div class="btnWrap">
         <button id="registerBtn" @click="register" :class="{'isRegister': !invalid}">注册</button>
       </div>
       <p class="derictLogin">
-        <a href="login.html">通过账号密码登录></a>
+        <a href="login.html">通过账号密码登录 ></a>
       </p>
       <p class="tip">
         <span>注册/登录代表您已同意</span>
@@ -47,7 +49,8 @@ export default {
       password:'',
       code:'',
       bolArr:[],
-      
+      countDown: 60,
+      isCode: false
     }
   },
   vuerify:{
@@ -69,6 +72,37 @@ export default {
     }
   },
   methods:{
+    gainCode(){
+      if(!this.phone){
+        this.toast('请输入手机号码')
+        return false;
+      }else{
+        if(this.errors.phone){
+            this.toast(this.errors.phone);
+            return false;
+        }else{
+          this.$http.get('/api.php/Tech/sendcode/?phone='+this.phone)
+            .then((res)=>{
+              //倒计时
+              if(res.data.errorCode == 200){
+                this.isCode = !this.isCode;
+                let _this = this;
+                let countTimer =  setInterval(function(){
+                                    if(_this.countDown<=1){
+                                      clearInterval(countTimer)
+                                      _this.isCode = !_this.isCode
+                                    }
+                                    _this.countDown--
+                                  },1000)
+              }else{
+                this.toast(res.data.message)
+                return false;
+              }
+            })
+
+        }
+      } 
+    },
     register:function(){
         if(!this.phone){
           this.toast('请输入手机号码')
@@ -94,7 +128,28 @@ export default {
         }
 
         if (this.$vuerify.check()) {
-            this.toast('注册成功')
+          this.$http.post("/api.php/Tech/register",
+              {
+                phone:this.phone,
+                code:this.code,
+                password:this.password
+              })
+              .then((res)=>{
+                if(res.data.errorCode == 200){
+                  this.toast('注册成功')
+                  // localStorage.setItem('techerData',JSON.stringify(res.data.data))
+                  this.$store.commit("_setStorage",loginData);
+                  
+                  //就直接登录
+                  this.$store.dispatch('login',{self:this,username:this.phone,password:this.password})
+
+
+                }else{
+                  this.toast(res.data.message)
+                }
+
+              })
+            
         }
     },
     toast:function(msg,posi,time){
@@ -123,15 +178,22 @@ export default {
       li
         line-height: .9rem
         height: .9rem
+        position: relative
         span 
           display: inline-block
           width: 13%
         input[type="tel"]
-          width:55%
+          width:50%
         input
           width: 80%
           height: 100%
           margin-left: .2rem
+          font-size: .28rem
+        button 
+          position: absolute
+          top: 50%
+          transform: translate(0,-50%)
+          right: 0  
         #gainCodeBtn
           display: inline-block
           width: 25%
@@ -140,6 +202,15 @@ export default {
           border: 1px solid #FA9E15
           color: #FA9E15
           border-radius: 5px
+        #code
+          display: inline-block
+          padding: 0 .15rem
+          height: .6rem
+          background: transparent
+          border: 1px solid #d0d0d0
+          color: #d0d0d0
+          border-radius: 5px
+          font-size: .24rem
     .btnWrap
       text-align: center
       margin-top: .7rem    
@@ -151,16 +222,17 @@ export default {
         background: #a1a1a1
         border:none
         color: #ffffff  
+        font-size: .28rem
       .isRegister
         background: #FA9E15!important
     .derictLogin
       text-align: center
-      font-size: .2rem
+      font-size: .24rem
       margin-top: .3rem
       a
         color: #FA9E15            
     .tip
-      font-size:.18rem
+      font-size:.24rem
       text-align: center
       width: 100%
       position: fixed

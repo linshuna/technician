@@ -7,11 +7,11 @@
       <ul class="loginWrap">
         <li class="border-bottom-1px">
           <span>账号</span>
-          <input type="tel" v-model.trim="phone" placeholder="请输入手机号">
+          <input type="tel" v-model.trim="phone" placeholder="请输入手机号" maxlength="11">
         </li>
         <li class="border-bottom-1px">
           <span>密码</span>
-          <input type="password" v-model.trim="password" placeholder="请输入登录密码">
+          <input type="password" v-model.trim="password" placeholder="请输入登录密码" maxlength="26">
         </li>
       </ul>
       
@@ -19,20 +19,20 @@
         <button id="registerBtn" @click="login" :class="{'isRegister': !invalid}">登录</button>
       </div>
       <p class="textRight clearFloat">
-        <a href="register.html" class="fl">注册</a>
-        <a href="forgetpwd.html" class="fr">忘记密码？</a>
+        <a :href="'register.html?returnUrl='+getReturnUrl" class="fl">注册</a>
+        <a :href="'forgetpwd.html?returnUrl='+getReturnUrl" class="fr">忘记密码？</a>
       </p>
   </div>
 </template>
 
 <script>
   import Vue from 'vue';
-  import { Field,Button,Toast  } from 'mint-ui';
   import Vuerify from 'vuerify'
   Vue.use(Vuerify)
-  
+  import { Field,Button,Toast  } from 'mint-ui';
   Vue.component(Field.name, Field);
   Vue.component(Button.name, Button);
+  
 export default {
   name: 'App',
   data(){
@@ -51,12 +51,18 @@ export default {
       message: '请输入正确的登录密码'
     },
   },
+  created: function(){
+
+  },
   computed: {
     errors () {
       return this.$vuerify.$errors
     },
     invalid () {
       return this.$vuerify.invalid
+    },
+    getReturnUrl(){
+      return this.$store.getters.getReturnUrl
     }
   },
   methods:{
@@ -81,7 +87,8 @@ export default {
         }
 
         if (this.$vuerify.check()) {
-            this.toast('登录成功')
+          this.$store.dispatch('login',{self:this,notip:1,username:this.phone,password:this.password})
+            
         }
     },
     toast:function(msg,posi,time){
@@ -114,6 +121,7 @@ export default {
           height: 100%
           margin-left: .2rem
           vertical-align: middle
+          font-size: .28rem
         #gainCodeBtn
           display: inline-block
           width: 25%

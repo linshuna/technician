@@ -40,7 +40,7 @@
             </mt-tab-container-item>  
             <mt-tab-container-item id="已失效">  
               <div class="couponList">
-                <CouponNoData></CouponNoData>
+                <no-data-tip :tipData="{typeTip:1,conTip:'您没有失效的优惠券',titleTip:'优惠券'}"></no-data-tip>
               </div>
             </mt-tab-container-item>  
           </mt-tab-container>  
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import CouponNoData from "./CouponNoData"
+import noDataTip from "../noDataTip.vue"
 export default {
   name: 'App',
   data(){
@@ -62,8 +62,16 @@ export default {
       noneCouponTipIcon:require("modules/images/noneCouponTipIcon.png")
     }
   },
-  components:{CouponNoData},
+  created: function(){
+    this.$emit('getIsLink',true)
+  },
+  components:{
+    'no-data-tip':noDataTip
+  },
   mounted: function(){
+    // 添加返回事件监听
+    // this.$store.dispatch('wxpopstate',this)
+
     this.$nextTick(function(){
       document.title = '优惠券'
     })

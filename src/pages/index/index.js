@@ -5,7 +5,9 @@ import App from './App'
 import router from './router'
 import getRem from 'modules/js/getRem.js'
 
-import { Tabbar, TabItem, TabContainer, TabContainerItem,Cell } from 'mint-ui';
+import store from 'modules/vuexData/vuexStore.js'
+
+import { Tabbar, TabItem, TabContainer, TabContainerItem,Cell,Toast } from 'mint-ui';
 import { Swipe, SwipeItem } from 'mint-ui';
 
 Vue.component(Tabbar.name, Tabbar);
@@ -15,6 +17,8 @@ Vue.component(TabContainerItem.name, TabContainerItem);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Cell.name, Cell);
+import vueAxiosPlugin from "modules/js/axiosPrototype.js"
+Vue.use(vueAxiosPlugin)
 
 import 'modules/css/reset.styl'
 import 'mint-ui/lib/style.css'
@@ -29,6 +33,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
