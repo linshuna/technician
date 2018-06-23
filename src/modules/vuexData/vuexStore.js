@@ -74,6 +74,7 @@ const store = new Vuex.Store({
         },
         logout(context){
             context.commit('_remvoeStorage')
+            Toast("成功退出登录")
             setTimeout(function(){
                 window.location.href = context.getters.getReturnUrl
             },1000)    
