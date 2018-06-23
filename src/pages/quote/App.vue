@@ -4,17 +4,9 @@
       <input class="search" type="text" v-model="carno" placeholder="请输入车牌" readonly @focus="isShow=true"/>
       <div class="add-btn"></div>
     </div>
-<<<<<<< Updated upstream
-    <div class="result">
-      <ul>
-        <li class="border-bottom-1px" @click="goQuote">云A11111 <span class="fr name">周 会员</span></li>
-        <li class="border-bottom-1px">云A22222</li>
-        <li class="border-bottom-1px">云A33333</li>
-        <li class="border-bottom-1px">云A66666</li>
-      </ul>
-    </div>
+
     <car-key-code v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></car-key-code>
-=======
+
     <template v-if="getStorage">
         <div v-if="customerList.length>0">
           <div class="result">
@@ -34,50 +26,11 @@
           <a :href="'login.html?returnUrl='+returnUrl">登录/注册</a>
         </div>
       </template>  
->>>>>>> Stashed changes
   </div>
 </template>
 
 <script>
-<<<<<<< Updated upstream
-  import carKeyCode from "components/carKeyCode.vue"
-  export default {
-    data() {
-      return {
-        goQuote() {
-          window.location.href='./pickupOrder.html#/quotation'
-        },
-        carno:'',
-        isShow: false,
-        isLogin: false,
-        techvid: ''
-      }
-    },
-    components:{
-      'car-key-code':carKeyCode
-    },
-    created:function(){
-      let getStorage = this.$store.getters.getStorage
-      if(getStorage){//处于登录状态
-        this.isLogin = true
-        getStorage = JSON.parse(getStorage)
-        this.techvid = getStorage.vid;
-      }
 
-    },
-    methods:{
-      gainCarno:function(value){//子组件传给当前组件（父组件）
-        this.carno = value.carno
-        this.$http.post("/api.php/TechReck",{carNo:this.carno,vid:this.techvid})
-        .then((response)=>{
-          let res = response.data;
-          if(res.errorCode == 200){
-            console.log(res)
-          }else{
-
-          }
-        })
-=======
   import noDataTip from 'components/noDataTip';
 
   export default {
@@ -86,8 +39,12 @@
         techvid:null,
         customerList: [],
         defaultIcon: require("modules/images/isLoginIcon.png"),
-        returnUrl: window.location.href
+        returnUrl: window.location.href,
+        carno:''
       }
+    },
+    components:{
+      'car-key-code':carKeyCode
     },
     methods: {
       goQuote() {
@@ -118,7 +75,6 @@
       let gainTecherData = JSON.parse(this.getStorage);
       if(gainTecherData){
         this.techvid = gainTecherData.vid;
->>>>>>> Stashed changes
       }
     },
     mounted() {
