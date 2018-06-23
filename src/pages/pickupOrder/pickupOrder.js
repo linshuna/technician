@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import getRem from 'modules/js/getRem.js'
 import router from './router'
+import vueAxiosPlugin from 'modules/js/axiosPrototype.js'
+Vue.use(vueAxiosPlugin)
 
 import { Navbar, TabItem, TabContainer, TabContainerItem,Popup,Picker   } from 'mint-ui';
 

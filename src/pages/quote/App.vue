@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="search-wrapper">
-      <input class="search" type="text" placeholder="请输入车牌"/>
+      <input class="search" type="text" v-model="carno" placeholder="请输入车牌" readonly @focus="isShow=true"/>
       <div class="add-btn"></div>
     </div>
     <div class="result">
@@ -12,16 +12,48 @@
         <li class="border-bottom-1px">云A66666</li>
       </ul>
     </div>
+    <car-key-code v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></car-key-code>
   </div>
 </template>
 
 <script>
+  import carKeyCode from "components/carKeyCode.vue"
   export default {
     data() {
       return {
         goQuote() {
           window.location.href='./pickupOrder.html#/quotation'
-        }
+        },
+        carno:'',
+        isShow: false,
+        isLogin: false,
+        techvid: ''
+      }
+    },
+    components:{
+      'car-key-code':carKeyCode
+    },
+    created:function(){
+      let getStorage = this.$store.getters.getStorage
+      if(getStorage){//处于登录状态
+        this.isLogin = true
+        getStorage = JSON.parse(getStorage)
+        this.techvid = getStorage.vid;
+      }
+
+    },
+    methods:{
+      gainCarno:function(value){//子组件传给当前组件（父组件）
+        this.carno = value.carno
+        this.$http.post("/api.php/TechReck",{carNo:this.carno,vid:this.techvid})
+        .then((response)=>{
+          let res = response.data;
+          if(res.errorCode == 200){
+            console.log(res)
+          }else{
+
+          }
+        })
       }
     }
   }  

@@ -1,6 +1,6 @@
 <template>
   <div id="walletWrap">
-    <mt-tabbar v-model="selected" fixed>  
+    <!-- <mt-tabbar v-model="selected" fixed>  
       <mt-tab-item id="日" @click.native="changeTime('日')">  
         日  
       </mt-tab-item>  
@@ -12,20 +12,45 @@
         <mt-tab-container class="page-tabbar-container" v-model="selected">  
           <mt-tab-container-item id="日"> 
             <div class="timeCon">
-              <img @click="reduceDate" :src="leftArrowIcon" alt="">
+              <img @click="reduceDate(checkedDate)" :src="leftArrowIcon" alt="">
               <span @click="changeIsShow('日')">{{checkedDate}}</span>
-              <img @click="addDate" :src="rightArrowIcon" alt="">
+              <img @click="addDate(checkedDate)" :src="rightArrowIcon" alt="">
             </div>
           </mt-tab-container-item>  
           <mt-tab-container-item id="月">  
             <div class="timeCon">
-              <img @click="reduceDate" :src="leftArrowIcon" alt="">
-              <span @click="changeIsShow('月')">{{checkedMonthDate}}</span>
-              <img @click="addDate" :src="rightArrowIcon" alt="">
+              <img @click="reduceDate(checkedMonthDate)" :src="leftArrowIcon" alt="">
+              <span @click="changeIsShow('月')">
+                {{checkedMonthDate}}
+              </span>
+              <img @click="addDate(checkedMonthDate)" :src="rightArrowIcon" alt="">
             </div>
           </mt-tab-container-item>  
-          
         </mt-tab-container>  
+    </div> -->
+    <div class="changeTimeWrap">
+        <ul class="listWrap">
+          <li :class="{'selected':isShowDate}" @click="isShowDate=!isShowDate">日</li>
+          <li :class="{'selected':!isShowDate}" @click="isShowDate=!isShowDate">月</li>
+        </ul>
+        <div class="tabCon">
+          <div v-show="isShowDate">
+            <!-- <img @click="reduceDate(date)" :src="leftArrowIcon" alt="" class="left"> -->
+            <datepicker v-model="date" language="zh-cn"></datepicker>
+            <!-- <img @click="addDate(date)" :src="rightArrowIcon" alt="" class="right"> -->
+          </div>
+          <div v-show="!isShowDate">
+            <!-- <img @click="reduceDate(event_date.date)" :src="leftArrowIcon" alt="" class="left"> -->
+            <datepicker 
+              :class="{'picker': !event_date.range, 'picker-range': event_date.range}" 
+              language="zh-cn"
+              :range="event_date.range" 
+              v-model="event_date.date" 
+              @input="updateEventDate">
+            </datepicker>
+            <!-- <img @click="addDate(event_date.date)" :src="rightArrowIcon" alt="" class="right"> -->
+          </div>
+        </div>
     </div>
     <div class="walletDetail">
       <div class="walletType">
@@ -68,84 +93,84 @@
         </li>
       </ul>
     </div>
-    <div class="marsk" v-show="isShow">
-        <Calendar v-on:gainCheckedDate="gainDate" 
-            v-bind:showCalendar.sync="isShow" 
-            v-bind:gainSelectedType="selectedType"
-            v-bind:gainStartDate.sync="startDate"
-            v-bind:gainEndDate.sync="endDate"
-        ></Calendar>
-    </div>
     
+
   </div>
 </template>
 
 <script>
-import Calendar from "components/Calendar"
+import datepicker from 'vue-date' 
+import {format} from "modules/js/date.js"
 export default {
   name: 'App',
   data(){
     return {
-      selected: '日',
-      searchValue:'',
       leftArrowIcon:require("modules/images/leftArrow.png"),
       rightArrowIcon:require("modules/images/rightArrow.png"),
-      isShow: false,
       firstDate:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+1,
       currentDate:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate(),
-      startDate: '',
-      endDate:'',
-      checkedDate: '',
-      checkedMonthDate:'',
-      selectedType:'日'
-      
+      date: '',
+      event_date: {
+          date: '',
+          range: true
+      },
+      isShowDate: true
     }
   },
   created: function(){
     this.$emit('getIsLink',true)
-    this.checkedDate = this.currentDate;
-    this.checkedMonthDate = this.firstDate+"~"+this.currentDate
-    this.startDate = this.currentDate;
-    this.endDate = this.currentDate;//初始化数据
   },
-  components:{Calendar},
+  components:{datepicker},
   mounted: function(){
+    this.date = this.currentDate;//初始化按日筛选的date
+    this.event_date.date = [this.firstDate,this.currentDate];//初始化按月筛选的date
     this.$nextTick(function(){
       document.title = '钱包'
-    })
+    }) 
    
   },
   methods:{
-    gainDate(value){
-      
-      if(value.indexOf("~")>-1){
-        this.checkedMonthDate = value
+    reduceDate(date){
+      let sd = '',n=1;
+      if(typeof date == 'object'){//按月
+        n = this.getDays(date[0],date[1]);
+        sd = date[0];
+        let gainDate = this.getEndDate(n,sd,-1);
+        this.event_date.date = [gainDate,date[0]];
       }else{
-        this.checkedDate = value
+        sd = date;
+        this.date = this.getEndDate(n,sd,-1)
       }
       
-    },
-    changeIsShow(str){
-      this.selectedType = str
-      this.isShow = true
-    },
-    changeTime(str){
-      if(str=='月'){//改变日期
-        var date = new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+1;
-        let dateArr = this.checkedMonthDate.split("~");
-
-        this.checkedMonthDate = this.firstDate+"~"+this.endDate
-
-      }else{
-        this.checkedDate = this.startDate
-      }
-      this.isShow = false
-    },
-    reduceDate(){
 
     },
-    addDate(){
+    addDate(date){
 
+    },
+    getEndDate(n,sd,type) {
+        var d = new Date(sd);
+        if (type<0) {//减期
+            d.setDate(d.getDate()-n);
+        }else{//加期
+            d.setDate(d.getDate()+n);
+        }
+        var date=format(d,'yyyy-MM-dd') 
+        return date;
+    },
+    getDays(strDateStart,strDateEnd){//计算相差的天数
+      var strSeparator = "-"; //日期分隔符
+      var oDate1;
+      var oDate2;
+      var iDays;
+      oDate1= strDateStart.split(strSeparator);
+      oDate2= strDateEnd.split(strSeparator);
+      var strDateS = new Date(oDate1[0], oDate1[1]-1, oDate1[2]);
+      var strDateE = new Date(oDate2[0], oDate2[1]-1, oDate2[2]);
+      iDays = parseInt(Math.abs(strDateS - strDateE ) / 1000 / 60 / 60 /24)//把相差的毫秒数转换为天数 
+      return iDays ;
+    },
+    updateEventDate(val){
+      console.log(val)
     }
     
   }
@@ -159,6 +184,18 @@ export default {
     float: right 
   .clearFloat
     overflow: hidden
+  .input-wrapper
+    border: none!important
+  .cancel-btn
+    display: none!important  
+  .date-panel
+    left: 50%!important
+    transform: translate(-50%,0)!important
+  .date-picker
+    width: 100% !important//设置日期的div
+    display: inline-block
+    padding-top: 5px
+    background: #fff
   .grayColor 
     font-size: .24rem
     line-height: .45rem
@@ -174,6 +211,38 @@ export default {
     background: #f4f4f4
     z-index: 100
     padding: 0
+    .changeTimeWrap
+      width: 100%
+      ul.listWrap
+        background:#ffffff
+        border-bottom: 1px solid #efefef
+        padding: 0 .2rem
+        font-size: 0
+        li
+          display: inline-block
+          width: 50%
+          height: .7rem
+          line-height: .7rem
+          padding: 0
+          font-size: .28rem
+        .selected
+          border-bottom: 1px solid #FA9E15
+          color: #FA9E15
+      .tabCon
+        width: 100%
+        >div
+          width: 100%  
+          img 
+            display:inline-block
+            width: .15rem
+          // position: relative 
+          // .left
+          //   position: absolute
+          //   left: 0
+            
+          // .right
+          //   position: absolute
+          //   right: 0  
     .mint-tabbar
       height: .7rem
       top: 0
@@ -191,22 +260,22 @@ export default {
         padding: 0  
         .mint-tab-item-label
           line-height: .7rem
-    .tabCon  
-      width: 100%
-      margin-top: .7rem
-      height: .9rem
-      line-height: .9rem
-      background: #ffffff
-      .timeCon
-        width: 100%
-        img
-          display: inline-block
-          width: .15rem
-          vertical-align: middle
-        span
-          display: inline-block
-          margin:0 .4rem
-          vertical-align: middle
+    // .tabCon  
+    //   width: 100%
+    //   margin-top: .7rem
+    //   height: .9rem
+    //   line-height: .9rem
+    //   background: #ffffff
+    //   .timeCon
+    //     width: 100%
+    //     img
+    //       display: inline-block
+    //       width: .15rem
+    //       vertical-align: middle
+    //     span
+    //       display: inline-block
+    //       margin:0 .4rem
+    //       vertical-align: middle
     .walletDetail
       width: 100%
       margin-top: .2rem

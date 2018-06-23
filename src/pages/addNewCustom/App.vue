@@ -291,6 +291,7 @@ export default {
         tip = '是否确定新增客户?'
         httpUrl = '/api.php/TechSysClient/adds'
       }
+      let _this = this;
       MessageBox.confirm(tip,'').then(action => {
         this.$http.post(httpUrl,gainNewCarData)
           .then((response)=>{
@@ -304,7 +305,9 @@ export default {
                 },1000)  
               }else{
                 setTimeout(function(){
+                  // _this.$router.push({path:"/customer"})
                   window.location.href = "index.html#/customer"
+
                 },1000)
               }
               

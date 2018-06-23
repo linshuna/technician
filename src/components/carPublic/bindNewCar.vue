@@ -6,10 +6,10 @@
             车牌号
           </span>
           <div class="setCusRight">
-            <span @click="isShow=true" class="inp" :class="{'blackColor':carno!=''}">
+            <!-- <span @click="isShow=true" class="inp" :class="{'blackColor':carno!=''}">
               {{carno==''?'请输入车牌号':carno}}
-            </span>
-            <!-- <input type="text" v-model="carno" @focus="isShow=true" placeholder="请输入车牌号"/> -->
+            </span> -->
+            <input type="text" v-model="carno" @focus="isShow=true" placeholder="请输入车牌号" readonly/>
           </div>
         </li>
         <li>
@@ -71,7 +71,7 @@
         <li>
           <span class="fieldName">到期日期</span>
           <div class="setCusRight">
-            <!-- <input type="text" placeholder="请选择日期" v-model="tranDate" readonly @focus="cusBirth('tranPicker')" v-on:input="gainCarMsg"/> -->
+            <!-- <input type="text" placeholder="请选择日期" v-model="tranDate" readonly @focus="cusBirth('tranPicker')"/> -->
             <span class="inp" :class="{'blackColor':tranDate!=''}"  @click="cusBirth('tranPicker')">{{tranDate==''?'请选择日期':tranDate}}</span>
             <img :src="birthIcon" alt="" class="btmArrowIcon">
               <mt-datetime-picker
@@ -90,7 +90,7 @@
         <li>
           <span class="fieldName">承保公司</span>
           <div class="setCusRight">
-            <!-- <input type="text" placeholder="请选择级别" v-model="tranCompanyText" readonly @focus="companyPick('tran')" @blur="comfirmChecked=false"/> -->
+            <!-- <input type="text" placeholder="请选择级别" v-model="companyText" readonly @focus="companyPick()"/> -->
             <span class="inp" :class="{'blackColor':companyText!=''}"  @click="companyPick()">{{companyText==''?'请选择级别':companyText}}</span>
             <img :src="btmArrowIcon" alt="" class="btmArrowIcon">
             <mt-popup v-model="popupVisible" position="bottom">
@@ -128,8 +128,8 @@
   Vue.component(Picker.name, Picker);
   Vue.component(DatetimePicker.name, DatetimePicker);
   import {format} from 'modules/js/date.js'
-  import carKeyCode from "components/CarKeyCode"
-  import brand from "components/brand"
+  import carKeyCode from "components/carKeyCode.vue"
+  import brand from "components/brand.vue"
 export default {
   name: 'App',
   props:{
@@ -210,6 +210,7 @@ export default {
         }
       })
     }
+
   },
   
   watch:{

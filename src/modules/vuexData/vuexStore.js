@@ -22,8 +22,13 @@ const store = new Vuex.Store({
         },
         getReturnUrl: function(state){
             let url = window.location.href; 
-            let urlArr = url.split("="); 
-            let returnUrl = urlArr[1]||"index.html";
+            let returnUrl = '';
+            if(url.indexOf("=")>-1){
+              let urlArr = url.split("=");   
+              returnUrl = urlArr[1]
+            }else{
+                returnUrl = "./index"
+            }
             state.returnUrl = returnUrl;
             return state.returnUrl;
         }
@@ -66,8 +71,13 @@ const store = new Vuex.Store({
             .catch(res=>{
                 Toast("如有问题，请联系客户")
             })
+        },
+        logout(context){
+            context.commit('_remvoeStorage')
+            setTimeout(function(){
+                window.location.href = context.getters.getReturnUrl
+            },1000)    
         }
-
     }
 })
 export default store;

@@ -1,7 +1,7 @@
 <template>
   <div class="setting">
     <ul>
-      <li class="border-bottom-1px">
+      <li class="border-bottom-1px" @click="registerFn">
         <span class="lockLeft">
           <img :src="lockIcon" alt="">
           <span>修改密码</span>  
@@ -11,7 +11,7 @@
         </div>
       </li>
     </ul>
-    <div class="btnWrap">
+    <div class="btnWrap" @click="logout">
       <button>退出登录</button>
     </div>
     
@@ -38,7 +38,12 @@
       })
     },
     methods:{
-
+      registerFn(){
+        window.location.href = "register.html?returnUrl="+window.location.href
+      },
+      logout(){
+        this.$store.dispatch('logout')
+      }
       
     }
   }

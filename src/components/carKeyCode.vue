@@ -10,7 +10,7 @@
                     <ul>
                         <li v-show="txtboardshow" v-for="(item,index) in cartxt">
                             <span v-show="index==cartxt.length-1" @click.stop="txtboardshow=false,numboardshow=true">ABC</span>
-                            <label v-for="(items,indexi) in item" @click.stop="txtclick(items,indexi,item.length)">{{items}}</label>
+                            <label v-for="(items,indexi) in item" @click.stop="txtclick(items,indexi,item.length)" >{{items}}</label>
                             <span v-show="index==cartxt.length-1" @click.stop="deleteCode()">
                                 <span class="delIcon"></span>
                             </span>
@@ -147,8 +147,8 @@
                 return;
             }
             this.$emit('update:isShow', false);//隐藏键盘 
-            //   this.tips = '';            
-            //   this.plate = '';
+            this.tips = '';            
+            this.plate = '';
             
             
         },

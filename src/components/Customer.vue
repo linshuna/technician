@@ -35,8 +35,10 @@
       </template>
       <template v-else>
         <div class="loginMsg">
-          <img :src="defaultIcon" alt="">
-          <a :href="'login.html?returnUrl='+returnUrl">登录/注册</a>
+          <a :href="'login.html?returnUrl='+returnUrl">
+            <img :src="defaultIcon" alt="">
+            <span>登录/注册</span>   
+          </a>
         </div>
       </template>
            
@@ -121,8 +123,10 @@
 <style lang="stylus">
   .orangeColor
     color: #fa9e15
+    font-size: .22rem!important
   .grayColor
     color: #999  
+    font-size: .22rem!important
   .customerWrap
     width: 100%
     min-height: 100%
@@ -133,13 +137,17 @@
     .loginMsg
       text-align: center
       margin-top: 30%
-      img
-        display: inline-block
-        width: 1.5rem
       a
         display: inline-block
         width: 100%
-        line-height: .45rem
+        line-height: .5rem
+        font-size: .28rem
+        img
+          display: inline-block
+          width: 1.5rem
+        span
+          display:block
+          text-align: center
     .setBg
       width: 100%
       .changeFixed

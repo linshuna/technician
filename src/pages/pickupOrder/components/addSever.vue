@@ -2,44 +2,14 @@
   <div class="addSever">
     <input class="search" placeholder="搜索服务名称/编码"/>
     <div class="item-wrapper">
-      <div class="item border-bottom-1px">
-        <div class="name">代办提档费</div>
-        <div class="code">编码: 23232</div>
-        <div class="account">¥300</div>
+      <div class="item border-bottom-1px" v-for="(item,index) in techReckList" :key="index">
+        <div class="name">{{item.name}}</div>
+        <div class="code">编码: {{item.code}}</div>
+        <div class="account">¥{{item.price}}</div>
         <div class="countBtn-wrapper">
-          <div class="reduce" @click="reduceCount">-</div>
-          <input class="count-input" type="number" v-model="sevQty"/>
-          <div class="add" @click="addCount">+</div>
-        </div>
-      </div>
-      <div class="item border-bottom-1px">
-        <div class="name">更换氧传送器</div>
-        <div class="code">编码: 23232</div>
-        <div class="account">¥300</div>
-        <div class="countBtn-wrapper">
-          <div class="reduce">-</div>
-          <input class="count-input" type="number" />
-          <div class="add">+</div>
-        </div>
-      </div>
-      <div class="item border-bottom-1px">
-        <div class="name">仪表台修复</div>
-        <div class="code">编码: 23232</div>
-        <div class="account">¥300</div>
-        <div class="countBtn-wrapper">
-          <div class="reduce">-</div>
-          <input class="count-input" type="number" />
-          <div class="add">+</div>
-        </div>
-      </div>
-      <div class="item border-bottom-1px">
-        <div class="name">代理违章服务费</div>
-        <div class="code">编码: 23232</div>
-        <div class="account">¥300</div>
-        <div class="countBtn-wrapper">
-          <div class="reduce">-</div>
-          <input class="count-input" type="number" />
-          <div class="add">+</div>
+          <div class="reduce" @click="reduceCount(index,item.num)">-</div>
+          <input class="count-input" type="number" v-model.number="item.num"/>
+          <div class="add" @click="addCount(index,item.num)">+</div>
         </div>
       </div>
     </div>
@@ -51,21 +21,47 @@
   </div>
 </template>
 <script>
+  import {Toast} from "mint-ui"
   export default {
     data() {
       return {
-        sevQty:'1'
+        sevQty:'1',
+        techReckList:[],
+        searchCon:''
       }
     },
+    created:function(){
+        this.init('')
+    },
     methods: {
+      init(con){
+        this.$http.post('/api.php/TechReck/lists',{search:con})
+        .then((response)=>{
+          let res = response.data
+          if(res.errorCode == 200){
+            this.techReckList = res.data
+            this.techReckList.map((item,index)=>{
+              this.$set(item,'num',1)
+            })
+            
+          }else{
+            Toast(res.message)
+          }
+        })
+      },
       newSever() {
         this.$router.push('/newSever')
       },
-      addCount() {
-        this.sevQty ++;
+      addCount(index,num) {
+        num++;
+        this.$set(this.techReckList[index],'num',num)
       },
-      reduceCount() {
-        this.sevQty --;
+      reduceCount(index,num) {
+        num--;
+        if(num<1){
+          return false;
+        }
+        this.$set(this.techReckList[index],'num',num)
       }
     },
     watch:{
@@ -103,12 +99,12 @@
       background-size: .5rem .5rem
       background-position: .2rem
     .item-wrapper
-      padding: 0 .2rem
       margin-top: 1.4rem  
       .item
         font-size: .28rem
         line-height: .6rem
         position: relative
+        padding: 0 0.2rem
         .name
           font-size: .32rem
         .account
