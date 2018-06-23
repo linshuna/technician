@@ -4,7 +4,7 @@
       @choseDay="clickDay"
       @changeMonth="changeDate" @isToday="isToday"></Calendar>
     <div class="look" @click="goOrder">查看</div>
-    <div class="add-wrapper"> 
+    <div class="add-wrapper" @click="addReseve"> 
       <div class="add-order-btn"></div>  
     </div>
     <div class="noData" v-if="!orderData.length">
@@ -35,13 +35,18 @@
 </template>
 
 <script>
-  import Calendar from 'vue-calendar-component';
+  import Calendar from 'vue-calendar-component' 
+  import Vue from 'vue'
+  import vueAxiosPlugin from "modules/js/axiosPrototype.js"
+  Vue.use(vueAxiosPlugin)
+  import { Toast } from 'mint-ui'
 
   export default {
     name: 'App',
     data () {
       return {
         noDataImg: require('modules/images/noData-order.png'),
+        selectedDate: '',
         orderData: [
           {
             type: 0,
@@ -79,6 +84,7 @@
     methods: {
       clickDay(data) {
         console.log(data); //选中某天
+        this.selectedDate = data.split('/').join('-')
       },
       changeDate(data) {
         console.log(data); //左右点击切换月份
@@ -88,16 +94,52 @@
       },
       isToday(data) {
         console.log(data);
+        this.selectedDate = data.split('/').join('-')
       },
       goOrder() {
         window.location.href = 'order.html'
       },
       goOrderDetail() {
         window.location.href = 'reservedOrderDetail.html'
+      },
+      addReseve() {
+        window.location.href = 'addResearch.html'
+      }
+    },
+    watch: {
+      selectedDate(newVal,oldVal) {
+        console.log('new'+newVal,'  old'+oldVal)
+        if(newVal){
+          this.$http.post('/api.php/TechOrder/index',{orderDate: '2018-06-10'})
+          .then((response)=>{
+            let res = response.data
+            if(res.errorCode == 200){
+              console.log(res.data);
+              this.orderData = res.data
+            }else{
+              Toast(res.message)
+            }
+          })
+        }
       }
     },
     components: {
       Calendar
+    },
+    computed:{
+      getStorage(){
+        return this.$store.getters.getStorage;
+      }
+    },
+    created() {
+      let gainTecherData = JSON.parse(this.getStorage);
+      if(!gainTecherData){
+        let instance = Toast('请先登录')
+        setTimeout(() => {
+          instance.close()
+          window.location.href = './login.html?returnUrl'+window.location.href
+        }, 2000);
+      }
     }
   }
 </script>
@@ -131,6 +173,8 @@ body
   #app
     font-family: PingFangSC-Regular
     background: #F9F9F9
+    height: 100%
+    overflow: scroll
     .look
       position: absolute
       right: 0.2rem

@@ -1,10 +1,10 @@
 <template>
   <div id="app">
       <mt-navbar v-model="selected">
-        <mt-tab-item id="1">待确认</mt-tab-item>
-        <mt-tab-item id="2">已确认</mt-tab-item>
-        <mt-tab-item id="3">已到店</mt-tab-item>
-        <mt-tab-item id="4">已取消</mt-tab-item>
+        <mt-tab-item id="1">已确认</mt-tab-item>
+        <mt-tab-item id="2">已到店</mt-tab-item>
+        <mt-tab-item id="3">已取消</mt-tab-item>
+        <img src="../../modules/images/searchIcon.png" class="search"></img>
       </mt-navbar>
 
       <div class="selectTime">6月4日(星期一)</div>  
@@ -105,6 +105,11 @@
 
   #app
     font-family: PingFangSC-Regular
+    .search
+      width: .6rem
+      height: .6rem
+      padding-top: .16rem
+      padding-right: .2rem
     .selectTime
       height: 1rem
       line-height: 1rem

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <div class="item border-bottom-1px carInfo">粤A99999 奔驰</div>
-    <div class="item border-bottom-1px" @click="showNameModal">豆果
+    <div class="item border-bottom-1px carInfo">{{this.carno}}</div>
+    <div class="item border-bottom-1px" @click="showNameModal">{{this.name}}
       <span class="iconfont icon-right">&#xe66b;</span>
     </div>
     <div class="item border-bottom-1px" @click="showTypeModal">服务类型
@@ -34,7 +34,7 @@
     <mt-popup class="modal-type" v-model="popupVisibleType" popup-transition="popup-fade" position="right">
       <div class="title">服务类型</div>
       <div class="list" v-for="(item,index) in typeData">
-        <div class="item" @click="selectItem(item,index)" :class="{active:index===selectTypeIndex}">{{item}}</div>
+        <div class="item" @click="selectItem(item)" :class="item.active==true?'active':''">{{item.name}}</div>
       </div>
       <div class="btn-wrapper">
         <div class="btn reset" @click="resetType">重置</div>
@@ -57,15 +57,25 @@
 </template>
 
 <script>
+import { GetQueryString,changeTitle } from 'modules/js/config.js'
+import Vue from 'vue'
+  import vueAxiosPlugin from "modules/js/axiosPrototype.js"
+  Vue.use(vueAxiosPlugin)
+
 export default {
   name: 'App',
   data() {
     return {
+      type: '',
+      carno: '',
+      carvid: '',
+      name: '',
       popupVisibleType: false,
       popupVisibleTime: false,
       pickerValue: false,
       popupVisibleName: false,
       selectTypeIndex: '-1',
+      project: [],
       remark:'',
       slots: [
         {
@@ -75,7 +85,7 @@ export default {
           textAlign: 'center'
         }
       ],
-      typeData: ['洗车','美容','保养','洗车','美容','保养'],
+      typeData: [],
       timeData: ['09:00','10:00','11:00','12:00','13:00','14:00','09:00','10:00','11:00','12:00','13:00','14:00']
     }
   },
@@ -95,11 +105,17 @@ export default {
       this.$refs.picker.open();
     },
     showNameModal() {
+      if(this.type==='add'){
+        return
+      }
       this.popupVisibleName = true
     },
-    selectItem(item,index) {
-      this.selectTypeIndex = index
-      console.log(item,index)
+    selectItem(item) {
+      this.project.push({id:item.id,name:item.name})
+      item.active=true
+      console.log(item)
+      
+      //this.selectTypeIndex = index
     },
     confirmSelecteType() {
       this.popupVisibleType = false
@@ -114,8 +130,30 @@ export default {
       this.popupVisibleName = false
     }
   },
-  created() {
-    
+  mounted() {
+    this.type = GetQueryString('type');
+    if(this.type==='add'){
+      this.name = decodeURIComponent(GetQueryString('name'))
+      this.carno = decodeURIComponent(GetQueryString('carno'))
+      this.carvid = GetQueryString('carvid')
+      changeTitle('新增预约')
+    }
+    console.log(this.type)
+
+    this.$http.get('/api.php/TechOrder/servicelist')
+    .then((response)=>{
+      let res = response.data
+      if(res.errorCode == 200){
+        let data = res.data
+        data.forEach((item,index)=>{
+          item.active = false
+        })
+        this.typeData = data
+        console.log(this.typeData)
+      }else{
+        Toast(res.message)
+      }
+    })
   }
 }
 </script>
