@@ -13,19 +13,19 @@
     </div>
     <div class="order-wrapper" v-if="orderData.length">
       <div class="item" v-for="item in orderData" @click="goOrderDetail">
-        <div class="type">已确认(<span>1</span>)</div>
+        <div class="type" v-html="item.status==0?'待到店':'已到店'">已确认(<span>1</span>)</div>
         <div class="carInfo">
-          <div class="time">{{item.time}}</div>
-          <img class="carImg" :src="item.carImg"/>
-          <div class="carno">{{item.carno}}</div>
-          <div class="name">{{item.name}}</div>
+          <div class="time">{{item.orderDay}}</div>
+          <img class="carImg" :src="item.icon"/>
+          <div class="carno">{{item.carNo}}</div>
+          <div class="name">{{item.uname}}</div>
         </div>
         <div class="repaire-type-wrapper">
           <div class="circle"></div>
           <div class="line"></div>
-          <div class="itemName">{{item.itemName}}</div>
+          <div class="itemName">{{item.project}}</div>
           <div class="btn-wrapper">
-            <div class="pickup btn">立即接车</div>
+            <div class="pickup btn" v-if="item.status==1">立即接车</div>
             <div class="cancelR btn">取消预约</div>
           </div>
         </div>
@@ -110,12 +110,12 @@
       selectedDate(newVal,oldVal) {
         console.log('new'+newVal,'  old'+oldVal)
         if(newVal){
-          this.$http.post('/api.php/TechOrder/index',{orderDate: '2018-06-10'})
+          this.$http.post('/api.php/TechOrder/index',{orderDate: this.selectedDate})
           .then((response)=>{
             let res = response.data
             if(res.errorCode == 200){
               console.log(res.data);
-              this.orderData = res.data
+              this.orderData = res.data   //0未到店1已到店
             }else{
               Toast(res.message)
             }
@@ -224,6 +224,7 @@ body
         width: 100%
         height: 2rem
         position: relative
+        margin-top: .2rem
         .circle
           width: .2rem
           height: .2rem

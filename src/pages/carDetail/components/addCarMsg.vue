@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="customWrap">
-      <bindNewCar v-on:gainCarMsg="gainNewCarMsg"></bindNewCar>
+      <bindNewCar v-on:gainCarMsg="gainNewCarMsg" :carno="this.carno"></bindNewCar>
       <div class="customerMsg">
         <p class="border-bottom-1px">客户信息</p>
         <ul class="fieldWrap">
@@ -52,14 +52,20 @@
 
 <script>
   import bindNewCar from "components/carPublic/bindNewCar"
+  import {GetQueryString} from 'modules/js/config.js'
+  import { Toast} from 'mint-ui'
+
 export default {
   name: 'App',
   data(){
     return {
+      carno: '',
+      techvid: null,
       cusTypevalue:'1',
       cusNameValue:'1',
       cusName:'',
       cusPhone:'',
+      newCarMsg: {},
       customerLogo:require("modules/images/defaultLogo.png"),
       btmArrowIcon: require("modules/images/btmArrow.png"),
       addLinkerIcon: require("modules/images/blueAddIcon.png"),
@@ -98,12 +104,41 @@ export default {
   components:{bindNewCar},
   methods:{
     gainNewCarMsg(value){//获取传回来的车辆信息,是一个对象
-        console.log(value)
+      console.log(value)
+      this.newCarMsg = value
     },
     saveMsg:function(){
-      console.log(this.cusNameVaule)
+      this.$set(this.newCarMsg,'carvid',this.carvid)
+      this.$set(this.newCarMsg,'techvid',this.techvid)
+      this.$set(this.newCarMsg,'phone',this.cusPhone)
+      this.$set(this.newCarMsg,'types',this.cusTypevalue)
+      this.$set(this.newCarMsg,'sex',this.cusNameValue)
+      this.$set(this.newCarMsg,'uname',this.cusName)
+      console.log(this.newCarMsg)
+      this.$http.post('/api.php/TechOrder/addNewClient',this.newCarMsg)
+        .then((response)=>{
+          let res = response.data;
+          if(res.errorCode == 200){
+            Toast('解绑成功')
+          }else{
+            Toast(res.data.message)
+          }
+        }) 
     }
     
+  },
+  computed:{
+    getStorage(){
+      return this.$store.getters.getStorage;
+    }
+  },
+  created() {
+    this.carno = decodeURIComponent(GetQueryString('carno'))
+    this.carvid = GetQueryString('carvid')
+    let gainTecherData = JSON.parse(this.getStorage);
+    if(gainTecherData){
+      this.techvid = gainTecherData.vid;
+    }
   }
 }
 </script>

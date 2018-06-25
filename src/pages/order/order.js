@@ -3,6 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import getRem from 'modules/js/getRem.js'
+import router from './router'
+import vueAxiosPlugin from 'modules/js/axiosPrototype.js'
+Vue.use(vueAxiosPlugin)
 
 import { Navbar, TabItem } from 'mint-ui';
 import { TabContainer, TabContainerItem } from 'mint-ui';
@@ -24,6 +27,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  router,
   template: '<App />',
   components: { App }
 })

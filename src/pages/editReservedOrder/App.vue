@@ -15,15 +15,15 @@
     </div>
     <div class="item link-phone border-bottom-1px">
       联系电话
-      <input class="phone" type="number" pattern="[0-9]*" placeholder="请输入"/>
+      <input class="phone" type="number" pattern="[0-9]*" placeholder="请输入" v-model="phone"/>
     </div>
     <div class="remark-wrapper">
       <div class="title item">车店备注</div>
       <textarea class="remark" name="" placeholder="备注" v-model="remark"></textarea>
     </div>
-    <div class="btn">保存</div>
+    <div class="btn" @click="submitBtn">保存</div>
 
-    <mt-popup position="bottom" v-model="popupVisibleName" :closeOnClickModal=false>
+    <mt-popup position="bottom" v-model="popupVisibleName" :closeOnClickModal="false">
       <div class="picker-toolbar name-picker-toolbar">  
           <span class="mint-datetime-cancel" @click="cancle">取消</span>  
           <span class="mint-datetime-confirm" @click="select">确定</span>  
@@ -31,36 +31,41 @@
       <mt-picker class="name-picker" :slots="slots" @change="onValuesChange"></mt-picker>
     </mt-popup>
 
-    <mt-popup class="modal-type" v-model="popupVisibleType" popup-transition="popup-fade" position="right">
+    <mt-popup class="modal-type" v-model="popupVisibleType" popup-transition="popup-fade" position="right" :closeOnClickModal="false">
       <div class="title">服务类型</div>
       <div class="list" v-for="(item,index) in typeData">
         <div class="item" @click="selectItem(item)" :class="item.active==true?'active':''">{{item.name}}</div>
       </div>
       <div class="btn-wrapper">
         <div class="btn reset" @click="resetType">重置</div>
-        <div class="btn confirm" @click="confirmSelecteType">确定</div>
+        <div class="btn confirm" @click="confirmSelectType">确定</div>
       </div>
     </mt-popup>
-    <mt-datetime-picker ref="picker" type="date" year-format="{value} 年"  month-format="{value} 月" date-format="{value} 日" v-model="pickerValue">
+
+    <mt-datetime-picker ref="picker" type="date" year-format="{value} 年"  month-format="{value} 月" date-format="{value} 日" @confirm="handleChange">
     </mt-datetime-picker>
-    <mt-popup class="modal-type" v-model="popupVisibleTime" popup-transition="popup-fade" position="right">
+
+    <mt-popup class="modal-type" v-model="popupVisibleTime" popup-transition="popup-fade" position="right" :closeOnClickModal="false">
       <div class="title">到店时间</div>
-      <div class="list" v-for="item in timeData">
-        <div class="item">{{item}}</div>
+      <div class="list" v-for="(item,index) in timeData">
+        <div class="item" @click="selectTime(index,item.time)" :class="selectTimeIndex==index?'active':''">{{item.time}}</div>
       </div>
       <div class="btn-wrapper">
-        <div class="btn reset">重置</div>
-        <div class="btn confirm">确定</div>
+        <div class="btn reset" @click="resetTime">重置</div>
+        <div class="btn confirm" @click="confirmSelectTime">确定</div>
       </div>
     </mt-popup>
+
   </div>
 </template>
 
 <script>
 import { GetQueryString,changeTitle } from 'modules/js/config.js'
 import Vue from 'vue'
-  import vueAxiosPlugin from "modules/js/axiosPrototype.js"
-  Vue.use(vueAxiosPlugin)
+import vueAxiosPlugin from "modules/js/axiosPrototype.js"
+Vue.use(vueAxiosPlugin)
+import {format} from 'modules/js/date.js'
+import { Toast } from 'mint-ui'
 
 export default {
   name: 'App',
@@ -69,13 +74,18 @@ export default {
       type: '',
       carno: '',
       carvid: '',
+      clientvid: '',
       name: '',
+      techvid: null,
+      date:'',
+      time: '',
+      phone: '',
+      project: [],
+      selectTimeIndex: -1,
       popupVisibleType: false,
       popupVisibleTime: false,
-      pickerValue: false,
       popupVisibleName: false,
       selectTypeIndex: '-1',
-      project: [],
       remark:'',
       slots: [
         {
@@ -86,7 +96,56 @@ export default {
         }
       ],
       typeData: [],
-      timeData: ['09:00','10:00','11:00','12:00','13:00','14:00','09:00','10:00','11:00','12:00','13:00','14:00']
+      timeData: [
+        {
+          time: '09:00',
+          active: false
+        },
+        {
+          time: '10:00',
+          active: false
+        },
+        {
+          time: '11:00',
+          active: false
+        },
+        {
+          time: '12:00',
+          active: false
+        },
+        {
+          time: '13:00',
+          active: false
+        },
+        {
+          time: '14:00',
+          active: false
+        },
+        {
+          time: '15:00',
+          active: false
+        },
+        {
+          time: '16:00',
+          active: false
+        },
+        {
+          time: '17:00',
+          active: false
+        },
+        {
+          time: '18:00',
+          active: false
+        },
+        {
+          time: '19:00',
+          active: false
+        },
+        {
+          time: '20:00',
+          active: false
+        }
+      ]
     }
   },
   methods: {
@@ -113,23 +172,113 @@ export default {
     selectItem(item) {
       this.project.push({id:item.id,name:item.name})
       item.active=true
-      console.log(item)
       
       //this.selectTypeIndex = index
     },
-    confirmSelecteType() {
+    confirmSelectType() {
       this.popupVisibleType = false
     },
     resetType() {
-      this.project.forEach((item,index)=>{
+      this.project = []
+      this.typeData.forEach((item,index)=>{
         item.active=false
       })
+    },
+    selectTime(index,time) {
+      this.selectTimeIndex = index
+      this.time = time
+    },
+    resetTime() {
+      this.selectTimeIndex = -1
+    },
+    confirmSelectTime() {
+      this.popupVisibleTime = false
     },
     cancle() {
       this.popupVisibleName = false
     },
     select() {
       this.popupVisibleName = false
+    },
+    handleChange(value) {
+      let date = value.toString()
+      date = format(date,'yyyy-MM-dd')
+      this.date = date
+    },
+    submitBtn() {
+      console.log(this.project)
+      if(this.project.length === 0) {
+        Toast({
+          message: '请选择服务类型',
+          position: 'bottom',
+          duration: 2000
+        })
+        return
+      }
+      if(this.date === '') {
+        Toast({
+          message: '请选择到店日期',
+          position: 'bottom',
+          duration: 2000
+        })
+        return
+      }
+      if(this.time === '') {
+        Toast({
+          message: '请选择到店时间',
+          position: 'bottom',
+          duration: 2000
+        })
+        return
+      }
+      if(this.phone === '') {
+        Toast({
+          message: '请填写联系电话',
+          position: 'bottom',
+          duration: 2000
+        })
+        return
+      }
+      if(this.selectTimeIndex) {}
+      this.$http.post('/api.php/TechOrder/orderNew',{lists: JSON.stringify(this.submitData.lists)})
+        .then((response)=>{
+          let res = response.data
+          if(res.errorCode == 200){
+            Toast({
+              message: '预约成功',
+              iconClass: 'icon icon-success'
+            })
+          }else{
+            Toast(res.message)
+          }
+        })
+    }
+  },
+  computed:{
+    getStorage() {
+      return this.$store.getters.getStorage;
+    },
+    orderDay() {
+      return `${this.date} ${this.time}`
+    },
+    submitData() {
+      return {
+        lists: {
+          carvid: this.carvid,
+          clientvid: this.clientvid,
+          techvid: this.techvid,
+          phone: this.phone,
+          remark: this.remark,
+          orderDay: this.orderDay,
+          project: this.project
+        }
+      }
+    },
+  },
+  created: function(){
+    let gainTecherData = JSON.parse(this.getStorage);
+    if(gainTecherData){
+      this.techvid = gainTecherData.vid;
     }
   },
   mounted() {
@@ -138,9 +287,9 @@ export default {
       this.name = decodeURIComponent(GetQueryString('name'))
       this.carno = decodeURIComponent(GetQueryString('carno'))
       this.carvid = GetQueryString('carvid')
+      this.clientvid = GetQueryString('clientvid')
       changeTitle('新增预约')
     }
-    console.log(this.type)
 
     this.$http.get('/api.php/TechOrder/servicelist')
     .then((response)=>{
@@ -151,7 +300,6 @@ export default {
           item.active = false
         })
         this.typeData = data
-        console.log(this.typeData)
       }else{
         Toast(res.message)
       }

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import carKeyCode from "components/CarKeyCode"
+  import carKeyCode from "components/carKeyCode"
   import { Toast} from 'mint-ui';
   export default {
     name: 'App',

@@ -11,13 +11,13 @@
       <li class="item border-bottom-1px" v-for="item in list" @click="hanleItemClick(item.clientvid,item.uname,item.carNo,item.carvid)">{{item.carNo}}<span class="name" v-show="item.clientvid!=='0'">{{item.uname}}</span></li>
     </ul>
 
-    <carKeyCode v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></carKeyCode>
+    <car-key-code v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></car-key-code>
     
   </div>
 </template>
 
 <script>
-  import carKeyCode from "components/CarKeyCode"
+  import carKeyCode from "components/carKeyCode"
   import { Toast} from 'mint-ui';
   import Vue from 'vue'
   import vueAxiosPlugin from "modules/js/axiosPrototype.js"
@@ -35,15 +35,6 @@
       }
     },
     methods: {
-      goDetail() {
-        window.location.href='pickupInfo.html#/type3'
-      },
-      goPath() {
-        window.location.href= './pickupOrder.html#/path'
-      },
-      goAdd() {
-        window.location.href= './pickupInfo.html#/type2'
-      },
       addCar() {
         window.location.href='./carDetail.html#/addCarMsg'
       },
@@ -67,7 +58,7 @@
         if(id!=='0'){
           window.location.href = './editReservedOrder.html?type=add&clientvid='+id+'&name='+encodeURIComponent(name)+'&carno='+encodeURIComponent(carno)+'&carvid='+carvid//去新增
         }else{
-          window.location.href = './searchCarno.html?carvid='+ carvid+'&clientvid='+id
+          window.location.href = './searchCarno.html?carvid='+ carvid+'&carno='+encodeURIComponent(carno)
         }
       }
     },
@@ -90,7 +81,7 @@
       }
     },
     components:{
-      carKeyCode
+      'car-key-code':carKeyCode,
     },
   }
 </script>

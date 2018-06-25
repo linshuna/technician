@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import getRem from 'modules/js/getRem.js'
+import store from 'modules/vuexData/vuexStore.js'
 
 import { Popup } from 'mint-ui';
 import { DatetimePicker } from 'mint-ui';
@@ -24,6 +25,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   components: { App },
   template: '<App/>'
 })
