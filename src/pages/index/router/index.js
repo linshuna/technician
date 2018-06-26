@@ -16,8 +16,8 @@ import Wallet from 'components/userChildren/Wallet.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
-  base: '/mits', 
+  //mode: 'history',
+  //base: '/mits', 
   routes: [
     {
       path: '/',

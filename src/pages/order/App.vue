@@ -1,64 +1,95 @@
 <template>
   <div id="app">
       <mt-navbar v-model="selected">
-        <mt-tab-item id="1">已确认</mt-tab-item>
+        <mt-tab-item id="1">待到店</mt-tab-item>
         <mt-tab-item id="2">已到店</mt-tab-item>
         <mt-tab-item id="3">已取消</mt-tab-item>
-        <img src="../../modules/images/searchIcon.png" class="search"></img>
+        <mt-tab-item id="4" class="search">
+          <img src="../../modules/images/searchIcon.png" class="search-icon" @click="searchCarOrder"></img>
+        </mt-tab-item>
       </mt-navbar>
 
-      <div class="selectTime">6月4日(星期一)</div>  
+      <!--<div class="selectTime">6月4日(星期一)</div>  -->
 
       <!-- tab-container -->
       <mt-tab-container v-model="selected">
         <mt-tab-container-item id="1">
-          <div class="noData" v-if="!orderData.length">
+          <div class="noData" v-if="orderHaveConfirmData.length==0">
             <img class="noDataImg" :src="noDataImg" />
-            <div class="text">无数据</div>
-            </div>
-            <div class="order-wrapper" v-if="orderData.length">
-            <div class="item" v-for="item in orderData">
-              <div class="type">已确认(<span>1</span>)</div>
+            <div class="text">暂无订单</div>
+          </div>
+          <div class="order-wrapper" v-if="orderHaveConfirmData.length>0">
+            <div class="item" v-for="item in orderHaveConfirmData" @click="goOrderDetail(item.orderNo)">
               <div class="carInfo">
-                <div class="time">{{item.time}}</div>
-                <img class="carImg" :src="item.carImg"/>
-                <div class="carno">{{item.carno}}</div>
-                <div class="name">{{item.name}}</div>
+                <div class="time">
+                  <div>{{item.orderDay}}</div>
+                  <div>{{item.orderTime}}</div>
+                </div>
+                <img class="carImg" :src="item.icon"/>
+                <div class="carno">{{item.carNo}}</div>
+                <div class="name">{{item.uname}}</div>
               </div>
               <div class="repaire-type-wrapper">
                 <div class="circle"></div>
                 <div class="line"></div>
-                <div class="itemName">{{item.itemName}}</div>
+                <div class="itemName">{{item.project}}</div>
               </div>
             </div>
           </div>
         </mt-tab-container-item>
         <mt-tab-container-item id="2">
-          <div class="noData" v-if="!orderHaveConfirmData.length">
+          <div class="noData" v-if="orderHaveInStoreData.length==0">
             <img class="noDataImg" :src="noDataImg" />
-            <div class="text">无数据</div>
-            </div>
-            <div class="order-wrapper" v-if="orderHaveConfirmData.length">
-            <div class="item" v-for="item in orderHaveConfirmData">
-              <div class="type">已确认(<span>1</span>)</div>
+            <div class="text">暂无订单</div>
+          </div>
+          <div class="order-wrapper" v-if="orderHaveInStoreData.length>0">
+            <div class="item" v-for="item in orderHaveInStoreData">
               <div class="carInfo">
-                <div class="time">{{item.time}}</div>
-                <img class="carImg" :src="item.carImg"/>
-                <div class="carno">{{item.carno}}</div>
-                <div class="name">{{item.name}}</div>
+                <div class="time">
+                  <div>{{item.orderDay}}</div>
+                  <div>{{item.orderTime}}</div>
+                </div>
+                <img class="carImg" :src="item.icon"/>
+                <div class="carno">{{item.carNo}}</div>
+                <div class="name">{{item.uname}}</div>
               </div>
               <div class="repaire-type-wrapper">
                 <div class="circle"></div>
                 <div class="line"></div>
-                <div class="itemName">{{item.itemName}}</div>
+                <div class="itemName">{{item.project}}</div>
               </div>
             </div>
           </div>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
-         都是
+          <div class="noData" v-if="orderHaveCancleData.length==0">
+            <img class="noDataImg" :src="noDataImg" />
+            <div class="text">暂无订单</div>
+          </div>
+          <div class="order-wrapper" v-if="orderHaveCancleData.length>0">
+            <div class="item" v-for="item in orderHaveCancleData">
+              <div class="carInfo">
+                <div class="time">
+                  <div>{{item.orderDay}}</div>
+                  <div>{{item.orderTime}}</div>
+                </div>
+                <img class="carImg" :src="item.icon"/>
+                <div class="carno">{{item.carNo}}</div>
+                <div class="name">{{item.uname}}</div>
+              </div>
+              <div class="repaire-type-wrapper">
+                <div class="circle"></div>
+                <div class="line"></div>
+                <div class="itemName">{{item.project}}</div>
+              </div>
+            </div>
+          </div>
+        </mt-tab-container-item>
+        <mt-tab-container-item id="4">
+          
         </mt-tab-container-item>
       </mt-tab-container>
+    <router-view></router-view>  
   </div>
 </template>
 
@@ -68,34 +99,32 @@
       return {
         selected:'1',
         noDataImg: require('modules/images/noData-order.png'),
-        orderData: [
-          {
-            type: 0,
-            time: '17:00',
-            carno: '粤A6666',
-            itemName: '美容',
-            name: '烟火',
-            carImg: require('modules/images/carImg.png')
-          },
-           {
-            type: 0,
-            time: '17:00',
-            carno: '粤A6666',
-            itemName: '美容',
-            name: '烟火222',
-            carImg: require('modules/images/carImg.png')
-          },
-           {
-            type: 0,
-            time: '17:00',
-            carno: '粤A6666',
-            itemName: '美容',
-            name: '烟火333',
-            carImg: require('modules/images/carImg.png')
-          }
-        ],
-        orderHaveConfirmData: []
+        orderHaveConfirmData: [],
+        orderHaveInStoreData: [],
+        orderHaveCancleData: []
       }
+    },
+    methods: {
+      goOrderDetail(id) {
+        window.location.href = 'editReservedOrder.html?orderId='+id
+      },
+      searchCarOrder() {
+        this.$router.push('/search')
+      }
+    },
+    mounted() {
+      this.$http.post('/api.php/TechOrder/lists',{carNo: ''})
+      .then((response)=>{
+        let res = response.data
+        if(res.errorCode == 200){
+          this.orderHaveConfirmData = res.data.nodeal
+          this.orderHaveInStoreData = res.data.deal
+          console.log(this.orderHaveInStoreData)
+          this.orderHaveCancleData = res.data.cancel
+        }else{
+          Toast(res.message)
+        }
+      })
     }
   }  
 </script>
@@ -105,11 +134,20 @@
 
   #app
     font-family: PingFangSC-Regular
-    .search
-      width: .6rem
-      height: .6rem
-      padding-top: .16rem
-      padding-right: .2rem
+    .mint-navbar
+      .mint-tab-item
+        padding: 0
+        flex: 2
+        .mint-tab-item-label
+          font-size: .32rem
+          line-height: .8rem  
+      .search
+        flex: 1          
+        .search-icon
+          width: 0.5rem
+          padding-top: .2rem
+          height: 0.6rem
+          box-sizing: border-box
     .selectTime
       height: 1rem
       line-height: 1rem
@@ -137,6 +175,7 @@
         .time
           font-size: .24rem
           color: #c1bfbf
+          text-align: center
         .carImg
           margin: 0 .2rem
           width: 1rem

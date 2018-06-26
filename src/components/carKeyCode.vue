@@ -147,6 +147,7 @@
                 return;
             }
             this.$emit('update:isShow', false);//隐藏键盘 
+            this.$emit('canRequest')
             this.tips = '';            
             this.plate = '';
             

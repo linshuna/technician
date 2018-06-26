@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import getRem from 'modules/js/getRem.js'
 import router from './router'
+import store from 'modules/vuexData/vuexStore.js'
 
 Vue.use(getRem)
 Vue.config.productionTip = false
@@ -11,6 +12,8 @@ import 'modules/css/reset.styl'
 import 'mint-ui/lib/style.css'
 import 'modules/css/iconfont.css'
 import 'modules/css/border-1px.css'
+
+import { Toast} from 'mint-ui';
 
 /* eslint-disable no-new */
 //注册  
@@ -184,6 +187,7 @@ import 'modules/css/border-1px.css'
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App />',
   components: { App }
 })

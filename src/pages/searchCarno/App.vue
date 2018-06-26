@@ -4,7 +4,7 @@
       <input v-model="keyword" class="search-input" placeholder="搜索姓名/手机号" @keyup="search"/>
       <div class="add-wrapper" @click="addCar">
         <div class="iconfont">&#xe60c;</div>
-        <div class="">新增车辆</div>
+        <div class="">新增客户</div>
       </div>
     </div>
     <ul class="result">
@@ -29,6 +29,7 @@
         keyword: '',
         carvid: '',
         clientvid:'',
+        carno: '',
         techvid: null,
         timer: null,
         list: []
@@ -36,7 +37,7 @@
     },
     methods: {
       addCar() {
-        window.location.href='./carDetail.html#/addCarMsg'
+        window.location.href=`./carDetail.html?carno=${this.carno}&carvid=${this.carvid}#/addCarMsg`
       },
       search() {
         this.$http.post('/api.php/TechOrder/orderAddUser',{search: this.keyword})
@@ -76,6 +77,7 @@
     created() {
       this.search()
       this.carvid = GetQueryString('carvid')
+      this.carno = decodeURIComponent(GetQueryString('carno'))
       let gainTecherData = JSON.parse(this.getStorage);
       if(gainTecherData){
         this.techvid = gainTecherData.vid;

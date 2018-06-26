@@ -31,7 +31,7 @@
 </template>
 <script>
   import Vue from 'vue'
-  import CarKeyCode from "components/CarKeyCode"
+  import carKeyCode from "components/carKeyCode"
   import Brand from "components/brand.vue"
   import { Toast } from 'mint-ui'
   import { Radio } from 'mint-ui'
@@ -82,7 +82,7 @@
       }
     },
     components:{
-      CarKeyCode,
+      carKeyCode,
       Brand
     }
   }

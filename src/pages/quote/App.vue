@@ -30,6 +30,7 @@
 </template>
 
 <script>
+  import carKeyCode from "components/carKeyCode.vue"
 
   import noDataTip from 'components/noDataTip';
 
@@ -42,10 +43,6 @@
         returnUrl: window.location.href,
         carno:''
       }
-    },
-    components:{
-      'car-key-code':carKeyCode,
-      'no-data-tip': noDataTip
     },
     methods: {
       
@@ -81,6 +78,11 @@
     },
     mounted() {
       this.searchData();
+
+    },
+    components:{
+      'no-data-tip': noDataTip,
+      'car-key-code':carKeyCode
     }
   }  
 </script>
