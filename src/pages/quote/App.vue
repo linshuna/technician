@@ -47,6 +47,7 @@
       'car-key-code':carKeyCode
     },
     methods: {
+      
       goQuote() {
         window.location.href='./pickupOrder.html#/quotation'
       },
