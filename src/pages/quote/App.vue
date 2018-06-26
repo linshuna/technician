@@ -31,6 +31,7 @@
 
 <script>
   import carKeyCode from "components/carKeyCode.vue"
+
   import noDataTip from 'components/noDataTip';
 
   export default {
@@ -39,8 +40,12 @@
         techvid:null,
         customerList: [],
         defaultIcon: require("modules/images/isLoginIcon.png"),
-        returnUrl: window.location.href
+        returnUrl: window.location.href,
+        carno:''
       }
+    },
+    components:{
+      'car-key-code':carKeyCode
     },
     methods: {
       goQuote() {

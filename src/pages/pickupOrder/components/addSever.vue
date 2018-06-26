@@ -2,7 +2,8 @@
   <div class="addSever">
     <input class="search" placeholder="搜索服务名称/编码"/>
     <div class="item-wrapper">
-      <div class="item border-bottom-1px" v-for="(item,index) in techReckList" :key="index">
+      <div class="item border-bottom-1px" v-for="(item,index) in techReckList" :key="index" 
+        :class="{'is_selected':item.bol}" @click="item.bol=!item.bol">
         <div class="name">{{item.name}}</div>
         <div class="code">编码: {{item.code}}</div>
         <div class="account">¥{{item.price}}</div>
@@ -42,6 +43,7 @@
             this.techReckList = res.data
             this.techReckList.map((item,index)=>{
               this.$set(item,'num',1)
+              this.$set(item,'bol',false)
             })
             
           }else{
@@ -62,13 +64,6 @@
           return false;
         }
         this.$set(this.techReckList[index],'num',num)
-      }
-    },
-    watch:{
-    'sevQty': function(newVal,oldVal){
-        if(newVal <= 0){
-          this.sevQty = 1
-        }
       }
     }
   }
@@ -99,12 +94,23 @@
       background-size: .5rem .5rem
       background-position: .2rem
     .item-wrapper
-      margin-top: 1.4rem  
+      margin-top: 1.4rem 
+      .is_selected
+        background: #ffe6c1!important
+        color: #fff 
+        .account
+          color: #fa9e15!important
+        .countBtn-wrapper
+          color: #fa9e15!important
+          .count-input
+            color: #fa9e15!important
+      .border-bottom-1px::after
+        background: #ffffff    
       .item
         font-size: .28rem
         line-height: .6rem
         position: relative
-        padding: 0 0.2rem
+        padding: 0 0.2rem  
         .name
           font-size: .32rem
         .account
