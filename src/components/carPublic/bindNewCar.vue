@@ -134,7 +134,7 @@ export default {
   name: 'App',
   props:{
     'routeCarId': {type: String},
-    'carno':{type:String}
+    'hasCarno':{type:String}
   },
   data(){
     return {
@@ -179,6 +179,7 @@ export default {
   },
   created:function(){
       let gainCarData = {};
+      this.carno = this.hasCarno
       gainCarData.carNo = this.carno;
       gainCarData.vin = this.carVin;
       gainCarData.modelid = this.selectedBrand;

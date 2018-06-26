@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="customWrap">
-      <bindNewCar v-on:gainCarMsg="gainNewCarMsg" :carno="this.carno"></bindNewCar>
+      <bindNewCar v-on:gainCarMsg="gainNewCarMsg" :hasCarno="this.carno"></bindNewCar>
       <div class="customerMsg">
         <p class="border-bottom-1px">客户信息</p>
         <ul class="fieldWrap">
