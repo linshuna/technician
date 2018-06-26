@@ -44,7 +44,8 @@
       }
     },
     components:{
-      'car-key-code':carKeyCode
+      'car-key-code':carKeyCode,
+      'no-data-tip': noDataTip
     },
     methods: {
       
@@ -80,9 +81,6 @@
     },
     mounted() {
       this.searchData();
-    },
-    components:{
-      'no-data-tip': noDataTip
     }
   }  
 </script>
