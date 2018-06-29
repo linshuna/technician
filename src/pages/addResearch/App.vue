@@ -18,7 +18,7 @@
 
 <script>
   import carKeyCode from "components/carKeyCode"
-  import { Toast} from 'mint-ui';
+  import { Toast} from 'mint-ui'
   import Vue from 'vue'
   import vueAxiosPlugin from "modules/js/axiosPrototype.js"
   Vue.use(vueAxiosPlugin)
@@ -82,7 +82,7 @@
     },
     components:{
       'car-key-code':carKeyCode,
-    },
+    }
   }
 </script>
 
