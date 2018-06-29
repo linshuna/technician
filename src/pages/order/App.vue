@@ -1,12 +1,19 @@
 <template>
   <div id="app">
       <mt-navbar v-model="selected">
+<<<<<<< Updated upstream
         <mt-tab-item id="1">待到店</mt-tab-item>
         <mt-tab-item id="2">已到店</mt-tab-item>
         <mt-tab-item id="3">已取消</mt-tab-item>
         <mt-tab-item id="4" class="search">
           <img src="../../modules/images/searchIcon.png" class="search-icon" @click="searchCarOrder"></img>
         </mt-tab-item>
+=======
+        <mt-tab-item id="1">已确认</mt-tab-item>
+        <mt-tab-item id="2">已到店</mt-tab-item>
+        <mt-tab-item id="3">已取消</mt-tab-item>
+        <img src="../../modules/images/searchIcon.png" class="search"></img>
+>>>>>>> Stashed changes
       </mt-navbar>
 
       <!--<div class="selectTime">6月4日(星期一)</div>  -->
@@ -134,6 +141,7 @@
 
   #app
     font-family: PingFangSC-Regular
+<<<<<<< Updated upstream
     .mint-navbar
       .mint-tab-item
         padding: 0
@@ -148,6 +156,13 @@
           padding-top: .2rem
           height: 0.6rem
           box-sizing: border-box
+=======
+    .search
+      width: .6rem
+      height: .6rem
+      padding-top: .16rem
+      padding-right: .2rem
+>>>>>>> Stashed changes
     .selectTime
       height: 1rem
       line-height: 1rem

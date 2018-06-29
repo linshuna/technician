@@ -104,7 +104,6 @@ export default {
   components:{bindNewCar},
   methods:{
     gainNewCarMsg(value){//获取传回来的车辆信息,是一个对象
-      console.log(value)
       this.newCarMsg = value
     },
     saveMsg:function(){
@@ -114,7 +113,6 @@ export default {
       this.$set(this.newCarMsg,'types',this.cusTypevalue)
       this.$set(this.newCarMsg,'sex',this.cusNameValue)
       this.$set(this.newCarMsg,'uname',this.cusName)
-      console.log(this.newCarMsg)
       this.$http.post('/api.php/TechOrder/addNewClient',this.newCarMsg)
         .then((response)=>{
           let res = response.data;
@@ -135,7 +133,7 @@ export default {
   created() {
     this.carno = decodeURIComponent(GetQueryString('carno')||'')
     this.carvid = GetQueryString('carvid')
-    let gainTecherData = JSON.parse(this.getStorage);
+    let gainTecherData = this.getStorage;
     if(gainTecherData){
       this.techvid = gainTecherData.vid;
     }

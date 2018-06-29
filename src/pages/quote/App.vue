@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <template> 
   <div class="quoteWrap">
     <!-- <div class="search-wrapper">
@@ -22,25 +23,53 @@
         <div class="noData" v-else>
           <no-data-tip :tipData="{typeTipe:0,titleTip:'快速报价',conTip:'暂无车牌列表'}"></no-data-tip>
         </div>  
+=======
+<template>
+  <div id="app">
+    <div class="search-wrapper">
+      <input class="search" type="text" placeholder="请输入车牌"/>
+      <div class="add-btn"></div>
+    </div>
+    <template v-if="getStorage">
+        <div v-if="customerList.length>0">
+          <div class="result">
+            <ul>
+              <li class="border-bottom-1px" @click="goQuote" v-for="(item,index) in customerList" :key="index">云A11111 <span class="fr name">周 会员</span></li>
+              <li class="border-bottom-1px">云A22222</li>
+            </ul>
+          </div>
+        </div>
+      <div class="noData" v-else>
+        <no-data-tip :tipData="{typeTipe:0,titleTip:'客户',conTip:'暂无客户'}"></no-data-tip>
+      </div>  
+>>>>>>> Stashed changes
     </template>
     <template v-else>
         <div class="loginMsg">
           <img :src="defaultIcon" alt="">
           <a :href="'login.html?returnUrl='+returnUrl">登录/注册</a>
         </div>
+<<<<<<< Updated upstream
     </template> 
+=======
+      </template>  
+>>>>>>> Stashed changes
   </div>
 </template>
 
 <script>
   import noDataTip from 'components/noDataTip';
+<<<<<<< Updated upstream
   import searchTemp from 'components/searchTemp'
   import {Toast} from "mint-ui"
+=======
+>>>>>>> Stashed changes
 
   export default {
     data() {
       return {
         techvid:null,
+<<<<<<< Updated upstream
         carList: [],
         defaultIcon: require("modules/images/isLoginIcon.png"),
         returnUrl: window.location.href,
@@ -82,7 +111,49 @@
         })
         
        
+=======
+        customerList: [],
+        defaultIcon: require("modules/images/isLoginIcon.png"),
+        returnUrl: window.location.href
       }
+    },
+    methods: {
+      goQuote() {
+        window.location.href='./pickupOrder.html#/quotation'
+      },
+      searchData(value){
+        let gainValue = value?value:'';
+        if(this.techvid){
+          this.$http.post('/api.php/TechSysClient/index',{techvid: this.techvid,search:gainValue})
+          .then((response)=>{
+            let res = response.data
+            if(res.errorCode == 200){
+              this.customerList = res.data
+            }else{
+              Toast(res.message)
+            }
+          })
+        }
+       
+      }
+    },
+    computed:{
+      getStorage(){
+        return this.$store.getters.getStorage;
+      }
+    },
+    created() {
+      let gainTecherData = JSON.parse(this.getStorage);
+      if(gainTecherData){
+        this.techvid = gainTecherData.vid;
+>>>>>>> Stashed changes
+      }
+    },
+    mounted() {
+      this.searchData();
+    },
+    components:{
+      'no-data-tip': noDataTip
     }
   }  
 </script>
@@ -111,12 +182,16 @@
         display: inline-block
         width: 2.5rem
       p
+<<<<<<< Updated upstream
         line-height: .45rem   
     .search-temp-wrap
       width:100%
       padding: .2rem
       box-sizing:border-box
       background: #ffffff  
+=======
+        line-height: .45rem     
+>>>>>>> Stashed changes
     .search-wrapper
       .search
         width: 94%
