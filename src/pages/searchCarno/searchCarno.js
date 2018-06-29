@@ -12,10 +12,10 @@ import 'modules/css/iconfont.css'
 
 Vue.use(getRem)
 
-import { Search } from 'mint-ui';
+import { Search } from 'mint-ui'
 
 
-Vue.component(Search.name, Search);
+Vue.component(Search.name, Search)
 
 
 Vue.config.productionTip = false

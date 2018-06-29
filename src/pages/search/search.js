@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import getRem from 'modules/js/getRem.js'
+import store from 'modules/vuexData/vuexStore.js'
 
 import 'modules/css/reset.styl'
 import 'modules/css/border-1px.css'
@@ -21,6 +22,7 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   template: '<App/>',
   components: { App }
 })

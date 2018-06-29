@@ -81,7 +81,7 @@
 <style lang="stylus" scoped>
   @import '~modules/css/variable.styl'
   #app >>>  .mint-tab-item-label
-    font-size: .32rem
+    font-size: .28rem
 
   #app
     font-family: PingFangSC-Regular

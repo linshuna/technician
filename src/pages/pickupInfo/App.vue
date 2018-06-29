@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view @getVal="getVal" @getType1Val="getType1Val"></router-view>
     <div class="pickup">
       <div class="title border-bottom-1px">接车事项</div>
       <div class="atStore border-bottom-1px">
         在店等
-        <mt-switch v-model="value"></mt-switch>
+        <mt-switch v-model="waitSwitch"></mt-switch>
       </div>
       <div class="odometer-wrapper">
         <div class="title">进店里程</div>
-        <input class="odometer" type="number" />
+        <input class="odometer" type="number" v-model="distance"/>
         <div class="pre-odometer">上次里程:<span>无</span></div>
       </div>
       <div class="oil-wrapper">
@@ -26,7 +26,7 @@
       </div>
       <div class="owner-remark">
         车主嘱咐
-        <textarea class="remark" placeholder="请输入车主嘱咐"></textarea>
+        <textarea class="remark" placeholder="请输入车主嘱咐" v-model="remark"></textarea>
       </div>
     </div>
 
@@ -41,25 +41,34 @@
     </mt-popup>
 
     <div class="btn-wrapper">
-      <div class="btn btn-l border-right-1px">
-        <p>完成接待并快速报价</p>
-        <p>添加服务</p>
-      </div>
-      <div class="btn receive">接待</div>
+      <div class="btn receive" @click="handleReceive">接待</div>
     </div>
   </div>
 </template>
 
 <script>
   import {format} from 'modules/js/date.js'
+  import {GetQueryString} from 'modules/js/config.js'
+  import { Toast } from 'mint-ui'
+  import Vue from 'vue'
+  import vueAxiosPlugin from "modules/js/axiosPrototype.js"
+  Vue.use(vueAxiosPlugin)
+
   export default {
     name: 'App',
     data () {
       return {
-        value: '',
+        carvid: '',
+        clientvid: '',
+        techvid: null,
+        waitSwitch: true,
+        distance: '',
         deliveryTime:'',
         oil: '',
+        remark: '',
         popupVisible: false,
+        type_2_Val: {},
+        type_1_Val: {},
         slots: [
           {
             values: ['1/2','1/3','1/4','满']
@@ -68,17 +77,19 @@
       }
     },
     computed: {
-
-    },
-    created() {
-
+      wait() {
+        return this.waitSwitch === true?'1':'0'
+      },
+      getStorage(){
+        return this.$store.getters.getStorage;
+      }
     },
     methods: {
       openTimePicker() {
         this.$refs.pickerDelivery.open();
       },
       handleConfirm(value) {
-        console.log(format(value.toString(),"yyyy-MM-dd hh:mm"))
+        console.log(format(value.toString(),"yyyy-MM-dd HH:mm"))
         this.deliveryTime = format(value.toString(),"yyyy-MM-dd HH:mm");
       },
       openOilPicker() {
@@ -91,10 +102,137 @@
         this.popupVisible = false;
         this.oil = this.$refs.oil.getValues().toString();
       },
-      onValuesChange() {}
+      onValuesChange() {},
+      getVal(obj) {
+        this.type_2_Val = obj
+        console.log(obj)
+      },
+      getType1Val(obj) {
+        this.type_1_Val = obj
+      },
+      handleReceive() {
+        console.log(this.$route.path)
+
+        if(!this.distance){
+          Toast({
+              message: '请输入进店里程',
+              position: 'bottom',
+              duration: 2000
+            })
+            return
+        }
+        if(!this.oil){
+          Toast({
+              message: '请输入进店油表',
+              position: 'bottom',
+              duration: 2000
+            })
+            return
+        }
+        if(!this.deliveryTime){
+          Toast({
+              message: '请输入预计交车时间',
+              position: 'bottom',
+              duration: 2000
+            })
+            return
+        }
+
+
+        if(this.$route.path==='/type3'){
+          this.$http.post(`/api.php/TechMeet/users`,{wait: this.wait,distance:this.distance,gettime:this.deliveryTime,oil: this.oil,remark: this.remark,techvid:this.techvid,carvid:this.carvid,clientvid:this.clientvid})
+          .then((response)=>{
+            let res = response.data
+            if(res.errorCode == 200){
+              let instance = Toast(res.message)
+                setTimeout(() => {
+                  instance.close()
+                }, 2000)
+            }else{
+              Toast(res.message)
+            }
+          })
+        }else if(this.$route.path==='/type2'){
+          if(!type_2_Val.username){
+             Toast({
+              message: '请输入客户名字',
+              position: 'bottom',
+              duration: 2000
+            })
+            return
+          }
+          if(!type_2_Val.phone){
+             Toast({
+              message: '请输入客户电话',
+              position: 'bottom',
+              duration: 2000
+            })
+            return
+          }
+
+          this.$http.post(`/api.php/TechMeet/noUsers`,
+           Object.assign({wait: this.wait,distance:this.distance,gettime:this.deliveryTime,oil: this.oil,remark: this.remark,techvid:this.techvid,carvid:this.carvid},this.type_2_Val))
+          .then((response)=>{
+            let res = response.data
+            if(res.errorCode == 200){
+              let instance = Toast(res.message)
+                setTimeout(() => {
+                  instance.close()
+                }, 2000)
+            }else{
+              Toast(res.message)
+            }
+          })
+        }else if(this.$route.path==='/type1'){
+          if(!this.type_1_Val.carNo){
+            Toast({
+              message: '请输入车牌',
+              position: 'bottom',
+              duration: 2000
+            })
+            return
+          }
+          if(!type_1_Val.username){
+             Toast({
+              message: '请输入客户名字',
+              position: 'bottom',
+              duration: 2000
+            })
+            return
+          }
+          if(!type_1_Val.phone){
+             Toast({
+              message: '请输入客户电话',
+              position: 'bottom',
+              duration: 2000
+            })
+            return
+          }
+
+
+          this.$http.post(`/api.php/TechMeet/addCars`,
+          Object.assign({wait: this.wait,distance:this.distance,gettime:this.deliveryTime,oil: this.oil,remark: this.remark,techvid:this.techvid},this.type_1_Val))
+            .then((response)=>{
+            let res = response.data
+            if(res.errorCode == 200){
+              let instance = Toast(res.message)
+                setTimeout(() => {
+                  instance.close()
+                }, 2000)
+            }else{
+              Toast(res.message)
+            }
+            })
+        }
+      }
     },
-    components: {
-      
+    created() {
+      this.carvid = GetQueryString('carvid')
+      this.clientvid = GetQueryString('clientvid')
+      let gainTecherData = JSON.parse(this.getStorage);
+      if(gainTecherData){
+        this.techvid = gainTecherData.vid;
+      }
     }
   }
 </script>
@@ -155,11 +293,12 @@
       .oil
         display: inline-block
         width: 4rem
-        height: .4rem
+        line-height: .4rem
         padding: .1rem .2rem
         margin: .1rem 0 .1rem .2rem
         border: 1px solid #d9d9d9
         border-radius: 4px
+        font-size: .28rem
     .expect-delivery
       overflow: hidden
       .title
@@ -168,10 +307,12 @@
         display: inline-block
         width: 4rem
         height: .4rem
+        line-height: .4rem
         padding: .1rem .2rem
         margin: .1rem 0 .1rem .2rem
         border: 1px solid #d9d9d9
         border-radius: 4px
+        font-size: .28rem
     .owner-remark
       .remark
         width: 4rem
@@ -193,7 +334,8 @@
       background: $color-main
       .btn
         float: left
-        width: 50%
+        //width: 50%
+        width: 100%
         text-align: center
         color: #fff
       .btn-l

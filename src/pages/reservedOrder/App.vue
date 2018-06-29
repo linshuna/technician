@@ -12,7 +12,7 @@
       <div class="text">无数据</div>
     </div>
     <div class="order-wrapper" v-if="orderData.length">
-      <div class="item" v-for="item in orderData" @click="goOrderDetail">
+      <div class="item" v-for="item in orderData" @click="goOrderDetail(item.orderNo,item.vid)">
         <div class="type" v-html="item.status==0?'待到店':'已到店'">已确认(<span>1</span>)</div>
         <div class="carInfo">
           <div class="time">{{item.orderDay}}</div>
@@ -26,7 +26,7 @@
           <div class="itemName">{{item.project}}</div>
           <div class="btn-wrapper">
             <div class="pickup btn" v-if="item.status==1">立即接车</div>
-            <div class="cancelR btn">取消预约</div>
+            <div class="cancelR btn" @click.stop="handleCancle(item.vid)">取消预约</div>
           </div>
         </div>
       </div>
@@ -47,32 +47,7 @@
       return {
         noDataImg: require('modules/images/noData-order.png'),
         selectedDate: '',
-        orderData: [
-          {
-            type: 0,
-            time: '17:00',
-            carno: '粤A6666',
-            itemName: '美容',
-            name: '烟火',
-            carImg: require('modules/images/carImg.png')
-          },
-           {
-            type: 0,
-            time: '17:00',
-            carno: '粤A6666',
-            itemName: '美容',
-            name: '烟火222',
-            carImg: require('modules/images/carImg.png')
-          },
-           {
-            type: 0,
-            time: '17:00',
-            carno: '粤A6666',
-            itemName: '美容',
-            name: '烟火333',
-            carImg: require('modules/images/carImg.png')
-          }
-        ]
+        orderData: []
       }
     },
     computed: {
@@ -99,29 +74,31 @@
       goOrder() {
         window.location.href = 'order.html'
       },
-      goOrderDetail() {
-        window.location.href = 'reservedOrderDetail.html'
+      goOrderDetail(orderNo,vid) {
+        window.location.href = 'reservedOrderDetail.html?orderNo='+orderNo+'&vid='+vid
       },
       addReseve() {
         window.location.href = 'addResearch.html'
+      },
+      handleCancle(vid) {
+        window.location.href = 'reason.html?vid='+vid
       }
     },
     watch: {
-      selectedDate(newVal,oldVal) {
-        console.log('new'+newVal,'  old'+oldVal)
-        if(newVal){
-          this.$http.post('/api.php/TechOrder/index',{orderDate: this.selectedDate})
-          .then((response)=>{
-            let res = response.data
-            if(res.errorCode == 200){
-              console.log(res.data);
-              this.orderData = res.data   //0未到店1已到店
-            }else{
-              Toast(res.message)
-            }
-          })
-        }
+      'selectedDate'(newVal,oldVal) {
+      if(newVal){
+        this.$http.post('/api.php/TechOrder/index',{orderDate: this.selectedDate})
+        .then((response)=>{
+          let res = response.data
+          if(res.errorCode == 200){
+            console.log(res.data)
+            this.orderData = res.data   //0未到店1已到店
+          }else{
+            Toast(res.message)
+          }
+        })
       }
+    }
     },
     components: {
       Calendar

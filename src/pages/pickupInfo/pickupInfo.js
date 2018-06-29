@@ -4,6 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import getRem from 'modules/js/getRem.js'
 import router from './router'
+import store from 'modules/vuexData/vuexStore.js'
+import vueAxiosPlugin from "modules/js/axiosPrototype.js"
+Vue.use(vueAxiosPlugin)
 
 import 'modules/css/reset.styl'
 import 'modules/css/border-1px.css'
@@ -25,6 +28,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

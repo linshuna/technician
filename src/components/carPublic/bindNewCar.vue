@@ -134,7 +134,10 @@ export default {
   name: 'App',
   props:{
     'routeCarId': {type: String},
-    'hasCarno':{type:String}
+    'hasCarno':{
+      type: String,
+      default: ''
+    }
   },
   data(){
     return {

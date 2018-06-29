@@ -3,18 +3,18 @@
     <div class="carInfo-wrapper border-bottom-1px">
       <img class="carImg" :src="carImg"/>
       <div class="carInfo">
-        <div class="carno">粤A68688</div>
-        <div class="brand">丰田</div>
+        <div class="carno">{{this.carno}}</div>
+        <div class="brand">{{this.carplate}}</div>
       </div>
     </div>
     <div class="name-wrapper">
       <div class="title">客户名称</div>
-      <input class="name" type="text" placeholder="请输入名称"/>
+      <input class="name" type="text" placeholder="请输入名称" v-model="name"/>
       <mt-radio v-model="cusNameValue" :options="cusNameOptions"></mt-radio>
     </div>
     <div class="link-phone">
       <div class="title">手机号</div>
-      <input class="phone" type="number" placeholder="请输入手机号码"/>
+      <input class="phone" type="number" placeholder="请输入手机号码" v-model="phone"/>
     </div>
     <div class="chooseCus">
       选择客户<span class="iconfont">&#xe66b;</span>
@@ -23,15 +23,23 @@
   </div>
 </template>
 <script>
-  import Vue from 'vue';
-
+  import {GetQueryString} from 'modules/js/config.js'
+  import { Toast } from 'mint-ui'
+  import Vue from 'vue'
+  import vueAxiosPlugin from "modules/js/axiosPrototype.js"
+  Vue.use(vueAxiosPlugin)
 
   export default {
     data() {
       return {
+        carvid: '',
+        carno: '',
+        carplate: '',
         carImg: require('modules/images/carImg.png'),
-        cusName:'',
-        cusNameValue: '',
+        name:'',
+        phone:'',
+        cusNameValue: '1',
+        emitObj: {},
         cusNameOptions:[
           {
             label:'先生',
@@ -44,8 +52,38 @@
         ]
       }
     },
-    components: {
-      
+    watch: {
+      name(newVal) {
+        this.emitObj['username'] = newVal
+        this.$emit('getVal',this.emitObj)
+      },
+      cusNameValue(newVal) {
+        this.emitObj['sex'] = newVal
+        this.$emit('getVal',this.emitObj)
+      },
+      phone(newVal) {
+        this.emitObj['phone'] = newVal
+        this.$emit('getVal',this.emitObj)
+      }
+    },
+    mounted() {
+      this.carvid = GetQueryString('carvid')
+      this.emitObj.username = this.name
+      this.emitObj.sex = this.cusNameValue
+      this.emitObj.phone = this.phone
+
+      this.$http.get(`/api.php/TechMeet/noUsers?carvid=${this.carvid}`)
+        .then((response)=>{
+          let res = response.data
+          if(res.errorCode == 200){
+            let data = res.data
+            this.carno = data.car.carNo
+            this.carImg = data.car.icon
+            this.carplate = data.car.carplate
+          }else{
+            Toast(res.message)
+          }
+        })
     }
   }
 </script>

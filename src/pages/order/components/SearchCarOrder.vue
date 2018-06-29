@@ -2,7 +2,7 @@
   <div class="search-wrapper">
     <div class="search">
       <img :src="searchIcon" alt="">
-      <input type="text" v-model="carno" placeholder="搜索车牌" @click.prevent="showCarKeyCode" />
+      <input type="text" v-model="carno" placeholder="搜索车牌" @click.prevent="showCarKeyCode" readonly/>
     </div>
 
     <mt-navbar v-model="selected">

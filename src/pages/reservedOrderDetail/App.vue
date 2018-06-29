@@ -1,30 +1,30 @@
 <template>
   <div id="app">
     <div class="type-wrapper border-bottom-1px">
-      <div class="time">距离到店时间3时22分</div>
-      <div class="order-type">已确认</div>
+      <div class="time" v-if="this.data.status==0 && this.diff>0">距离到店时间{{this.countDowmTime}}</div>
+      <div class="order-type">{{this.data.status==0?'待到店':'已到店'}}</div>
     </div>
     <div class="carInfo-wrapper border-bottom-1px">
-      <div class="carno">粤A686868</div>
-      <div class="brand">奔驰</div>
-      <div class="records-num">已到店1次</div>
+      <div class="carno">{{this.data.carNo}}</div>
+      <div class="brand">{{this.data.carplate}}</div>
+      <div class="records-num">已到店{{this.data.num}}次</div>
     </div>
-    <div class="name border-bottom-1px">周柏豪</div>
+    <div class="name border-bottom-1px">{{this.data.uname}}</div>
     <div class="service-type border-bottom-1px">
       服务类型
-      <div class="type">洗车</div>
+      <div class="type">{{this.data.project}}</div>
     </div>
     <div class="reservedTime border-bottom-1px">
       预约到店时间
-      <div class="time">2018.08.08 14:50</div>
+      <div class="time">{{this.data.orderDay}}</div>
     </div>
     <div class="link-phone border-bottom-1px">
       联系电话
-      <a href="tel:1111" class="phone">1552108888</a>
+      <a href="tel:1111" class="phone">{{this.data.phone}}</a>
     </div>
     <div class="owner-remark border-bottom-1px">
       车主备注
-      <div></div>
+      <div class="owner">{{this.data.remark}}</div>
     </div>
     <div class="store-remark border-bottom-1px">
       车店备注
@@ -39,30 +39,52 @@
 </template>
 
 <script>
-  
+  import {GetQueryString,SecondToDate} from 'modules/js/config.js'
+  import axios from 'axios'
+  import Vue from 'vue'
+  import vueAxiosPlugin from "modules/js/axiosPrototype.js"
+  Vue.use(vueAxiosPlugin)
+  import { Toast } from 'mint-ui'
+
   export default {
     name: 'App',
     data () {
       return {
-        
+        orderNo: '',
+        vid: '',
+        data: {},
+        countDowmTime: '',
+        diff:''
       }
     },
-    computed: {
-      
-    },
-    created() {
-      
+    mounted() {
+      this.orderNo = GetQueryString('orderNo')
+      this.vid = GetQueryString('vid')
+      this.$http.post('/api.php/TechOrder/orderdetail',{orderNo: this.orderNo})
+        .then((response)=>{
+          let res = response.data
+          if(res.errorCode == 200){
+            this.data = res.data.detail
+            this.data.num = res.data.num
+            let date  = new Date()
+            date = Date.parse(date)/1000
+            this.diff = Number(this.data.orderDate)-Number(date)
+            if(this.diff<0){
+              return
+            }
+            this.countDowmTime = SecondToDate(this.diff)
+          }else{
+            Toast(res.message)
+          }
+        })
     },
     methods: {
       cancelReseved() {
-        window.location.href='reason.html'
+        window.location.href='reason.html?vid='+this.vid
       },
       editReseved() {
-        window.location.href='editReservedOrder.html'
+        window.location.href='editReservedOrder.html?orderNo='+this.orderNo
       }
-    },
-    components: {
-      
     }
   }
 </script>
@@ -113,6 +135,9 @@
       .phone
         color: #55b7ff
         float: right
+    .owner-remark
+      .owner
+        color: #a7a7a7      
     .btn-wrapper
       position: fixed
       width: 100%

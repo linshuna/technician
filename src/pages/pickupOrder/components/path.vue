@@ -122,6 +122,9 @@
   </div>
 </template>
 <script>
+  import {GetQueryString} from 'modules/js/config.js'
+  import { Toast } from 'mint-ui'
+
   export default {
     data() {
       return {
@@ -153,7 +156,11 @@
             className:'nav-icon-carMsg',
             name:'车辆信息'
           }
-        ]
+        ],
+        carvid: '',
+        clientvid: '',
+        orderNo: '',
+        techvid: null
       }
     },
     methods: {
@@ -181,6 +188,22 @@
       handleNavClick(val) {
         this.$router.push('/'+val)
       }
+    },
+    computed:{
+      getStorage(){
+        return this.$store.getters.getStorage;
+      }
+    },
+    created() {
+      let gainTecherData = JSON.parse(this.getStorage);
+      if(gainTecherData){
+        this.techvid = gainTecherData.vid;
+      }
+
+      // this.carvid = GetQueryString('carvid')
+      // this.clientvid = GetQueryString('clientvid')
+      // this.orderNo = GetQueryString('orderNo')
+
     }
   }
 </script>
@@ -258,7 +281,7 @@
           padding-right: 0.15rem
           box-sizing: border-box
           position: absolute
-          left: -.8rem
+          left: -.7rem
           .searchTime
             display: inline-block
             width: 75%

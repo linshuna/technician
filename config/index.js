@@ -17,7 +17,14 @@ module.exports = {
         pathRewrite: {
               '^/': ''   //需要rewrite重写的,
         } 
-      }
+      },
+      '/test': {
+        target: 'http://mb.hhqccar.cn',//接口域名
+        changeOrigin: true,//是否跨域
+        pathRewrite: {
+          '^/test':''
+        } 
+      },
     },
 
     // Various Dev Server settings

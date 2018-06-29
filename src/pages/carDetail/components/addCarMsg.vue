@@ -119,9 +119,9 @@ export default {
         .then((response)=>{
           let res = response.data;
           if(res.errorCode == 200){
-            Toast('解绑成功')
+            Toast('新增客户成功')
           }else{
-            Toast(res.data.message)
+            Toast(res.message)
           }
         }) 
     }
@@ -133,7 +133,7 @@ export default {
     }
   },
   created() {
-    this.carno = decodeURIComponent(GetQueryString('carno'))
+    this.carno = decodeURIComponent(GetQueryString('carno')||'')
     this.carvid = GetQueryString('carvid')
     let gainTecherData = JSON.parse(this.getStorage);
     if(gainTecherData){

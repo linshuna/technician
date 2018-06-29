@@ -19,7 +19,7 @@
             <div class="text">暂无订单</div>
           </div>
           <div class="order-wrapper" v-if="orderHaveConfirmData.length>0">
-            <div class="item" v-for="item in orderHaveConfirmData" @click="goOrderDetail(item.orderNo)">
+            <div class="item" v-for="item in orderHaveConfirmData" @click="goOrderDetail(item.orderNo,item.vid)">
               <div class="carInfo">
                 <div class="time">
                   <div>{{item.orderDay}}</div>
@@ -105,8 +105,8 @@
       }
     },
     methods: {
-      goOrderDetail(id) {
-        window.location.href = 'editReservedOrder.html?orderId='+id
+      goOrderDetail(orderNo,vid) {
+        window.location.href = 'reservedOrderDetail.html?orderNo='+orderNo+'&vid='+vid
       },
       searchCarOrder() {
         this.$router.push('/search')

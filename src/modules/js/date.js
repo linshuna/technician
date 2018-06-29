@@ -1,7 +1,7 @@
 export function format(time, format){
     var t = new Date(time);
-    // var tf = function(i){return (i < 10 ? '0' : '') + i};
-    var tf = function(i){return i};
+    var tf = function(i){return (i < 10 ? '0' : '') + i};
+    //var tf = function(i){return i};
     return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function(a){
         switch(a){
             case 'yyyy':

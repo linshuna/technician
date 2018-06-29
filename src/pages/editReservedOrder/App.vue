@@ -9,6 +9,7 @@
     </div>
     <div class="item border-bottom-1px" @click="showPicker">预约到店日期
       <span class="iconfont icon-right">&#xe66b;</span>
+      <span class="fr">{{this.date}}</span>
     </div>
     <div class="item border-bottom-1px" @click="showTimeModal">预约到店时间
       <span class="iconfont icon-right">&#xe66b;</span>
@@ -71,6 +72,7 @@ export default {
   name: 'App',
   data() {
     return {
+      orderNo: '',
       type: '',
       carno: '',
       carvid: '',
@@ -167,7 +169,7 @@ export default {
       if(this.type==='add'){
         return
       }
-      this.popupVisibleName = true
+      this.popupVisibleName = false
     },
     selectItem(item) {
       this.project.push({id:item.id,name:item.name})
@@ -239,8 +241,8 @@ export default {
         })
         return
       }
-      if(this.selectTimeIndex) {}
-      this.$http.post('/api.php/TechOrder/orderNew',{lists: JSON.stringify(this.submitData.lists)})
+      if(this.type==='add'){
+        this.$http.post('/api.php/TechOrder/orderNew',{lists: JSON.stringify(this.submitData.lists)})
         .then((response)=>{
           let res = response.data
           if(res.errorCode == 200){
@@ -252,6 +254,21 @@ export default {
             Toast(res.message)
           }
         })
+      }else{
+        let list = Object.assign(this.submitData.lists,{orderNo:this.orderNo})
+        this.$http.post('/api.php/TechOrder/orderedit',{lists: JSON.stringify(list)})
+        .then((response)=>{
+          let res = response.data
+          if(res.errorCode == 200){
+            Toast({
+              message: '编辑成功',
+              iconClass: 'icon icon-success'
+            })
+          }else{
+            Toast(res.message)
+          }
+        })
+      }
     }
   },
   computed:{
@@ -276,12 +293,6 @@ export default {
     },
   },
   created: function(){
-    let gainTecherData = JSON.parse(this.getStorage);
-    if(gainTecherData){
-      this.techvid = gainTecherData.vid;
-    }
-  },
-  mounted() {
     this.type = GetQueryString('type');
     if(this.type==='add'){
       this.name = decodeURIComponent(GetQueryString('name'))
@@ -304,6 +315,49 @@ export default {
         Toast(res.message)
       }
     })
+
+    let gainTecherData = JSON.parse(this.getStorage)
+    this.orderNo = GetQueryString('orderNo')
+    
+    if(gainTecherData){
+      this.techvid = gainTecherData.vid;
+    }
+  },
+  mounted() {
+    if(this.type!=='add'){
+    this.$http.post('/api.php/TechOrder/orderdetail',{orderNo: this.orderNo})
+    .then((response)=>{
+      let res = response.data
+      if(res.errorCode == 200){
+        this.name = res.data.detail.uname
+        this.carno = res.data.detail.carNo
+        this.carvid = res.data.detail.carvid
+        this.clientvid = res.data.detail.clientvid
+        this.phone = res.data.detail.phone
+        this.remark = res.data.detail.remark
+        this.date = res.data.detail.orderDay.split(' ')[0]
+        this.time = res.data.detail.orderDay.split(' ')[1]
+        this.timeData.forEach((item,index)=>{
+          if(item.time === this.time){
+            this.selectTimeIndex = index
+          }
+        })
+        let service = res.data.service
+        service.forEach((item)=>{
+          console.log(item)
+          this.typeData.forEach((value)=>{
+            console.log(value)
+            if(item.id===value.id){
+              value.active = true
+              this.project.push({id:item.id,name:item.name})
+            }
+          })
+        })
+      }else{
+        Toast(res.message)
+      }
+    })
+    }
   }
 }
 </script>
@@ -338,7 +392,7 @@ export default {
         margin-right: .2rem
     .remark-wrapper
       .remark
-        margin: 0 .4rem
+        margin-left: .4rem
         width: 90%
         height: 1.5rem
         border: 1px solid #f4f4f4

@@ -6,7 +6,7 @@
     </div>
     <div class="vin-wrapper">
       <div class="title">车架号</div>
-      <input class="vin" placeholder="请输入17位数车架号"/>
+      <input class="vin" placeholder="请输入17位数车架号" v-model="vin"/>
     </div>
     <div class="brand-wrapper">
       <div class="title">车型</div>
@@ -19,7 +19,7 @@
     </div>
     <div class="link-phone">
       <div class="title">手机号</div>
-      <input class="phone" type="number" placeholder="请输入手机号码"/>
+      <input class="phone" type="number" placeholder="请输入手机号码" v-model="phone"/>
     </div>
     <div class="chooseCus">
       选择系统客户<span class="iconfont">&#xe66b;</span>
@@ -41,12 +41,16 @@
     data() {
       return {
         carno: '',
+        vin: '',
+        modelid: '1',
         isShow: false,
         tip: '',
         cusName:'',
+        phone: '',
         cusNameValue: '1',
         popBrand: false,
         selectedBrand: '奥迪',
+        type_1_val: {},
         cusNameOptions:[
           {
             label:'先生',
@@ -84,6 +88,40 @@
     components:{
       carKeyCode,
       Brand
+    },
+    watch: {
+      carno(newVal) {
+        this.type_1_val.carNo = newVal
+        this.$emit('getType1Val',this.type_1_val)
+      },
+      vin(newVal) {
+        this.type_1_val.vin = newVal
+        this.$emit('getType1Val',this.type_1_val)
+      },
+      modelid(newVal) {
+        this.type_1_val.modelid = newVal
+        this.$emit('getType1Val',this.type_1_val)
+      },
+      cusName(newVal) {
+        this.type_1_val.username = newVal
+        this.$emit('getType1Val',this.type_1_val)
+      },
+      cusNameValue(newVal) {
+        this.type_1_val.sex = newVal
+        this.$emit('getType1Val',this.type_1_val)
+      },
+      phone(newVal) {
+        this.type_1_val.phone = newVal
+        this.$emit('getType1Val',this.type_1_val)
+      }
+    },
+    mounted() {
+      this.type_1_val['carNo'] = this.carno 
+      this.type_1_val['vin'] = this.vin  
+      this.type_1_val['modelid'] = this.modelid
+      this.type_1_val['username'] = this.cusName
+      this.type_1_val['sex'] = this.cusNameValue
+      this.type_1_val['phone'] = this.phone
     }
   }
 </script>

@@ -3,15 +3,15 @@
 		<div class="setMar" style="margin:0">
 			<div class="" style="display: inline-block;border: 8px solid rgb(238, 238, 238);border-radius: 20px;width: 50%;padding: .4rem 0;margin: 1rem 0;">
 				<div class="uploadDiv">
-					<form id="uploadCarnoForm" class="setInputWidth">
+					<form id="uploadCarnoForm" class="setInputWidth" ref="form">
 						<span class="setSaomaImg">
 							<img :src="imgOpt_first">
 						</span>
-						<input type="file" name="file" accept="image/*" id="carnoPic">
+						<input type="file" name="file" accept="image/*" id="carnoPic" @change="picChange" ref="carPicInput">
 					</form>
 					
 				</div>
-				<p class="setFontPadding">拍照</p>
+				<p class="setFontPadding">立即识别(车牌)</p>
 			</div>
 			
 			<div class="logoWrap" style="border: 8px solid rgb(238, 238, 238);border-radius: 20px;width: 50%;padding: .4rem 0;margin: 0 auto;" @click="manualImport">
@@ -24,17 +24,52 @@
 	</div>
 </template>
 <script>
+  import axios from 'axios'
+  import { Toast } from 'mint-ui'
 
   export default {
     data() {
       return {
         imgOpt_first: require('../modules/images/saoma.png'),
-        imgOpt_sec: require('../modules/images/entryWrite.png')
+        imgOpt_sec: require('../modules/images/entryWrite.png'),
+        uploadPic:''
       }
     },
     methods: {
       manualImport() {
         window.location.href='search.html'
+      },
+      picChange() {
+        if(this.$refs.carPicInput.files.length!==0){
+          var formData = new FormData(this.$refs.form)
+          console.log(formData)
+
+          let config = { 
+            headers:{'Content-Type':'multipart/form-data'} 
+          };
+          axios.post('/api.php/TechMeet/uploadCarno',formData,config)
+          .then((response)=>{
+            let res = response.data
+            if(res.errorCode == 200){
+              this.uploadPic = res.data.pic
+              this.getLicensePlate(this.uploadPic)
+            }else{
+              Toast(res.message)
+            }
+          })
+        }
+      },
+      getLicensePlate(pic) {
+        this.$http.post('/api.php/apiOcr/getlicensePlate',{'pic':pic,'sign':'24cSGM7151LA'})
+          .then((response)=>{
+            let res = response.data
+            if(res.errorCode == 200){
+              console.log(res.data.number)
+              window.location.href='search.html?carno='+res.data.number
+            }else{
+              Toast(res.message)
+            }
+          })
       }
     }
   }
