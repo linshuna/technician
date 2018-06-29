@@ -71,10 +71,6 @@ export default {
   mounted: function(){
     // 添加返回事件监听
     // this.$store.dispatch('wxpopstate',this)
-
-    this.$nextTick(function(){
-      document.title = '优惠券'
-    })
   },
   methods:{
 

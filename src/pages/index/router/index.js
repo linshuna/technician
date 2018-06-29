@@ -25,20 +25,20 @@ export default new Router({
       component: Home,
       redirect: '/index',
       children: [
-        { path: '/index', component: Index, name: '工作台' },
-        { path: '/customer', component: Customer, name: '客户' },
-        { path: '/pickupCar', component: PickupCar, name: '接车' },
-        { path: '/order', component: Order, name: '订单' },
+        { path: '/index', component: Index, name: '工作台',meta:{title:'工作台'} },
+        { path: '/customer', component: Customer, name: '客户',meta:{title:'客户'} },
+        { path: '/pickupCar', component: PickupCar, name: '接车',meta:{title:'接车'} },
+        { path: '/order', component: Order, name: '订单',meta:{title:'订单'} },
         { path: '/user', 
           component: User, 
           name: '我的',
-          meta:{index:0},
+          meta:{title:'我的'},
           children:[
-            { path:'/user/selfCenter',component: SelfCenter,name: 'selfCenter',meta:{index:1} },
-            { path:'/user/setting',component: Setting,name: 'setting',meta:{index:2} },
-            { path:'/user/guide',component: Guide,name: 'Guide',meta:{index:3} },
-            { path:'/user/coupon',component: Coupon,name: 'Coupon',meta:{index:4} },
-            { path:'/user/wallet',component: Wallet,name: 'Wallet',meta:{index:5} },
+            { path:'/user/selfCenter',component: SelfCenter,name: 'selfCenter',meta:{title:'个人中心'} },
+            { path:'/user/setting',component: Setting,name: 'setting',meta:{title:'设置'} },
+            { path:'/user/guide',component: Guide,name: 'Guide',meta:{title:'帮助中心'} },
+            { path:'/user/coupon',component: Coupon,name: 'Coupon',meta:{title:'优惠券'} },
+            { path:'/user/wallet',component: Wallet,name: 'Wallet',meta:{title:'我的钱包'} },
             
           ]
         }

@@ -7,12 +7,15 @@
           <a :href="'login.html?returnUrl='+returnUrl">登录/注册</a>
         </div>
         <div class="loginMsg" v-else>
-          <img :src="techerData.headimg" alt="">
-          <div class="showUserName">
-            <p>{{techerData.nickname}}</p>
-            <p>{{techerData.phone}}</p>
-          </div>
-          
+          <form action="" ref="changeAvatarForm">
+            <!-- techerData.headimg -->
+            <img :src="avatar" alt="" @click="setAvatar">
+            <input type="file" name="avatar" accept="image/*" style="display:none"  @change="changeImage($event)" ref="avatarInput">
+            <div class="showUserName">
+              <p>{{techerData.nickname}}</p>
+              <p>{{techerData.phone}}</p>
+            </div>  
+          </form>
         </div>
       </div>
       <div class="userDetailMsgWrap">
@@ -140,7 +143,8 @@ import {Toast} from "mint-ui"
         isLogin: false,
         techerData: null,
         returnUrl: window.location.href,
-        isLink: false
+        isLink: false,
+        avatar: null//用户的头像
       }
     },
     created: function(){
@@ -151,13 +155,15 @@ import {Toast} from "mint-ui"
       window.addEventListener("popstate", function(e) {// 添加返回事件监听
           _this.isLink = false;
       },false)
+      
       this.$nextTick(function(){
         document.title = '我的';
         if(this.getStorage){
-          let gainTecherData = JSON.parse(this.getStorage);
+          let gainTecherData = this.getStorage;
           if(gainTecherData){
             this.isLogin = true;
             this.techerData = gainTecherData;//获取登录的数据
+            this.avatar = gainTecherData.headimg;//获取登录的头像
           }  
         }
 
@@ -173,7 +179,23 @@ import {Toast} from "mint-ui"
       getIsLink(bol){
         this.isLink = bol
       },
-      gainTag(){
+      setAvatar(){
+        this.$refs.avatarInput.click()
+      },
+      changeImage(e){
+        var file = e.target.files[0]
+        var reader = new FileReader()
+        var that = this;
+        reader.readAsDataURL(file)
+        reader.onload = function(e) {
+          that.avatar = this.result;//改变头像
+        }
+        if(this.$refs.avatarInput.files.length != 0){
+          var changeAvatarForm = this.$refs.changeAvatarForm;//获取form对象
+          var image = new FormData(changeAvatarForm);
+          image.append('avatar',this.$refs.avatarInput.files[0])
+          //对接修改头像接口
+        }
 
       },
       isWaitingTip(url){//路由提示
@@ -181,23 +203,10 @@ import {Toast} from "mint-ui"
         let toastObj = document.getElementsByClassName("mint-toast");
         let toastLen = toastObj.length;
         if(!url){
-          if(toastLen>0){
-            //len=toastObj.length-1，不然会出现一闪一闪的问题（要留下最后一个mint-toast）
-            for(var i=0,len=toastObj.length-1;i < len;i++){
-              if(toastObj[i]){
-                bodyObj.removeChild(toastObj[i])
-              }
-            }
-          }else{
-            Toast("正在开发中，敬请期待。。。")
-          }
-          
+          this.$store.dispatch("delToast")
+          Toast("正在开发中，敬请期待。。。")
         }else{
-            for(var i=0,len=toastObj.length;i < len;i++){
-              if(toastObj[i]){
-                bodyObj.removeChild(toastObj[i])
-              }
-            }
+            this.$store.dispatch("delToast")
         }
       },
       jumpCom: function(){
@@ -216,35 +225,6 @@ import {Toast} from "mint-ui"
     overflow: hidden 
   .orangeColor
     color: #FA9E15  
-  // .slide-right-enter-active,
-  // .slide-right-leave-active,
-  // .slide-left-enter-active,
-  // .slide-left-leave-active{
-  //   will-change: transform;
-  //   transition: all 250ms;
-  //   height: 100%;
-  //   backface-visibility: hidden;
-  //   perspective: 1000;
-  //   position: absolute;
-  //   top:0;
-  // }
-  // .slide-right-enter {
-  //   opacity: 0;
-  //   transform: translate3d(-100%, 0, 0);
-  // }
-  // .slide-right-leave-active {
-  //   opacity: 0;
-  //   transform: translate(100%, 0, 0);
-  // }
-  // .slide-left-enter {
-  //   opacity: 0;
-  //   transform: translate3d(100%, 0, 0);
-  // }
-  // .slide-left-leave-active {
-  //   opacity: 0;
-  //   transform: translate(-100%, 0, 0);
-  // }
-
   .slide-fade{
     position: absolute;
     width:100%;
@@ -307,6 +287,7 @@ import {Toast} from "mint-ui"
       text-align: left 
       .loginMsg
         width: 100%
+        position: relative
         img
           vertical-align: middle
           display: inline-block
@@ -317,7 +298,14 @@ import {Toast} from "mint-ui"
           display: inline-block
           color: #ffffff
           padding-left: .2rem
-          font-size: .36rem    
+          font-size: .36rem   
+        input[type="file"]
+          position: absolute
+          left: 0
+          width: 1.5rem
+          height: 1.5rem
+          top: 50%
+          transform: translate(0,-50%)   
         .showUserName
           display: inline-block  
           vertical-align: middle
@@ -337,6 +325,8 @@ import {Toast} from "mint-ui"
         background: #ffffff  
         margin-bottom: .2rem
       .userOrderDetail
+        position: relative
+        z-index: 100
         .deposit
           line-height: 0.5rem
           border-bottom: 1px dotted #bfbfbf

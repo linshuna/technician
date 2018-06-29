@@ -32,10 +32,6 @@
       this.$emit('getIsLink',true)
     },
     mounted: function(){
-
-      this.$nextTick(function(){
-        document.title = '设置'
-      })
     },
     methods:{
       registerFn(){

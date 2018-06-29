@@ -98,7 +98,7 @@
     },
     mounted: function(){
       this.clientvid = GetQueryString('cusId');
-      let gainTecherData = JSON.parse(this.getStorage);
+      let gainTecherData = this.getStorage;
       let techvid = gainTecherData.vid||'';
       this.techvid = techvid;
       this.init(this.clientvid,techvid)

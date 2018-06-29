@@ -177,7 +177,7 @@ export default {
     }
   },
   mounted: function(){
-    let gainTecherData = JSON.parse(this.getStorage);//获取技师登录的信息
+    let gainTecherData = this.getStorage;//获取技师登录的信息
     if(gainTecherData){
       this.techvid = gainTecherData.vid
     }

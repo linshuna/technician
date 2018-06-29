@@ -12,9 +12,11 @@ import Dispath from '../components/dispath.vue'
 import Bill from '../components/bill.vue'
 import NewSever from '../components/newSever.vue'
 import NewPro from '../components/newPro.vue'
+import QRecord from '../components/qRecord.vue'
+import SerDetail from '../components/serDetail.vue'
+import router from '../../index/router';
 
 Vue.use(Router)
-
 export default new Router({
   //mode: 'history',
   routes: [
@@ -41,12 +43,18 @@ export default new Router({
     {
       path: '/quotation',
       name: 'quotation',
-      component: Quotation
+      component: Quotation,
+      meta:{
+        title:'快速报价'
+      }
     },
     {
       path: '/addSever',
       name: 'addSever',
-      component: AddSever
+      component: AddSever,
+      meta:{
+        title: '添加服务'
+      }
     },
     {
       path: '/addPro',
@@ -66,12 +74,32 @@ export default new Router({
     {
       path: '/newSever',
       name: 'newSever',
-      component: NewSever
+      component: NewSever,
+      meta:{
+        title: '添加服务'
+      }
     },
     {
       path: '/newPro',
       name: 'newPro',
       component: NewPro
+    },
+    {
+      path: '/qRecord',
+      name: 'qRecord',
+      component:QRecord,
+      meta:{
+        title:'报价记录'
+      }
+    },
+    {
+      path: '/serDetail',
+      name:'serDetail',
+      component: SerDetail,
+      meta:{
+        title:'报价详情'
+      }
     }
   ]
 })
+

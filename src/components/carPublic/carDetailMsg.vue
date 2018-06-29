@@ -22,7 +22,7 @@
             <div id="carMsg" v-if="carinfo">
               <div class="carBaseMsg setMsg">
                 <p>
-                  <img :src="carinfo.icon?carinfo.icon:defaultIcon" alt="" class="carLogo">
+                  <img :src="carinfo.icon?carinfo.icon:defaultIcon" alt="图片" class="carLogo">
                   <span>
                     <span v-if="carinfo.carplate">{{carinfo.carplate}}</span>
                     <span v-else class="grayColor">暂无</span>
@@ -102,10 +102,15 @@
                     <span>100.00</span>
                   </li>
                 </ul>
-                <div class="searchWrap">
+                <!-- <div class="searchWrap">
                     <img :src="searchIcon" alt="">
                     <input type="text" v-model="searchValue" placeholder="搜索项目">
-                </div> 
+                </div>  -->
+                <div class="search-temp-wrap">
+                  <search-temp setWidthStyle="100" 
+                    setPlaceholder="搜索项目"
+                    v-on:getSearchValue="gainSearchValue" ></search-temp>
+                </div>
                 <div class="searchResult">
                     <ul>
                       <li>
@@ -249,6 +254,7 @@
 
 <script>
   import Vue from 'vue';
+  import searchTemp  from "components/searchTemp.vue"
   import { Tabbar, TabItem,TabContainer, TabContainerItem,Cell,Toast,MessageBox  } from 'mint-ui';
   Vue.component(Tabbar.name, Tabbar);
   Vue.component(TabItem.name, TabItem);
@@ -273,6 +279,9 @@ export default {
       info:null,
       carinfo:null
     }
+  },
+  components:{
+    'search-temp':searchTemp
   },
   mounted: function(){
     let clientvid = GetQueryString('cusId');
@@ -312,6 +321,9 @@ export default {
     },
     carEditorFn(){
       this.$router.push({path:"/addNewCar/"+this.carId})
+    },
+    gainSearchValue(value){//搜索项目的内容（触发回车按钮）
+      console.log(value)
     }
 
     
@@ -370,7 +382,7 @@ export default {
           .carLogo
             display: inline-block
             width: .8rem
-            width: .8rem
+            height: .8rem
             vertical-align: middle
           span 
             vertical-align: middle 
@@ -441,6 +453,10 @@ export default {
               font-size: .26rem
               width: 34%
               text-align: center
+        .search-temp-wrap
+          width: 100%
+          padding: .2rem
+          box-sizing: border-box  
         .searchWrap
           display: inline-block
           font-size: .28rem

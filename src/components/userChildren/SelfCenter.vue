@@ -53,10 +53,6 @@
       this.$emit('getIsLink',true)
     },
     mounted: function(){
-
-      this.$nextTick(function(){
-        document.title = '个人中心'
-      })
     },
     methods:{
 

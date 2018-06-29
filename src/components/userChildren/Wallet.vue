@@ -35,12 +35,12 @@
         </ul>
         <div class="tabCon">
           <div v-show="isShowDate">
-            <!-- <img @click="reduceDate(date)" :src="leftArrowIcon" alt="" class="left"> -->
+            <img @click="changeDate(date,-1)" :src="leftArrowIcon" alt="" class="left">
             <datepicker v-model="date" language="zh-cn"></datepicker>
-            <!-- <img @click="addDate(date)" :src="rightArrowIcon" alt="" class="right"> -->
+            <img @click="changeDate(date,1)" :src="rightArrowIcon" alt="" class="right">
           </div>
           <div v-show="!isShowDate">
-            <!-- <img @click="reduceDate(event_date.date)" :src="leftArrowIcon" alt="" class="left"> -->
+            <img @click="changeDate(event_date.date,-1)" :src="leftArrowIcon" alt="" class="left">
             <datepicker 
               :class="{'picker': !event_date.range, 'picker-range': event_date.range}" 
               language="zh-cn"
@@ -48,7 +48,7 @@
               v-model="event_date.date" 
               @input="updateEventDate">
             </datepicker>
-            <!-- <img @click="addDate(event_date.date)" :src="rightArrowIcon" alt="" class="right"> -->
+            <img @click="changeDate(event_date.date,1)" :src="rightArrowIcon" alt="" class="right">
           </div>
         </div>
     </div>
@@ -123,29 +123,21 @@ export default {
   components:{datepicker},
   mounted: function(){
     this.date = this.currentDate;//初始化按日筛选的date
-    this.event_date.date = [this.firstDate,this.currentDate];//初始化按月筛选的date
-    this.$nextTick(function(){
-      document.title = '钱包'
-    }) 
-   
+    this.event_date.date = [this.firstDate,this.currentDate];//初始化按月筛选的date 
   },
   methods:{
-    reduceDate(date){
+    changeDate(date,type){
+      // type==-1减法，type==1加法
       let sd = '',n=1;
       if(typeof date == 'object'){//按月
         n = this.getDays(date[0],date[1]);
         sd = date[0];
-        let gainDate = this.getEndDate(n,sd,-1);
+        let gainDate = this.getEndDate(n,sd,type);
         this.event_date.date = [gainDate,date[0]];
       }else{
         sd = date;
-        this.date = this.getEndDate(n,sd,-1)
+        this.date = this.getEndDate(n,sd,type)
       }
-      
-
-    },
-    addDate(date){
-
     },
     getEndDate(n,sd,type) {
         var d = new Date(sd);
@@ -192,10 +184,11 @@ export default {
     left: 50%!important
     transform: translate(-50%,0)!important
   .date-picker
-    width: 100% !important//设置日期的div
+    width: 45% !important//设置日期的div
     display: inline-block
     padding-top: 5px
     background: #fff
+    vertical-align: middle
   .grayColor 
     font-size: .24rem
     line-height: .45rem
@@ -230,11 +223,13 @@ export default {
           color: #FA9E15
       .tabCon
         width: 100%
+        background: #ffffff
         >div
           width: 100%  
           img 
             display:inline-block
             width: .15rem
+            vertical-align: middle
           // position: relative 
           // .left
           //   position: absolute

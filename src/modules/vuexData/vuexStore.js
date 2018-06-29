@@ -5,20 +5,22 @@ Vue.use(Vuex)
 import vueAxiosPlugin from "modules/js/axiosPrototype.js"
 Vue.use(vueAxiosPlugin)
 import {Toast} from 'mint-ui'
-const key = 'techerData'
 const store = new Vuex.Store({
     state:{
+        key:'techerData',
         techerData: null,
         returnUrl: null
     },
     getters:{
         getStorage: function(state){
-            if(!state.techerData){
-                if(localStorage.getItem(key)!='undefined'){//不存在该key，也就是处于未登录状态
-                   state.techerData = JSON.parse(localStorage.getItem(key))
+            let data = null;
+            if(localStorage.getItem(state.key)!='undefined'){//不存在该key，也就是处于未登录状态
+                data = JSON.parse(localStorage.getItem(state.key))
+                if(state.key == 'techerData'){
+                    state.techerData = data;
                 }
             }
-            return state.techerData;
+            return data;
         },
         getReturnUrl: function(state){
             let url = window.location.href; 
@@ -27,20 +29,25 @@ const store = new Vuex.Store({
               let urlArr = url.split("=");   
               returnUrl = urlArr[1]
             }else{
-                returnUrl = "./index"
+                returnUrl = "/"
             }
             state.returnUrl = returnUrl;
             return state.returnUrl;
         }
     },
     mutations:{
+        _setName(state,value){
+            state.key = value
+        },
         _setStorage(state,value){
-            state.techerData = value;
-            localStorage.setItem(key,JSON.stringify(value))
+            if(state.key == 'techerData') state.techerData = value;
+            localStorage.setItem(state.key,JSON.stringify(value))
         },
         _remvoeStorage(state){
-            state.techerData = null;
-            localStorage.removeItem(key)
+            if(state.key == 'techerData'){
+                state.techerData = null;
+            }
+            localStorage.removeItem(state.key)
         }
     },
     actions:{
@@ -58,7 +65,7 @@ const store = new Vuex.Store({
                     if(isTip){
                       Toast('登录成功')  
                     }
-                    let loginData = JSON.stringify(res.data);
+                    let loginData = res.data;
                     context.commit("_setStorage",loginData);//用vuex本地存储
                     setTimeout(function(){
                         window.location.href = context.getters.getReturnUrl
@@ -78,6 +85,18 @@ const store = new Vuex.Store({
             setTimeout(function(){
                 window.location.href = context.getters.getReturnUrl
             },1000)    
+        },
+        delToast(){
+            let bodyObj = document.getElementsByTagName("body")[0];
+            let toastObj = document.getElementsByClassName("mint-toast");
+            let toastLen = toastObj.length;
+            for(var i=0,len=toastObj.length;i < len;i++){
+                if(toastObj[i]){
+                    bodyObj.removeChild(toastObj[i])
+                }
+            }    
+            
+            
         }
     }
 })

@@ -3,8 +3,15 @@
     <div class="setBg">
       <div class="searchWrap" :class="{'changeFixed':changePosi}">
         <div class="searchLeft">
-            <img src="../modules/images/searchIcon.png" alt="">
-            <input type="text" v-model="searchValue" placeholder="搜索姓名、手机号" @keyup.enter="searchData(searchValue)">
+            <!-- <img src="../modules/images/searchIcon.png" alt="">
+            <form action="javascript:return true" @submit="formSubmit" autocomplete="off">
+              <input type="search" v-model="searchValue" placeholder="搜索姓名、手机号" @keyup.enter="enterSearch" @blur="showAllData">
+            </form> -->
+            <search-temp setWidthStyle="90" 
+              setPlaceholder="搜索姓名、手机号"
+              :isSroll = true
+              v-on:getSearchValue="gainSearchValue" 
+              v-bind:changePosi.sync="changePosi"></search-temp>
         </div>  
         <div class="searchRight">
           <img src="../modules/images/add-icon.png" alt="" class="addIcon" @click="addNewCustom">
@@ -34,12 +41,7 @@
         </div>  
       </template>
       <template v-else>
-        <div class="loginMsg">
-          <a :href="'login.html?returnUrl='+returnUrl">
-            <img :src="defaultIcon" alt="">
-            <span>登录/注册</span>   
-          </a>
-        </div>
+        <no-login-tip></no-login-tip>
       </template>
            
     </div>
@@ -49,6 +51,8 @@
 <script>
   import { Toast } from 'mint-ui';
   import noDataTip from './noDataTip';
+  import noLoginTip from './NoLoginTip';
+  import searchTemp  from "components/searchTemp.vue"
   export default {
     data(){
       return{
@@ -64,7 +68,9 @@
       }
     },
     components:{
-      'no-data-tip': noDataTip
+      'no-data-tip': noDataTip,
+      'no-login-tip': noLoginTip,
+      'search-temp':searchTemp
     },
     computed:{
       getStorage(){
@@ -72,35 +78,63 @@
       }
     },
     created: function(){
-      let gainTecherData = JSON.parse(this.getStorage);
+      let gainTecherData = this.getStorage;
       if(gainTecherData){
         this.techvid = gainTecherData.vid;
       }
     },
     mounted: function(){
-      this.title = '客户';//获取标题名称
       this.searchData();
-      this.$nextTick(function(){
-        document.title = '客户';
-        let bignav  = this.$refs.searchObj//获取到导航栏id
-        let _this = this;
-        window.addEventListener('scroll',function(){
-          var topScroll = document.documentElement.scrollTop||document.body.scrollTop;//滚动的距离,距离顶部的距离          
-          if(topScroll > 100){  //当滚动距离大于250px时执行下面的东西
-              _this.changePosi = true
-          }else{//当滚动距离小于250的时候执行下面的内容，也就是让导航栏恢复原状
-              _this.changePosi = false
-          }
-        })
+      // this.$nextTick(function(){
+      //   let bignav  = this.$refs.searchObj//获取到导航栏id
+      //   let _this = this;
+      //   window.addEventListener('scroll',function(){
+      //     var topScroll = document.documentElement.scrollTop||document.body.scrollTop;//滚动的距离,距离顶部的距离          
+      //     if(topScroll > 50){  //当滚动距离大于250px时执行下面的东西
+      //         _this.changePosi = true
+      //     }else{//当滚动距离小于250的时候执行下面的内容，也就是让导航栏恢复原状
+      //         _this.changePosi = false
+      //     }
+      //   })
 
-      })
+      // })
     },
     methods:{
+      formSubmit(){
+        return false;
+      },
       addNewCustom(){
-        window.location.href = "addNewCustom.html"
+        if(this.techvid){
+          window.location.href = "addNewCustom.html"
+        }else{
+          Toast("请先登录");
+          let _this = this;
+          setTimeout(function(){
+            window.location.href = "login.html?returnUrl="+_this.returnUrl
+          },500)
+          
+        }
       },
       linkCusDetial(id){
         window.location.href = "customerDetail.html?cusId="+id
+      },
+      gainSearchValue(value){//就是触发回车的请求
+        if(!this.techvid){
+          Toast("请先登录");
+          return false;
+        }
+        if(value == ''){
+          Toast("请输入您要搜索姓名、手机号");
+          return false;
+        }
+        this.searchData(value)
+      },
+      showAllData(){
+        if(this.searchValue==''){
+          this.searchData()
+        }else{
+          return false;
+        }
       },
       searchData(value){
         let gainValue = value?value:'';
@@ -150,10 +184,6 @@
           text-align: center
     .setBg
       width: 100%
-      .changeFixed
-        position: fixed!important
-        top: 0!important
-        z-index: 999999!important
       .searchWrap 
         width:100%
         padding: .2rem
@@ -170,18 +200,21 @@
           width: 85%
           vertical-align: middle
           text-align: left
-          border: 1px solid #f4f4f4
-          border-radius: 5px
-          padding: .15rem .2rem
           box-sizing: border-box
-          img 
-            display: inline-block
-            width: .35rem
-            vertical-align: middle
-          input 
-            display: inline-block
-            width: 90%
-            vertical-align: middle
+          // border: 1px solid #f4f4f4
+          // border-radius: 5px
+          // padding: .15rem .2rem
+          // img 
+          //   display: inline-block
+          //   width: .35rem
+          //   vertical-align: middle
+          // form
+          //   display: inline-block
+          //   width: 90%
+          //   vertical-align: middle
+          //   input 
+          //     display: inline-block
+          //     width: 100%
         .searchRight
           width: 15%  
           vertical-align: middle

@@ -1,26 +1,171 @@
 <template>
   <div class="quotation">
-    <div class="total-wrapper">¥0 
-      <img src=""/>
+    <div class="itemWrap" v-if="serverList.length>0">
+      <div v-for="(item,index) in serverList" :key="index" class="border-bottom-1px">
+        <server-temp v-bind:item.sync="item" v-on:deleteFn="delServer(item)" v-bind:isEditor="isEditor" v-bind:isDel="isDel"></server-temp>
+      </div>
+    </div>
+    <div class="addServerTipWrap" v-else>
+      <p @click="addSever" class="addServerTip">赶紧去添加服务项目吧^_^</p>
+    </div>
+    <div class="total-wrapper clearFloat">
+      <span class="fl" @click="changeEditor">
+        <template v-if="!isEditor">
+          <span>编辑</span> 
+          <img :src="editSmallLogo" alt="" class="editSmallLogo">  
+        </template>
+        <template v-else>
+          <span>保存</span>
+        </template>
+      </span>
+      <span class="fr" :class="{'orangeColor':total>0}">¥{{total | totalFilter}}</span> 
     </div>
     <div class="btn-wrapper">
       <div class="btn border-right-1px" @click="addSever">添加服务</div>
-      <div class="btn">保存报价</div>
+      <div class="btn" @click="saveReck">保存报价</div>
     </div>
   </div>
 </template>
 <script>
+  import serverTemp from './serverTemp.vue'
+  import {Toast,MessageBox} from 'mint-ui'
+  import {GetQueryString} from 'modules/js/config.js'
   export default {
+    data(){
+      return{
+        techvid:'',
+        carno: decodeURI(GetQueryString("carno"))||'',
+        reckorderNo:GetQueryString("reckorderNo")||'',
+        serverList: [],
+        editSmallLogo: require('modules/images/edit-small-logo.png'),
+        isEditor: false,
+        isDel: true
+      }
+    },
+    components:{
+      'server-temp':serverTemp
+    },
+    created:function(){
+      let getTechStorage = this.$store.getters.getStorage;
+      this.techvid = getTechStorage?getTechStorage.vid:'';
+      this.init()
+    },
+    filters:{
+      totalFilter: function(value){
+        if(!value) return 0;
+        value = value - 0;
+        return value.toFixed(1);
+      }
+    },
+    computed:{
+      total:function(){
+        let gainTotal = 0;
+        if(this.serverList.length>0){
+          this.serverList.map((item,index)=>{
+              gainTotal+=item.num*item.price
+          })  
+        }
+        return gainTotal;
+      }
+    },
     methods: {
+      init(){//查看添加项目的列表
+        if(!this.reckorderNo){
+          return false;
+        }
+        this.$http.post('/api.php/TechReck/checkreck',{reckorderNo: this.reckorderNo})
+        .then((response)=>{
+            let res = response.data;
+            if(res.errorCode == 200){
+              let list = res.data.list;
+              if(list.length>0) this.serverList = list;
+                else{//必须重置serverList数组
+                  this.serverList = [];
+                  this.isEditor = false;
+                }
+            }else{
+              Toast(res.message)
+            }
+        })
+      },
+      delServer(item){
+        this.$http.post("/api.php/TechReck/editextand",{extandid:item.extandid})
+        .then((response)=>{
+          let res = response.data;
+          Toast(res.message)
+          if(res.errorCode == 200){
+            this.init()
+          }
+        })
+      },
       addSever() {
         this.$router.push('/addSever')
+      },
+      changeEditor(){
+        if(this.serverList.length<=0){
+          this.$store.dispatch('delToast')
+          Toast("赶紧去添加项目吧"); 
+          return false;
+        }
+        this.isEditor=!this.isEditor
+      },
+      saveReck(){
+        if(this.serverList.length<=0){
+          this.$store.dispatch('delToast')
+          Toast("赶紧去添加项目吧");
+          return false;
+        }
+        let project = [];
+        this.serverList.map((item,index)=>{
+          //要push item的内容
+          project.push({
+            projectid: item.projectid,
+            num: item.num,
+            types: item.types,
+            pprice: item.pprice,
+            price: item.price,
+          })
+        })
+        let msgTip = '';
+        if(this.isEditor){
+          msgTip = "是否确定保存已修改服务项目？"
+        }else{
+          msgTip = "是否确定保存服务项目？"
+        }
+        MessageBox.confirm(msgTip,'')
+        .then(action => {
+            let gainListsData = {};
+            gainListsData.carNo = this.carno
+            gainListsData.project = project
+            gainListsData.techvid = this.techvid
+            gainListsData.reckorderNo = this.reckorderNo
+            gainListsData = JSON.stringify(gainListsData)
+
+            this.$http.post('/api.php/TechReck/saves',{lists:gainListsData})
+            .then((response)=>{
+              let res = response.data
+              Toast(res.message)
+              if(res.errorCode==200){
+                //要清空本地存储 key为addTempProData
+                this.$store.commit('_setName','addTempProData');
+                this.$store.commit("_remvoeStorage")
+                this.$store.dispatch('delToast')
+                window.location.href = "pickupOrder.html?carno="+this.carno+"#/qRecord"
+              }
+            })
+        })
+        .catch((err)=>{
+            if(err == 'cancel') console.log("取消")
+        })
+        
       }
     }
   }
 </script>
 <style lang="stylus" scoped>
   @import '~modules/css/variable.styl'
-
+  .orangeColor
+    color: #fa9e15!important
   .quotation
     position: fixed
     top: 0
@@ -30,14 +175,31 @@
     z-index: 10
     font-size: .28rem
     background: #f9f9f9
+    .item-wrapper
+      margin-top: 1.4rem 
+    .addServerTipWrap  
+      text-align: center
+      margin-top: 20%
+      .addServerTip
+        font-size: .28rem
+        color: gray
     .total-wrapper
       position: fixed
       bottom: .8rem
       line-height: .8rem
       width: 100%
+      padding: 0 .2rem
+      box-sizing: border-box
       line-height: 0.8rem
       text-align: right
       background: #fff
+      .fl
+        span 
+          vertical-align: middle
+        img
+          display: inline-block
+          width: 0.32rem
+          vertical-align: middle
     .btn-wrapper
       position: fixed
       bottom: 0

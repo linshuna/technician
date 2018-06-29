@@ -31,7 +31,7 @@
     </div>
   </div>
 </template>
- <script>
+<script>
  export default{
     props:{
         'isShow':{type: Boolean}
@@ -58,6 +58,9 @@
                 ['Z','X','C','V','B','N','M']
             ]
         }
+    },
+    mounted:function(){
+        console.log(this.isShow)
     },
     methods: {
         txtclick : function(txt,indexi,size){

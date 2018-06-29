@@ -193,9 +193,6 @@ export default {
     }
   },
   mounted: function(){
-    this.$nextTick(function(){
-      document.title = '车辆详情'
-    })
   },
   methods:{
 

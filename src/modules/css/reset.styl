@@ -99,7 +99,8 @@ input,textarea
   float: right
 .fl
   float: left  
-
+.clearFloat
+  overflow: hidden
 .delIcon{
   position: relative;
   width: 15px!important;
@@ -124,4 +125,10 @@ input,textarea
 }
 .delIcon::after{
   transform: rotate(-45deg);
+}
+
+.changeFixed {
+    position: fixed !important;
+    top: 0 !important;
+    z-index: 999999 !important;
 }
