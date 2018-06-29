@@ -202,7 +202,17 @@
 
       // this.carvid = GetQueryString('carvid')
       // this.clientvid = GetQueryString('clientvid')
-      // this.orderNo = GetQueryString('orderNo')
+      this.orderNo = GetQueryString('orderNo')
+      
+      this.$http.post('/api.php/TechService/detail',{orderNo: this.orderNo})
+      .then((response)=>{
+        let res = response.data
+        if(res.errorCode == 200){
+          console.log(res.data)
+        }else{
+          Toast(res.message)
+        }
+      })
 
     }
   }

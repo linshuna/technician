@@ -20,7 +20,7 @@
     <!-- tab-container -->
     <mt-tab-container v-model="type">
       <mt-tab-container-item id="atServe">
-        <div class="item border-bottom-1px" v-for="item in atServeOrder" @click="goOrderDetail(item.orderNo)" v-if="atServeOrder.length>0">
+        <div class="item border-bottom-1px" v-for="item in atServeOrder" @click="goOrderDetail(item.orderNo,item.carNo)" v-if="atServeOrder.length>0">
           <img class="carImg" :src="item.icon"/>
           <div class="main-c">
             <div class="carno">{{item.carNo}}</div>
@@ -39,7 +39,7 @@
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="waitPay">
-        <div class="item border-bottom-1px" v-for="item in waitPayOrder" @click="goOrderDetail(item.orderNo)" v-if="waitPayOrder.length>0">
+        <div class="item border-bottom-1px" v-for="item in waitPayOrder" @click="goOrderDetail(item.orderNo,item.carNo)" v-if="waitPayOrder.length>0">
           <img class="carImg" :src="item.icon"/>
           <div class="main-c">
             <div class="carno">{{item.carNo}}</div>
@@ -58,7 +58,7 @@
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="picked">
-        <div class="item border-bottom-1px" v-for="item in pickedOrder" @click="goOrderDetail(item.orderNo)" v-if="pickedOrder.length>0">
+        <div class="item border-bottom-1px" v-for="item in pickedOrder" @click="goOrderDetail(item.orderNo,item.carNo)" v-if="pickedOrder.length>0">
           <img class="carImg" :src="item.icon"/>
           <div class="main-c">
             <div class="carno">{{item.carNo}}</div>
@@ -101,8 +101,8 @@
       }
     },
     methods: {
-      goOrderDetail(orderNo) {
-        window.location.href = `./pickupOrder.html?orderNo=${orderNo}#/path`
+      goOrderDetail(orderNo,carNo) {
+        window.location.href = `./pickupOrder.html?orderNo=${orderNo}&carNo=${carNo}#/path`
         //this.$router.push('/path')
       },
       getOrderList(carNo) {
