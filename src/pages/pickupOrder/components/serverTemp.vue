@@ -76,7 +76,7 @@
     .show-num
       position: absolute
       right: .2rem
-      bottom: 0.1rem  
+      bottom: 0 
     .countBtn-wrapper
       position: absolute
       right: .2rem  
