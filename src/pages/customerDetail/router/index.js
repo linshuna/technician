@@ -13,6 +13,7 @@ let addNewCar = r => require.ensure([], () => r(require('../components/addNewCar
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path:"/",
