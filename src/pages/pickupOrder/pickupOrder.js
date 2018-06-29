@@ -6,7 +6,9 @@ import getRem from 'modules/js/getRem.js'
 import router from './router'
 import store from 'modules/vuexData/vuexStore.js'
 import vueAxiosPlugin from 'modules/js/axiosPrototype.js'
+import GetUrlName from 'modules/js/getUrlName.js'
 Vue.use(vueAxiosPlugin)
+Vue.use(GetUrlName)
 
 import { Navbar, TabItem, TabContainer, TabContainerItem,Popup,Picker,Toast } from 'mint-ui';
 
@@ -30,6 +32,7 @@ Vue.component(Picker.name, Picker)
 Vue.use(getRem)
 
 Vue.config.productionTip = false
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -45,3 +48,4 @@ router.beforeEach((to,from,next)=>{
   }
   next();
 })
+

@@ -73,13 +73,17 @@
           pprice: '',
           descs:'',
           value: false,
-          carno:'',
-          reckorderNo:'',
-          addTempProDataJson:{}
+          // carno:'',
+          // reckorderNo:'',
+          addTempProDataJson:{},
+          // orderNo:''
       }
     },
     components:{
       'no-login-tip':NoLoginTip
+    },
+    created:function(){
+      
     },
     mounted: function(){
       this.$nextTick(function(){
@@ -88,8 +92,6 @@
         let getTechStorage = this.$store.getters.getStorage;
         this.techvid = getTechStorage?getTechStorage.vid:'';
 
-        this.carno = decodeURI(GetQueryString("carno"));
-        this.reckorderNo = GetQueryString("reckorderNo")  
       })
       
     },
@@ -109,15 +111,22 @@
           addTempProData.pprice = this.pprice
           addTempProData.descs = this.descs
           addTempProData.status = this.value?1:0;
-
-          const key = 'addTempProData';
+          let reqHttp = '';
+          let key = ''
+          if(this.orderNo){
+            key = 'addTempSerData';
+            reqHttp = '/api.php/TechService/addTempProject';
+          }else{
+            key = 'addTempProData';
+            reqHttp = '/api.php/TechReck/addTempProject';
+          }
           this.$store.commit('_setName',key)
           let getStorage = this.$store.getters.getStorage;
           if(getStorage){//如果本地是存在这个数据的话，就得累加
               this.addTempProDataJson = getStorage
           }
           let objLen = Object.keys(this.addTempProDataJson).length
-          this.$http.post('/api.php/TechReck/addTempProject',addTempProData)
+          this.$http.post(reqHttp,addTempProData)
           .then((response)=>{
               let res = response.data
               Toast(res.message)
@@ -128,7 +137,12 @@
                 this.$set(this.addTempProDataJson,objLen,addTempProData)//把数据追加到原来的数据里边
                 this.$store.commit('_setStorage',this.addTempProDataJson)  
                 setTimeout(function(){
-                  window.location.href = "pickupOrder.html?carno="+_this.carno+"&reckorderNo="+_this.reckorderNo+"#/addSever"
+                  if(_this.orderNo){
+                    window.location.href = "pickupOrder.html?carno="+_this.carno+"&orderNo="+_this.orderNo+"&reckorderNo="+_this.reckorderNo+"#/addSever"
+                  }else{
+                    window.location.href = "pickupOrder.html?carno="+_this.carno+"&reckorderNo="+_this.reckorderNo+"#/addSever"
+                  }
+                  
                 },500)
 
               }

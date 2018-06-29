@@ -70,10 +70,19 @@
     },
     methods: {
       init(){//查看添加项目的列表
-        if(!this.reckorderNo){
+        if(!this.reckorderNo){ 
           return false;
         }
-        this.$http.post('/api.php/TechReck/checkreck',{reckorderNo: this.reckorderNo})
+        let reqHttp = '';
+        let reqData = {}
+        if(this.orderNo){
+          reqHttp = '/api.php/TechService/checkreck';
+          reqData = {reckorderNo: this.reckorderNo,orderNo:this.orderNo}
+        }else{
+          reqHttp = '/api.php/TechReck/checkreck';
+          reqData = {reckorderNo: this.reckorderNo}
+        }
+        this.$http.post(reqHttp,reqData)
         .then((response)=>{
             let res = response.data;
             if(res.errorCode == 200){
@@ -89,7 +98,13 @@
         })
       },
       delServer(item){
-        this.$http.post("/api.php/TechReck/editextand",{extandid:item.extandid})
+        let reqHttp = '';
+        if(this.orderNo){
+          reqHttp = '/api.php/TechService/editextand';
+        }else{
+          reqHttp = '/api.php/TechReck/editextand';
+        }
+        this.$http.post(reqHttp,{extandid:item.extandid})
         .then((response)=>{
           let res = response.data;
           Toast(res.message)
@@ -114,6 +129,12 @@
           this.$store.dispatch('delToast')
           Toast("赶紧去添加项目吧");
           return false;
+        }
+        let reqHttp = '';
+        if(this.orderNo){
+          reqHttp = '/api.php/TechService/saves';
+        }else{
+          reqHttp = '/api.php/TechReck/saves';
         }
         let project = [];
         this.serverList.map((item,index)=>{

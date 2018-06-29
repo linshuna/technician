@@ -43,7 +43,7 @@ export default {
 <style lang="stylus">
     .server-detail-wrap
         width: 100%
-        position: absolute
+        position: fixed
         top: 0
         left: 0
         min-height: 100%

@@ -25,7 +25,6 @@
 </template>
 <script>
   import {Toast} from "mint-ui"
-  import {GetQueryString} from 'modules/js/config.js'
   import serverTemp from './serverTemp.vue'
   export default {
     data() {
@@ -33,8 +32,7 @@
         sevQty:'1',
         techReckList:[],
         searchCon:'',
-        techvid:'',
-        carno:''
+        techvid:''
       }
     },
     components:{
@@ -44,14 +42,21 @@
       this.$store.state.key = "techerData"
       let getTechStorage = this.$store.getters.getStorage;
       this.techvid = getTechStorage?getTechStorage.vid:'';
-      this.carno = decodeURI(GetQueryString("carno"))||''; 
-      
       this.init('');//初始获取服务项目的数据
 
     },
     methods: {
       init(con){
-        this.$http.post('/api.php/TechReck/lists',{search:con})
+        let reqHttp = '';
+        let key = '';
+        if(this.orderNo){
+          reqHttp = '/api.php/TechService/lists';
+          key = 'addTempSerData'
+        }else{
+          reqHttp = '/api.php/TechReck/lists';
+          key = 'addTempProData'
+        }
+        this.$http.post(reqHttp,{search:con})
         .then((response)=>{
           let res = response.data
           if(res.errorCode == 200){
@@ -59,8 +64,8 @@
             this.techReckList = gainData;
             
             let len = this.techReckList.length;
+
             //获取本地是否存在自己新增的服务项目,把自己添加的项目最佳在后面
-            let key = 'addTempProData'
             this.$store.commit('_setName',key)
             let getStorage = this.$store.getters.getStorage;
             this.techReckList.map((item,index)=>{
@@ -117,7 +122,12 @@
             if(res.errorCode == 200){
                 let reckorderNo = res.data.reckorderNo
                 setTimeout(function(){
-                  window.location.href = "pickupOrder.html?carno="+_this.carno+"&reckorderNo="+reckorderNo+"#/quotation/"
+                  if(_this.orderNo){
+                    window.location.href = "pickupOrder.html?carno="+_this.carno+"&orderNo="+_this.orderNo+"&reckorderNo="+reckorderNo+"#/quotation/"
+                  }else{
+                    window.location.href = "pickupOrder.html?carno="+_this.carno+"&reckorderNo="+reckorderNo+"#/quotation/"
+                  }
+                  
                 },500)
             }
             
