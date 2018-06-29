@@ -47,36 +47,7 @@
       return {
         noDataImg: require('modules/images/noData-order.png'),
         selectedDate: '',
-<<<<<<< Updated upstream
         orderData: []
-=======
-        orderData: [
-          {
-            type: 0,
-            time: '17:00',
-            carno: '粤A6666',
-            itemName: '美容',
-            name: '烟火',
-            carImg: require('modules/images/carImg.png')
-          },
-           {
-            type: 0,
-            time: '17:00',
-            carno: '粤A6666',
-            itemName: '美容',
-            name: '烟火222',
-            carImg: require('modules/images/carImg.png')
-          },
-           {
-            type: 0,
-            time: '17:00',
-            carno: '粤A6666',
-            itemName: '美容',
-            name: '烟火333',
-            carImg: require('modules/images/carImg.png')
-          }
-        ]
->>>>>>> Stashed changes
       }
     },
     computed: {
@@ -103,7 +74,6 @@
       goOrder() {
         window.location.href = 'order.html'
       },
-<<<<<<< Updated upstream
       goOrderDetail(orderNo,vid) {
         window.location.href = 'reservedOrderDetail.html?orderNo='+orderNo+'&vid='+vid
       },
@@ -127,30 +97,6 @@
             Toast(res.message)
           }
         })
-=======
-      goOrderDetail() {
-        window.location.href = 'reservedOrderDetail.html'
-      },
-      addReseve() {
-        window.location.href = 'addResearch.html'
-      }
-    },
-    watch: {
-      selectedDate(newVal,oldVal) {
-        console.log('new'+newVal,'  old'+oldVal)
-        if(newVal){
-          this.$http.post('/api.php/TechOrder/index',{orderDate: '2018-06-10'})
-          .then((response)=>{
-            let res = response.data
-            if(res.errorCode == 200){
-              console.log(res.data);
-              this.orderData = res.data
-            }else{
-              Toast(res.message)
-            }
-          })
-        }
->>>>>>> Stashed changes
       }
     }
     },
@@ -163,11 +109,7 @@
       }
     },
     created() {
-<<<<<<< Updated upstream
       let gainTecherData = this.getStorage;
-=======
-      let gainTecherData = JSON.parse(this.getStorage);
->>>>>>> Stashed changes
       if(!gainTecherData){
         let instance = Toast('请先登录')
         setTimeout(() => {

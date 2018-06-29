@@ -141,7 +141,6 @@
 
   #app
     font-family: PingFangSC-Regular
-<<<<<<< Updated upstream
     .mint-navbar
       .mint-tab-item
         padding: 0
@@ -156,13 +155,6 @@
           padding-top: .2rem
           height: 0.6rem
           box-sizing: border-box
-=======
-    .search
-      width: .6rem
-      height: .6rem
-      padding-top: .16rem
-      padding-right: .2rem
->>>>>>> Stashed changes
     .selectTime
       height: 1rem
       line-height: 1rem

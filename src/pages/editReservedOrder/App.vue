@@ -63,21 +63,15 @@
 <script>
 import { GetQueryString,changeTitle } from 'modules/js/config.js'
 import Vue from 'vue'
-<<<<<<< Updated upstream
 import vueAxiosPlugin from "modules/js/axiosPrototype.js"
 Vue.use(vueAxiosPlugin)
 import {format} from 'modules/js/date.js'
 import { Toast } from 'mint-ui'
-=======
-  import vueAxiosPlugin from "modules/js/axiosPrototype.js"
-  Vue.use(vueAxiosPlugin)
->>>>>>> Stashed changes
 
 export default {
   name: 'App',
   data() {
     return {
-<<<<<<< Updated upstream
       orderNo: '',
       type: '',
       carno: '',
@@ -90,12 +84,6 @@ export default {
       phone: '',
       project: [],
       selectTimeIndex: -1,
-=======
-      type: '',
-      carno: '',
-      carvid: '',
-      name: '',
->>>>>>> Stashed changes
       popupVisibleType: false,
       popupVisibleTime: false,
       popupVisibleName: false,
@@ -111,7 +99,6 @@ export default {
         }
       ],
       typeData: [],
-<<<<<<< Updated upstream
       timeData: [
         {
           time: '09:00',
@@ -162,9 +149,6 @@ export default {
           active: false
         }
       ]
-=======
-      timeData: ['09:00','10:00','11:00','12:00','13:00','14:00','09:00','10:00','11:00','12:00','13:00','14:00']
->>>>>>> Stashed changes
     }
   },
   methods: {
@@ -186,19 +170,12 @@ export default {
       if(this.type==='add'){
         return
       }
-<<<<<<< Updated upstream
       this.popupVisibleName = false
-=======
-      this.popupVisibleName = true
->>>>>>> Stashed changes
+
     },
     selectItem(item) {
       this.project.push({id:item.id,name:item.name})
       item.active=true
-<<<<<<< Updated upstream
-=======
-      console.log(item)
->>>>>>> Stashed changes
       
       //this.selectTypeIndex = index
     },
@@ -296,7 +273,6 @@ export default {
       }
     }
   },
-<<<<<<< Updated upstream
   computed:{
     getStorage() {
       return this.$store.getters.getStorage;
@@ -319,23 +295,14 @@ export default {
     },
   },
   created: function(){
-=======
-  mounted() {
->>>>>>> Stashed changes
     this.type = GetQueryString('type');
     if(this.type==='add'){
       this.name = decodeURIComponent(GetQueryString('name'))
       this.carno = decodeURIComponent(GetQueryString('carno'))
       this.carvid = GetQueryString('carvid')
-<<<<<<< Updated upstream
       this.clientvid = GetQueryString('clientvid')
       changeTitle('新增预约')
     }
-=======
-      changeTitle('新增预约')
-    }
-    console.log(this.type)
->>>>>>> Stashed changes
 
     this.$http.get('/api.php/TechOrder/servicelist')
     .then((response)=>{
@@ -346,15 +313,10 @@ export default {
           item.active = false
         })
         this.typeData = data
-<<<<<<< Updated upstream
-=======
-        console.log(this.typeData)
->>>>>>> Stashed changes
       }else{
         Toast(res.message)
       }
     })
-<<<<<<< Updated upstream
 
     let gainTecherData = this.getStorage
     this.orderNo = GetQueryString('orderNo')
@@ -398,8 +360,6 @@ export default {
       }
     })
     }
-=======
->>>>>>> Stashed changes
   }
 }
 </script>
