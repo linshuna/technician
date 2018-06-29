@@ -191,13 +191,13 @@
     },
     computed:{
       getStorage(){
-        return this.$store.getters.getStorage;
+        return this.$store.getters.getStorage
       }
     },
     created() {
-      let gainTecherData = JSON.parse(this.getStorage);
+      let gainTecherData = this.getStorage
       if(gainTecherData){
-        this.techvid = gainTecherData.vid;
+        this.techvid = gainTecherData.vid
       }
 
       // this.carvid = GetQueryString('carvid')

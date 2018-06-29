@@ -105,9 +105,9 @@
       this.carno = decodeURIComponent(GetQueryString('carno')||'')
       this.handleSearchCarno(this.carno)
 
-      let gainTecherData = JSON.parse(this.getStorage);
+      let gainTecherData = this.getStorage
       if(gainTecherData){
-        this.techvid = gainTecherData.vid;
+        this.techvid = gainTecherData.vid
       }
     }
   }

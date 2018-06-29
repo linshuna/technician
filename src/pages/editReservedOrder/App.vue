@@ -316,7 +316,7 @@ export default {
       }
     })
 
-    let gainTecherData = JSON.parse(this.getStorage)
+    let gainTecherData = this.getStorage
     this.orderNo = GetQueryString('orderNo')
     
     if(gainTecherData){

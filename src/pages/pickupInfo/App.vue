@@ -229,9 +229,9 @@
     created() {
       this.carvid = GetQueryString('carvid')
       this.clientvid = GetQueryString('clientvid')
-      let gainTecherData = JSON.parse(this.getStorage);
+      let gainTecherData = this.getStorage
       if(gainTecherData){
-        this.techvid = gainTecherData.vid;
+        this.techvid = gainTecherData.vid
       }
     }
   }

@@ -78,9 +78,9 @@
       this.search()
       this.carvid = GetQueryString('carvid')
       this.carno = decodeURIComponent(GetQueryString('carno'))
-      let gainTecherData = JSON.parse(this.getStorage);
+      let gainTecherData = this.getStorage
       if(gainTecherData){
-        this.techvid = gainTecherData.vid;
+        this.techvid = gainTecherData.vid
       }else{
         
       }

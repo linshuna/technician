@@ -109,7 +109,7 @@
       }
     },
     created() {
-      let gainTecherData = JSON.parse(this.getStorage);
+      let gainTecherData = this.getStorage;
       if(!gainTecherData){
         let instance = Toast('请先登录')
         setTimeout(() => {
