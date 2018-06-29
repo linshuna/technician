@@ -5,7 +5,7 @@ import App from './App'
 import getRem from 'modules/js/getRem.js'
 import vueAxiosPlugin from 'modules/js/axiosPrototype.js'
 Vue.use(vueAxiosPlugin)
-Vue.use(getRem)
+Vue.use(getRem) 
 
 import store from 'modules/vuexData/vuexStore.js'
 
