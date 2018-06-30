@@ -3,13 +3,8 @@
     <div class="setBg">
       <div class="searchWrap" :class="{'changeFixed':changePosi}">
         <div class="searchLeft">
-            <!-- <img src="../modules/images/searchIcon.png" alt="">
-            <form action="javascript:return true" @submit="formSubmit" autocomplete="off">
-              <input type="search" v-model="searchValue" placeholder="搜索姓名、手机号" @keyup.enter="enterSearch" @blur="showAllData">
-            </form> -->
-            <search-temp setWidthStyle="90" 
+            <search-temp setWidthStyle="100" 
               setPlaceholder="搜索姓名、手机号"
-              :isSroll = true
               v-on:getSearchValue="gainSearchValue" 
               v-bind:changePosi.sync="changePosi"></search-temp>
         </div>  
@@ -18,7 +13,7 @@
         </div>
       </div>
       <template v-if="getStorage">
-        <div v-if="customerList.length>0">
+        <div v-if="customerList.length>0" style="margin-top:1rem;">
           <ul class="searchResult">
               <li class="border-bottom-1px" v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)">
                   <div class="resultLeft">
@@ -85,19 +80,6 @@
     },
     mounted: function(){
       this.searchData();
-      // this.$nextTick(function(){
-      //   let bignav  = this.$refs.searchObj//获取到导航栏id
-      //   let _this = this;
-      //   window.addEventListener('scroll',function(){
-      //     var topScroll = document.documentElement.scrollTop||document.body.scrollTop;//滚动的距离,距离顶部的距离          
-      //     if(topScroll > 50){  //当滚动距离大于250px时执行下面的东西
-      //         _this.changePosi = true
-      //     }else{//当滚动距离小于250的时候执行下面的内容，也就是让导航栏恢复原状
-      //         _this.changePosi = false
-      //     }
-      //   })
-
-      // })
     },
     methods:{
       formSubmit(){
@@ -191,7 +173,9 @@
         padding-top: .2rem
         box-sizing: border-box
         background #ffffff
-        position: static
+        position: fixed
+        top:0
+        left:0
         z-index:2
         .searchLeft,.searchRight
           display: inline-block

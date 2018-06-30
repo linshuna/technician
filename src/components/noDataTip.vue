@@ -62,7 +62,7 @@ export default {
       width: 100%
       text-align: center
       font-size: .28rem
-      padding-top: .7rem
+      padding-top: 1rem
       img
         display: inline-block
         width: 2.5rem

@@ -6,14 +6,13 @@
     <div class="search-temp-wrap" :class="{'changeFixed':changePosi}">
         <search-temp setWidthStyle="100" 
             setPlaceholder="请输入车牌"
-            :isSroll = true 
             type="search-car"
             v-on:getSearchValue="gainSearchValue" 
             v-bind:changePosi.sync="changePosi"></search-temp>
     </div>
     <template v-if="techvid">
         <div v-if="carList.length>0">
-          <div class="result">
+          <div class="result" style="margin-top: 1rem;">
             <ul>
               <li class="border-bottom-1px" @click="goQuote(item.carNo)" v-for="(item,index) in carList" :key="index">{{item.carNo}} <span class="fr name">{{item.uname}}</span></li>
             </ul>
@@ -34,7 +33,7 @@
 
 <script>
   import noDataTip from 'components/noDataTip';
-  import searchTemp from 'components/searchTemp.vue';
+  import searchTemp  from "components/searchTemp.vue"
   import {Toast} from "mint-ui"
 
   export default {
@@ -83,12 +82,6 @@
         
        
       }
-    },
-    mounted() {
-      this.searchData();
-    },
-    components:{
-      'no-data-tip': noDataTip
     }
   }  
 </script>
@@ -123,6 +116,10 @@
       padding: .2rem
       box-sizing:border-box
       background: #ffffff  
+      position: fixed
+      top:0
+      left:0
+      z-index: 999
     .search-wrapper
       .search
         width: 94%

@@ -19,7 +19,6 @@ import {Toast} from "mint-ui"
 export default {
     props:{
         setPlaceholder:{type:String},
-        isSroll:{type: Boolean},
         setWidthStyle: {type:String},
         setReadonly:{type: Boolean},
         type:{type:String}
@@ -40,17 +39,17 @@ export default {
     },
     mounted: function(){
       this.$nextTick(function(){
-        if(this.isSroll){
-            let _this = this;
-            window.addEventListener('scroll',function(){
-                var topScroll = document.documentElement.scrollTop||document.body.scrollTop;//滚动的距离,距离顶部的距离          
-                if(topScroll > 50){  //当滚动距离大于250px时执行下面的东西
-                    _this.$emit("update:changePosi",true)
-                }else{//当滚动距离小于250的时候执行下面的内容，也就是让导航栏恢复原状
-                    _this.$emit("update:changePosi",false)
-                }
-            })    
-        }
+        // if(this.isSroll){
+        //     let _this = this;
+        //     window.addEventListener('scroll',function(){
+        //         var topScroll = document.documentElement.scrollTop||document.body.scrollTop;//滚动的距离,距离顶部的距离          
+        //         if(topScroll > 50){  //当滚动距离大于250px时执行下面的东西
+        //             _this.$emit("update:changePosi",true)
+        //         }else{//当滚动距离小于250的时候执行下面的内容，也就是让导航栏恢复原状
+        //             _this.$emit("update:changePosi",false)
+        //         }
+        //     })    
+        // }
 
       })
     },
