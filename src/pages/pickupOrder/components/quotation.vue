@@ -188,11 +188,12 @@
   .orangeColor
     color: #fa9e15!important
   .quotation
-    position: fixed
+    position: absolute
     top: 0
     left: 0
     bottom: 0
     right: 0
+    min-height: 100%
     z-index: 10
     font-size: .28rem
     background: #f9f9f9

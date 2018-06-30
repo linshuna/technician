@@ -128,8 +128,8 @@
   Vue.component(Picker.name, Picker);
   Vue.component(DatetimePicker.name, DatetimePicker);
   import {format} from 'modules/js/date.js'
-  import carKeyCode from "components/carKeyCode.vue"
-  import brand from "components/brand.vue"
+  import carKeyCode from "components/common/carKeyCode.vue"
+  import brand from "components/common/brand.vue"
 export default {
   name: 'App',
   props:{

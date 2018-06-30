@@ -150,11 +150,13 @@
           },
           {
             className:'nav-icon-file',
-            name:'客户档案'
+            name:'客户档案',
+            tag: 'index.html#/customer'
           },
           {
             className:'nav-icon-carMsg',
-            name:'车辆信息'
+            name:'车辆信息',
+            tag:'carDetail.html'
           }
         ],
         carvid: '',
@@ -186,7 +188,11 @@
         this.$router.push('/bill')
       },
       handleNavClick(val) {
-        this.$router.push('/'+val)
+        if(val.indexOf(".html")>-1){
+          window.location.href = val;
+        }else{
+          this.$router.push('/'+val)
+        }
       }
     },
     computed:{

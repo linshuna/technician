@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import carKeyCode from "components/carKeyCode"
+  import carKeyCode from "components/common/carKeyCode"
   import { Toast} from 'mint-ui'
   import Vue from 'vue'
   import vueAxiosPlugin from "modules/js/axiosPrototype.js"

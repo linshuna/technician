@@ -93,7 +93,7 @@
   </div>
 </template>
 <script>
-  import carKeyCode from 'components/carKeyCode.vue'
+  import carKeyCode from 'components/common/carKeyCode.vue'
   import { Toast } from 'mint-ui';
 
   export default {
@@ -117,6 +117,8 @@
         this.tips = value.tips
         if(this.tips&&this.tips!=''){
           Toast(this.tips)
+        }else{
+          this.searchCarOrder(this.carno)
         }
       },
       showCarKeyCode() {

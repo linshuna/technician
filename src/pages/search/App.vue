@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import carKeyCode from "components/carKeyCode"
+  import carKeyCode from "components/common/carKeyCode"
   import { Toast} from 'mint-ui'
   import {GetQueryString} from 'modules/js/config.js'
   import Vue from 'vue'

@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import noDataTip from "../noDataTip.vue"
+import noDataTip from "components/common/noDataTip.vue"
 export default {
   name: 'App',
   data(){

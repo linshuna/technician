@@ -1,19 +1,12 @@
 <template>
   <div id="app">
       <mt-navbar v-model="selected">
-<<<<<<< Updated upstream
         <mt-tab-item id="1">待到店</mt-tab-item>
         <mt-tab-item id="2">已到店</mt-tab-item>
         <mt-tab-item id="3">已取消</mt-tab-item>
         <mt-tab-item id="4" class="search">
           <img src="../../modules/images/searchIcon.png" class="search-icon" @click="searchCarOrder"></img>
         </mt-tab-item>
-=======
-        <mt-tab-item id="1">已确认</mt-tab-item>
-        <mt-tab-item id="2">已到店</mt-tab-item>
-        <mt-tab-item id="3">已取消</mt-tab-item>
-        <img src="../../modules/images/searchIcon.png" class="search"></img>
->>>>>>> Stashed changes
       </mt-navbar>
 
       <!--<div class="selectTime">6月4日(星期一)</div>  -->

@@ -57,7 +57,7 @@
   </div>
 </template>
 <script>
-  import NoLoginTip from "components/NoLoginTip.vue"
+  import NoLoginTip from "components/common/NoLoginTip.vue"
   import Vue from "vue"
   import { Switch,Toast } from 'mint-ui';
   Vue.component(Switch.name, Switch);

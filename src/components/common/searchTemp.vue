@@ -1,6 +1,6 @@
 <template>
     <div class="search-wrap" :style="{'width':setWidthStyle+'%'}">
-        <img src="../modules/images/searchIcon.png" alt="">
+        <img src="../../modules/images/searchIcon.png" alt="">
         <form action="javascript:return true;" @submit="formSubmit" autocomplete="off">
             <input type="search" 
                 v-model="searchValue" 
@@ -14,7 +14,7 @@
     </div>
 </template>
 <script>
-import carKeyCode from "components/carKeyCode.vue"
+import carKeyCode from "components/common/carKeyCode.vue"
 import {Toast} from "mint-ui"
 export default {
     props:{
@@ -74,6 +74,9 @@ export default {
             if(this.tips&&this.tips!=''){
                 Toast('').close();
                 Toast(this.tips)
+            }
+            if(this.type){
+                this.$emit('getSearchValue',this.searchValue)
             }
         }
         

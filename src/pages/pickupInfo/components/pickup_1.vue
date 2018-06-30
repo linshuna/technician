@@ -31,8 +31,8 @@
 </template>
 <script>
   import Vue from 'vue'
-  import carKeyCode from "components/carKeyCode"
-  import Brand from "components/brand.vue"
+  import carKeyCode from "components/common/carKeyCode.vue"
+  import Brand from "components/common/brand.vue"
   import { Toast } from 'mint-ui'
   import { Radio } from 'mint-ui'
   Vue.component(Radio.name, Radio)

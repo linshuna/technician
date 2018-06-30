@@ -1,43 +1,48 @@
 <template>
   <div class="customerWrap" :style="{'padding-bottom':customerList.length>3?'1.5rem':''}">
     <div class="setBg">
-      <div class="searchWrap" :class="{'changeFixed':changePosi}">
+      <div class="searchWrap">
         <div class="searchLeft">
             <search-temp setWidthStyle="100" 
               setPlaceholder="搜索姓名、手机号"
-              v-on:getSearchValue="gainSearchValue" 
-              v-bind:changePosi.sync="changePosi"></search-temp>
+              v-on:getSearchValue="gainSearchValue" ></search-temp>
         </div>  
         <div class="searchRight">
           <img src="../modules/images/add-icon.png" alt="" class="addIcon" @click="addNewCustom">
         </div>
       </div>
-      <template v-if="getStorage">
-        <div v-if="customerList.length>0" style="margin-top:1rem;">
-          <ul class="searchResult">
-              <li class="border-bottom-1px" v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)">
-                  <div class="resultLeft">
-                    <img :src="item.headimg" alt="">
-                  </div>
-                  <div class="resultRight">
-                    <p class="customMsg">
-                      {{item.uname}}
-                      <img :src="item.sex==1?boyIcon:girlIcon" alt="" class="sexType"></p>
-                    <p class="remark" :class="{'grayColor':!item.remark,'orangeColor':item.remark}">{{item.remark?item.remark:'暂无'}}</p>
-                    <a :href="'tel:'+item.phone">
-                      <img src="../modules/images/telIcon.png" alt="" class="telIcon">
-                    </a>
-                  </div>
-              </li>
-          </ul> 
-        </div>
-        <div class="noData" v-else>
-          <no-data-tip :tipData="{typeTipe:0,titleTip:'客户',conTip:'暂无客户'}"></no-data-tip>
-        </div>  
-      </template>
+      
+        
+      <loading v-if="loading"></loading>
       <template v-else>
-        <no-login-tip></no-login-tip>
+        <template v-if="getStorage">
+          <div v-if="customerList.length>0" style="margin-top:1rem;">
+            <ul class="searchResult">
+                <li class="border-bottom-1px" v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)">
+                    <div class="resultLeft">
+                      <img :src="item.headimg" alt="">
+                    </div>
+                    <div class="resultRight">
+                      <p class="customMsg">
+                        {{item.uname}}
+                        <img :src="item.sex==1?boyIcon:girlIcon" alt="" class="sexType"></p>
+                      <p class="remark" :class="{'grayColor':!item.remark,'orangeColor':item.remark}">{{item.remark?item.remark:'暂无'}}</p>
+                      <a :href="'tel:'+item.phone">
+                        <img src="../modules/images/telIcon.png" alt="" class="telIcon">
+                      </a>
+                    </div>
+                </li>
+            </ul> 
+          </div>
+          <div class="noData" v-else>
+            <no-data-tip :tipData="{typeTipe:0,titleTip:'客户',conTip:'暂无客户'}"></no-data-tip>
+          </div>  
+        </template>
+        <template v-else>
+          <no-login-tip></no-login-tip>
+        </template>  
       </template>
+      
            
     </div>
 
@@ -45,9 +50,11 @@
 </template>
 <script>
   import { Toast } from 'mint-ui';
-  import noDataTip from './noDataTip';
-  import noLoginTip from './NoLoginTip';
-  import searchTemp  from "components/searchTemp.vue"
+  import noDataTip from 'components/common/noDataTip';
+  import noLoginTip from 'components/common/NoLoginTip';
+  import searchTemp  from "components/common/searchTemp.vue" 
+  import loading from 'components/common/Loading.vue'
+  import {mapState} from 'vuex'
   export default {
     data(){
       return{
@@ -58,19 +65,20 @@
         defaultIcon: require("modules/images/isLoginIcon.png"),
         girlIcon: require("modules/images/girlIcon.png"),
         boyIcon: require("modules/images/boyIcon.png"),
-        changePosi: false,
         returnUrl: window.location.href
       }
     },
     components:{
       'no-data-tip': noDataTip,
       'no-login-tip': noLoginTip,
-      'search-temp':searchTemp
+      'search-temp':searchTemp,
+      'loading': loading
     },
     computed:{
       getStorage(){
         return this.$store.getters.getStorage;
-      }
+      },
+      ...mapState(['loading'])
     },
     created: function(){
       let gainTecherData = this.getStorage;
@@ -119,6 +127,7 @@
         }
       },
       searchData(value){
+        this.$store.commit('showLoading');//开始显示loading
         let gainValue = value?value:'';
         if(this.techvid){
           this.$http.post('/api.php/TechSysClient/index',{techvid: this.techvid,search:gainValue})
@@ -129,9 +138,11 @@
             }else{
               Toast(res.message)
             }
+            this.$store.commit('hideLoading');//隐藏loading
           })
         }
-       
+        
+
       }
     }
   }

@@ -10,7 +10,8 @@ const store = new Vuex.Store({
     state:{
         key:'techerData',
         techerData: null,
-        returnUrl: null
+        returnUrl: null,
+        loading: false
     },
     getters:{
         getStorage: function(state){
@@ -49,6 +50,12 @@ const store = new Vuex.Store({
                 state.techerData = null;
             }
             localStorage.removeItem(state.key)
+        },
+        showLoading(state){
+            state.loading = true
+        },
+        hideLoading(state){
+            state.loading = false
         }
     },
     actions:{

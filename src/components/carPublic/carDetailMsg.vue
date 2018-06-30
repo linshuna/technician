@@ -254,7 +254,7 @@
 
 <script>
   import Vue from 'vue';
-  import searchTemp  from "components/searchTemp.vue"
+  import searchTemp  from "components/common/searchTemp.vue"
   import { Tabbar, TabItem,TabContainer, TabContainerItem,Cell,Toast,MessageBox  } from 'mint-ui';
   Vue.component(Tabbar.name, Tabbar);
   Vue.component(TabItem.name, TabItem);
