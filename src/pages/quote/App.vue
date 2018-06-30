@@ -34,7 +34,7 @@
 
 <script>
   import noDataTip from 'components/noDataTip';
-  import searchTemp from 'components/searchTemp'
+  import searchTemp from 'components/searchTemp.vue';
   import {Toast} from "mint-ui"
 
   export default {

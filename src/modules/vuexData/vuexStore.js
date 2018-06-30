@@ -5,6 +5,7 @@ Vue.use(Vuex)
 import vueAxiosPlugin from "modules/js/axiosPrototype.js"
 Vue.use(vueAxiosPlugin)
 import {Toast} from 'mint-ui'
+const defaultUrl = "/mits"
 const store = new Vuex.Store({
     state:{
         key:'techerData',
@@ -29,7 +30,7 @@ const store = new Vuex.Store({
               let urlArr = url.split("=");   
               returnUrl = urlArr[1]
             }else{
-                returnUrl = "/"
+                returnUrl = defaultUrl
             }
             state.returnUrl = returnUrl;
             return state.returnUrl;
