@@ -11,37 +11,37 @@
           <img src="../modules/images/add-icon.png" alt="" class="addIcon" @click="addNewCustom">
         </div>
       </div>
+         
       
-        
-      <loading v-if="loading"></loading>
-      <template v-else>
-        <template v-if="getStorage">
-          <div v-if="customerList.length>0" style="margin-top:1rem;">
-            <ul class="searchResult">
-                <li class="border-bottom-1px" v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)">
-                    <div class="resultLeft">
-                      <img :src="item.headimg" alt="">
-                    </div>
-                    <div class="resultRight">
-                      <p class="customMsg">
-                        {{item.uname}}
-                        <img :src="item.sex==1?boyIcon:girlIcon" alt="" class="sexType"></p>
-                      <p class="remark" :class="{'grayColor':!item.remark,'orangeColor':item.remark}">{{item.remark?item.remark:'暂无'}}</p>
-                      <a :href="'tel:'+item.phone">
-                        <img src="../modules/images/telIcon.png" alt="" class="telIcon">
-                      </a>
-                    </div>
-                </li>
-            </ul> 
-          </div>
-          <div class="noData" v-else>
-            <no-data-tip :tipData="{typeTipe:0,titleTip:'客户',conTip:'暂无客户'}"></no-data-tip>
-          </div>  
-        </template>
-        <template v-else>
-          <no-login-tip></no-login-tip>
-        </template>  
+
+      <template v-if="getStorage">
+        <loading v-if="loading"></loading>
+        <div v-else-if="customerList.length>0" style="margin-top:1rem;">
+          <ul class="searchResult">
+              <li class="border-bottom-1px" v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)">
+                  <div class="resultLeft">
+                    <img :src="item.headimg" alt="">
+                  </div>
+                  <div class="resultRight">
+                    <p class="customMsg">
+                      {{item.uname}}
+                      <img :src="item.sex==1?boyIcon:girlIcon" alt="" class="sexType"></p>
+                    <p class="remark" :class="{'grayColor':!item.remark,'orangeColor':item.remark}">{{item.remark?item.remark:'暂无'}}</p>
+                    <a :href="'tel:'+item.phone">
+                      <img src="../modules/images/telIcon.png" alt="" class="telIcon">
+                    </a>
+                  </div>
+              </li>
+          </ul> 
+        </div>
+        <div class="noData" v-else>
+          <no-data-tip :tipData="{typeTipe:0,titleTip:'客户',conTip:'暂无客户'}"></no-data-tip>
+        </div>  
       </template>
+      <template v-else>
+        <no-login-tip></no-login-tip>
+      </template>  
+
       
            
     </div>
