@@ -166,6 +166,18 @@
       }
     },
     methods: {
+      init(orderNo){
+        console.log(orderNo)
+        this.$http.post('/api.php/TechService/detail',{orderNo:orderNo})
+        .then((response)=>{
+          let res = response.data
+          if(res.errorCode == 200){
+            console.log(res.data)
+          }else{
+            Toast(res.message)
+          }
+        })
+      },
       look() {
         this.$router.push('/look')
       },
@@ -200,27 +212,18 @@
         return this.$store.getters.getStorage
       }
     },
-    created() {
+    created:function() {
       let gainTecherData = this.getStorage
       if(gainTecherData){
         this.techvid = gainTecherData.vid
       }
-
-      // this.carvid = GetQueryString('carvid')
-      // this.clientvid = GetQueryString('clientvid')
-      this.orderNo = GetQueryString('orderNo')
-      
-      this.$http.post('/api.php/TechService/detail',{orderNo: this.orderNo})
-      .then((response)=>{
-        let res = response.data
-        if(res.errorCode == 200){
-          console.log(res.data)
-        }else{
-          Toast(res.message)
-        }
+    },
+    mounted() {
+      this.$nextTick(function(){
+        this.orderNo = GetQueryString('orderNo')
+        this.init(this.orderNo)
       })
-
-    }
+    },
   }
 </script>
 <style lang="stylus">

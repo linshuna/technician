@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import App from '../app.vue'
-import PickupIndex from '../components/pickupIndex.vue'
+// import App from '../app.vue'
+let App = r => require.ensure([], () => r(require('../App')), 'App')
+import Server from '../components/server.vue'
 import Path from '../components/path.vue'
 import Look from '../components/look.vue'
 import Edit from '../components/edit.vue'
@@ -24,12 +25,12 @@ export default new Router({
   routes: [{
     path:"/",
     component:App,
-    redirect: '/pickupIndex',
+    redirect: '/server',
     children:[
       {
-        path: '/pickupIndex',
-        name: 'pickupIndex',
-        component: PickupIndex
+        path: '/server',
+        name: 'server',
+        component: Server
       },
       {
         path: '/path',
