@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <mt-navbar v-model="selected" fixed=true>
+    <mt-navbar v-model="selected" :fixed=true>
       <mt-tab-item id="1">当前仓库</mt-tab-item>
       <mt-tab-item id="2">待采购</mt-tab-item>
       <mt-tab-item id="3">待入库</mt-tab-item>

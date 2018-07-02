@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// import App from '../app.vue'
+// import App from '../app.vue' 
 let App = r => require.ensure([], () => r(require('../App')), 'App')
 import Server from '../components/server.vue'
 import Path from '../components/path.vue'

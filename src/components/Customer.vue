@@ -12,8 +12,6 @@
         </div>
       </div>
          
-      
-
       <template v-if="getStorage">
         <loading v-if="loading"></loading>
         <div v-else-if="customerList.length>0" style="margin-top:1rem;">
@@ -42,8 +40,6 @@
         <no-login-tip></no-login-tip>
       </template>  
 
-      
-           
     </div>
 
   </div>
