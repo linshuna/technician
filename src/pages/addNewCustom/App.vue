@@ -141,8 +141,8 @@ export default {
           },
       ],
       popupVisible:false,//picker组件显示和关闭
-      slots: [{defaultIndex:0}],//picker选择框数据
-      cusLabelText:'',//选中的value值
+      slots: [{defaultIndex:1}],//picker选择框数据
+      cusLabelText:'新客户',//选中的value值
       cusLabelValue:0,
       cusTypeStyle:  [{name:'新客户',value:0}, {name:'普通',vlaue:1}, {name:'金牌',value:2}, {name:'钻石',vlaue:3}],
       startDate: new Date('1960/1/1'),//开始的生日日期
@@ -305,9 +305,7 @@ export default {
                 },1000)  
               }else{
                 setTimeout(function(){
-                  // _this.$router.push({path:"/customer"})
                   window.location.href = "index.html#/customer"
-
                 },1000)
               }
               

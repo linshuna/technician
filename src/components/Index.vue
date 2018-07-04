@@ -67,7 +67,7 @@
             name:'充值优惠'
           },
           {
-            link:'/index.html#/customer',
+            link:'/susun/customer',
             // link:'/customer',
             className:'nav-icon-customer',
             name:'我的客户'
