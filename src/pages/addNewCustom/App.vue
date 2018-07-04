@@ -346,8 +346,8 @@ export default {
         padding: .2rem 0;
         .customLogo
           display: inline-block
-          width: .8rem
-          height: .8rem
+          width: 1.56rem
+          height: 1.56rem
       .fieldWrap
         width: 100% 
         font-size: 0
@@ -396,9 +396,9 @@ export default {
                 min-height auto
                 .mint-radio-input:checked + .mint-radio-core
                   background-color: #fff
-                  border-color: #26a2ff
+                  border-color: #fbaa31
                 .mint-radio-input:checked + .mint-radio-core::after
-                  background-color: #26a2ff
+                  background-color: #fbaa31
                 .mint-cell-wrapper
                   background: transparent!important
                   padding-left: 8px

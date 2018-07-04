@@ -420,8 +420,8 @@ export default {
                 line-height: .7rem
               img 
                 display: inline-block
-                width: .35rem
-                height: .35rem
+                width: .64rem
+                height: .3rem
                 vertical-align: middle
       #msgRemard
         width: 100%

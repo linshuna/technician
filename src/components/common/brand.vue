@@ -167,7 +167,7 @@
         line-height: 1rem
         float: right
         margin-right: .4rem 
-        color: #408dde
+        color: #fa9e15
   .alphabet-wrapper
     .alphabet-list
       font-size: .24rem
@@ -193,9 +193,9 @@
           float: left 
           text-align: center
         .reset
-          color: #4a93f1
-          background: #cae9ff
+          color: #fff
+          background: #fbbb5b
         .confirm
           color: #fff
-          background: #4a93f1        
+          background: #fa9e15        
 </style>

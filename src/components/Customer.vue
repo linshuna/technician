@@ -14,17 +14,18 @@
          
       <template v-if="getStorage">
         <loading v-if="loading"></loading>
-        <div v-else-if="customerList.length>0" style="margin-top:1rem;">
+        <div v-else-if="customerList.length>0" style="margin-top:1.14rem;">
           <ul class="searchResult">
-              <li class="border-bottom-1px" v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)">
+              <li v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)">
                   <div class="resultLeft">
                     <img :src="item.headimg" alt="">
                   </div>
-                  <div class="resultRight">
+                  <div class="resultRight border-bottom-1px">
                     <p class="customMsg">
                       {{item.uname}}
                       <img :src="item.sex==1?boyIcon:girlIcon" alt="" class="sexType"></p>
                     <p class="remark" :class="{'grayColor':!item.remark,'orangeColor':item.remark}">{{item.remark?item.remark:'暂无'}}</p>
+                    <p class="time grayColor">03:21PM</p>
                     <a :href="'tel:'+item.phone">
                       <img src="../modules/images/telIcon.png" alt="" class="telIcon">
                     </a>
@@ -146,10 +147,10 @@
 <style lang="stylus">
   .orangeColor
     color: #fa9e15
-    font-size: .22rem!important
+    font-size: .24rem!important
   .grayColor
     color: #999  
-    font-size: .22rem!important
+    font-size: .24rem!important
   .customerWrap
     width: 100%
     min-height: 100%
@@ -179,7 +180,7 @@
         font-size: 0
         padding-top: .2rem
         box-sizing: border-box
-        background #ffffff
+        background: #fa902b
         position: fixed
         top:0
         left:0
@@ -188,12 +189,13 @@
           display: inline-block
           font-size: .28rem
         .searchLeft
-          width: 85%
+          width: 90%
           vertical-align: middle
           text-align: left
           box-sizing: border-box
+          background-color #fff
+          border-radius: 5px
           // border: 1px solid #f4f4f4
-          // border-radius: 5px
           // padding: .15rem .2rem
           // img 
           //   display: inline-block
@@ -207,10 +209,11 @@
           //     display: inline-block
           //     width: 100%
         .searchRight
-          width: 15%  
+          width: 10%  
           vertical-align: middle
           text-align: center
           img 
+            padding-left: 0.14rem
             width: .6rem
             height: .6rem
       // .noData
@@ -227,47 +230,49 @@
         width: 100%      
         .searchResult
           width: 100%
-          width:100%
           padding-left:.32rem
           box-sizing: border-box
           background #ffffff
           li
             font-size: 0
+            height: 1.2rem
             padding: .32rem 0
+            display flex
             .resultLeft,.resultRight
-              display: inline-block
               font-size: .28rem
               vertical-align: top
             .resultLeft
-              width: 15%
+              width: 1.92rem
+              text-align left
               img
-                display: inline-block
-                width: 1rem
-                height: 1rem
+                width: 1.2rem
+                height: 1.2rem
             .resultRight
-              width: 85%
+              width: 5.58rem
+              height: 1.52rem
               position: relative
               color: #999
               text-align: left
-              padding-left: .32rem
               box-sizing: border-box
               .customMsg
-                width: 100%
+                font-size: 0.34rem
                 .sexType 
                   display: inline-block
-                  width: .3rem
+                  width: .64rem
                   height: .3rem
-                  margin-left: .15rem
+                  margin-left: .44rem
+                  vertical-align: bottom
               .remark
                 margin-top: .3rem
+              .time
+                margin-top: .1rem
               a
                 position: absolute
-                top: 0
+                top: 0.26rem
                 right: .32rem
                 img.telIcon
-                  display: inline-block
-                  width: .5rem
-                  height: .5rem
+                  width: .6rem
+                  height: .6rem
 
 
 

@@ -197,44 +197,48 @@
         box-sizing: border-box
       .logoWrap
         width: 100%
-        padding: .2rem 0 .2rem .6rem
+        height: 1.66rem
+        padding: 0.2rem 0 0.2rem 0.32rem
         box-sizing: border-box
         font-size:0
         .customLogo
           display: inline-block
-          width: 1rem
-          height: 1rem
+          width: 1.2rem
+          height: 1.2rem
+          padding-right: .2rem
           vertical-align: top
         .logoRight
           display: inline-block
-          width: 84%
-          padding-left: .2rem
+          position: relative
           box-sizing: border-box
           text-align:left
           vertical-align: top
           font-size: .28rem
           position: relative
           .customerName
-            width: 100%
+            padding-top: 0.2rem
             span 
               vertical-align: middle
+              font-size: .34rem
+              color: #333
             img   
               display: inline-block
-              width: .35rem
-              height: .35rem
+              width: .64rem
+              height: .3rem
               vertical-align: middle
               padding-left:.1rem
           .remark
-            padding-top: .2rem
-            font-size: .24rem
+            padding-top: .1rem
+            font-size: .3rem
           .grayColor
             color: gray
           .orangeColor
             color: #FA9E15
           .customerTel
             position: absolute
-            top: 0
-            right: .4rem  
+            top: 0.2rem
+            left: 2.8rem  
+            font-size: 0.34rem
             color: #FA9E15
       .wechatWrap
         width: 100%
@@ -245,11 +249,11 @@
           display: inline-block
           border: 1px solid #FA9E15
           color: #FA9E15  
-          width: 80%
+          width: 4.2rem
           background: transparent
-          height: .7rem
+          height: .48rem
           font-size: .28rem
-          border-radius: 8px
+          border-radius: 1.04rem
     .carMsgList
       width: 100%
       background: #ffffff
