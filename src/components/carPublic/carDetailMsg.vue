@@ -331,7 +331,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .fl
     float: left
   .fr
@@ -365,10 +365,10 @@ export default {
       color: #FA9E15
     .mint-tab-item
       height: .7rem
-      line-height: .7rem
+      line-height: .7rem!important
       padding: 0  
       .mint-tab-item-label
-        line-height: .7rem
+        line-height: .7rem!important
     .tabCon
       margin-top: .7rem
       #carMsg
@@ -575,4 +575,7 @@ export default {
 </style>
 
 
-
+<style lang="stylus">
+  .mint-tab-item-label
+    line-height: .7rem!important
+</style>
