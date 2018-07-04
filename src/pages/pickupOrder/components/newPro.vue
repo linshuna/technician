@@ -67,7 +67,26 @@
   </div>
 </template>
 <script>
-  
+  export default{
+    data(){
+      return {
+        techvid:''
+      }
+    },
+    mounted: function(){
+      this.$nextTick(function(){
+        let keys = 'techerData';
+        this.$store.commit("_setName",keys);//重新设置获取自己想要的对象
+        let getTechStorage = this.$store.getters.getStorage;
+        this.techvid = getTechStorage?getTechStorage.vid:'';
+
+      })
+      
+    },
+    methods:{
+      
+    }
+  }
 </script>
 <style lang="stylus" scoped>
   @import '~modules/css/variable.styl'

@@ -66,7 +66,7 @@
         this.searchData(value)
       },
       goQuote(carno) {
-        window.location.href='./pickupOrder.html?carno='+carno+'#/quotation/'
+        window.location.href='./pickupOrder.html?carno='+carno+'#/quotation/quick-quote' 
       },
       searchData(value){
 

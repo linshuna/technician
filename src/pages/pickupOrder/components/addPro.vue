@@ -2,48 +2,18 @@
   <div class="addSever">
     <input class="search" placeholder="搜索商品名称"/>
     <span class="filter">筛选</span>
-    <div class="item-wrapper">
-      <div class="item border-bottom-1px">
+    <ul class="item-wrapper">
+      <li class="item border-bottom-1px">
         <div class="name">主气囊</div>
         <div class="code">商品编码: 23232</div>
         <div class="account">¥300</div>
         <div class="countBtn-wrapper">
           <div class="reduce" @click="reduceCount">-</div>
-          <input class="count-input" type="number" v-model="prodQty">
+          <input class="count-input" type="number" >
           <div class="add" @click="addCount">+</div>
         </div>
-      </div>
-      <div class="item border-bottom-1px">
-        <div class="name">副气囊</div>
-        <div class="code">商品编码: 23232</div>
-        <div class="account">¥300</div>
-        <div class="countBtn-wrapper">
-          <div class="reduce">-</div>
-          <input class="count-input" type="number"/>
-          <div class="add">+</div>
-        </div>
-      </div>
-      <div class="item border-bottom-1px">
-        <div class="name">仪表台修复</div>
-        <div class="code">商品编码: 23232</div>
-        <div class="account">¥300</div>
-        <div class="countBtn-wrapper">
-          <div class="reduce">-</div>
-          <input class="count-input" type="number" />
-          <div class="add">+</div>
-        </div>
-      </div>
-      <div class="item border-bottom-1px">
-        <div class="name">代理违章服务费</div>
-        <div class="code">商品编码: 23232</div>
-        <div class="account">¥300</div>
-        <div class="countBtn-wrapper">
-          <div class="reduce">-</div>
-          <input class="count-input" type="number" />
-          <div class="add">+</div>
-        </div>
-      </div>
-    </div>
+      </li>
+    </ul>
 
     <div class="btn-wrapper">
       <div class="btn border-right-1px" @click="newSever">新增</div>
@@ -55,7 +25,7 @@
   export default {
     data() {
       return {
-        prodQty: '1'
+
       }
     },
     methods: {
@@ -70,11 +40,6 @@
       }
     },
     watch:{
-    'prodQty': function(newVal,oldVal){
-        if(newVal <= 0){
-          this.prodQty = 1
-        }
-      }
     }
   }
 </script>

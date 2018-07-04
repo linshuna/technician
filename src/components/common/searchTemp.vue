@@ -10,7 +10,7 @@
                 @focus="changeType"
                 @blur="showAllData" />
         </form>
-        <car-key-code v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow" v-on:canRequest="enterSearch"></car-key-code>  
+        <car-key-code v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></car-key-code>   
     </div>
 </template>
 <script>
@@ -35,7 +35,6 @@ export default {
         }
     },
     created: function(){
-        console.log(this.setPlaceholder)
     },
     mounted: function(){
       this.$nextTick(function(){
@@ -56,9 +55,6 @@ export default {
     methods:{
         formSubmit(){
             return false;
-        },
-        enterSearch(){//回车的触发，或者是完成输入车牌
-            this.$emit('getSearchValue',this.searchValue)
         },
         showAllData(){
 

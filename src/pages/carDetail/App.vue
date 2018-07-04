@@ -3,53 +3,45 @@
     <div class="setBg">
       <div class="searchWrap">
         <div class="searchLeft">
-            <img :src="searchIcon" alt="">
-            <input type="text" v-model="searchValue" placeholder="搜索车牌">
+            <search-temp setWidthStyle="100" 
+              setPlaceholder="搜索车牌号"
+              v-on:getSearchValue="gainSearchValue" type="search-car"></search-temp>
         </div> 
+
         <div class="searchRight">
           <img :src="addIcon" alt="" class="addIcon" @click="addNewCustom">
         </div>
       </div>
-      <ul class="searchResult">
-          <li class="border-bottom-1px" @click="linkCusDetial(1)">
-              <div class="resultLeft">
-                <img :src="defaultLogo" alt="">
-              </div>
-              <div class="resultRight">
-                <p class="customMsg">粤A55555</p>
-                <p class="remark clearFloat">
-                  <span class="fl">车牌类型</span> 
-                  <img :src="rightArrowIcon" alt="" class="fr"> 
-                </p>
-                <a href="tel:15217141012">
-                  <span>李小姐</span>
-                  <img :src="telIcon" alt="" class="telIcon">
-                </a>
-              </div>
-          </li>
-          <li class="border-bottom-1px" @click="linkCusDetial(2)">
-              <div class="resultLeft">
-                <img :src="defaultLogo" alt="">
-              </div>
-              <div class="resultRight">
-                <p class="customMsg">粤A55555</p>
-                <p class="remark clearFloat">
-                  <span class="fl">车牌类型</span> 
-                  <img :src="rightArrowIcon" alt="" class="fr"> 
-                </p>
-                <a href="tel:15217141012">
-                  <span>李小姐</span>
-                  <img :src="telIcon" alt="" class="telIcon">
-                </a>
-              </div>
-          </li>
+      <ul class="searchResult" v-if="carList">
+        <li class="border-bottom-1px" v-for="(item,index) in carList" :key="index" @click="linkCusDetial(item.carvid)" >
+            <div class="resultLeft">
+              <img :src="item.icon||defaultLogo" alt="">
+            </div>
+            <div class="resultRight">
+              <p class="customMsg">{{item.carNo}}</p>
+              <p class="remark clearFloat">
+                <span class="fl">{{item.carmodel}}</span> 
+                <img :src="rightArrowIcon" alt="" class="fr"> 
+              </p>
+              <a :href="'tel:'+item.phone">
+                <span>{{item.uname}}</span>
+                <img :src="telIcon" alt="" class="telIcon">
+              </a>
+            </div>
+        </li>
       </ul>      
+      <div class="noData" v-else>
+        <no-data-tip :tipData="{typeTipe:0,titleTip:'车辆管理',conTip:'暂无车辆'}"></no-data-tip>
+      </div>
       <router-view></router-view>
     </div>
 
   </div>
 </template>
 <script>
+  import {Toast} from 'mint-ui'
+  import searchTemp  from "components/common/searchTemp.vue"
+  import noDataTip  from "components/common/noDataTip"
   export default {
     data(){
       return{
@@ -59,15 +51,56 @@
           addIcon: require("modules/images/add-icon.png"),
           telIcon: require("modules/images/telIcon.png"),
           rightArrowIcon: require("modules/images/rightArrow.png"),
+          carList: [],
+          techvid: ''
       }
     },
+    created: function(){
+      let gainTecherData = this.$store.getters.getStorage;
+      if(gainTecherData){
+        this.techvid = gainTecherData.vid;
+      }
+    },
+    mounted: function(){
+      this.$nextTick(function(){
+        this.init()
+      })
+      
+    },
+    components:{
+      'search-temp':searchTemp,
+      'no-data-tip': noDataTip,    
+    },
     methods:{
+      init(searchValue){
+        let value = searchValue?searchValue:''
+        this.$http.post('/api.php/TechCar/index',{carNo:value})
+        .then((response)=>{
+          let res = response.data;
+          if(res.errorCode == 200){
+            this.carList = res.data
+          }else{
+            Toast(res.message) 
+          }
+        })
+      },
       addNewCustom(){
         this.$router.push({path:"/addCarMsg"})
       },
       linkCusDetial(id){
         this.$router.push({path:"/carDetailMsg/"+id})
-      }
+      },
+      gainSearchValue(value){//就是触发回车的请求
+        if(!this.techvid){
+          Toast("请先登录");
+          return false;
+        }
+        if(value == ''){
+          Toast("请输入您要搜索车牌号");
+          return false;
+        }
+        this.init(value)
+      },
     }
   }
 </script>
@@ -81,13 +114,12 @@
     background #f4f4f4
     .setBg
       width: 100%
-      background #ffffff
       .searchWrap 
         width:100%
-        padding-left: .2rem
+        padding: .2rem
         box-sizing: border-box
         font-size: 0
-        padding-top: .2rem
+        background #ffffff
         .searchLeft,.searchRight
           display: inline-block
           font-size: .28rem
@@ -95,18 +127,18 @@
           width: 85%
           vertical-align: middle
           text-align: left
-          border: 1px solid #f4f4f4
-          border-radius: 5px
-          padding: .15rem .2rem
-          box-sizing: border-box
-          img 
-            display: inline-block
-            width: .35rem
-            vertical-align: middle
-          input 
-            display: inline-block
-            width: 90%
-            vertical-align: middle
+          // border: 1px solid #f4f4f4
+          // border-radius: 5px
+          // padding: .15rem .2rem
+          // box-sizing: border-box
+          // img 
+          //   display: inline-block
+          //   width: .35rem
+          //   vertical-align: middle
+          // input 
+          //   display: inline-block
+          //   width: 90%
+          //   vertical-align: middle
         .searchRight
           width: 15%  
           vertical-align: middle

@@ -3,10 +3,22 @@ const GetUrlName = {}
 const orderNo = GetQueryString('orderNo');
 const carno = decodeURI(GetQueryString('carno'))||decodeURI(GetQueryString('carNo'));
 const reckorderNo = GetQueryString('reckorderNo');
+const scienceorderNo = GetQueryString('scienceorderNo')
+
 GetUrlName.install = function(Vue,options){
   Vue.prototype.orderNo = orderNo
   Vue.prototype.carno = carno
   Vue.prototype.reckorderNo = reckorderNo
+  Vue.prototype.scienceorderNo = scienceorderNo
+  //*******获取报价的类型********/
+  Vue.prototype.storeList = 'store-list'
+  Vue.prototype.pickUpList = 'pick-up-list'
+  Vue.prototype.quickQuote = 'quick-quote'
+  Vue.prototype.getQuoteName = function (value) { 
+    if (value == this.storeList) return 'TechScience';
+      else if (value == this.pickUpList) return 'TechService';
+        else return 'TechReck';
+  }
 }
 export default GetUrlName;
 

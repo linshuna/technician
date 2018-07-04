@@ -6,7 +6,7 @@
           <span class="checkedTime">{{index}}</span>
         </p>
         <div class="serverDetailList border-bottom-1px" v-for="(serListItem,serListIndex) in item" :key="serListIndex" @click="serDetail(serListIndex)">
-          <p>{{serListIndex}}</p>
+          <p>单号：{{serListIndex}}</p>
           <p class="clearFloat">
             <span class="fl">项目名称</span>
             <span class="fr">项目金额</span>
@@ -33,12 +33,10 @@
   export default {
     data(){
       return {
-        carno: '',
         serverList:[]
       }
     },
     created:function(){
-      this.carno = decodeURI(GetQueryString("carno"));
       this.init()
     },
     filters:{

@@ -1,19 +1,12 @@
 <template>
   <div class="addSever">
     <form action="javascript:return true">
-        <input class="search" type="search" placeholder="搜索服务名称/编码" v-model="searchCon" @keyup.13="init(searchCon)"/>
+        <input class="search" type="search" :placeholder="setPlaceholder" v-model="searchCon" @keyup.13="init(searchCon)"/>
     </form>
+    
     <div class="item-wrapper">
       <div :class="{'is_selected':item.bol}"  @click.stop="item.bol=!item.bol" v-for="(item,index) in techReckList" :key="index">
-        <!-- <div class="name">{{item.name}}</div>
-        <div class="code">编码: {{item.code}}</div>
-        <div class="account">¥{{item.price}}</div>
-        <div class="countBtn-wrapper">
-          <div class="reduce" @click.stop="reduceCount(index,item.num)">-</div>
-          <input class="count-input" type="number" v-model.number="item.num"/>
-          <div class="add" @click.stop="addCount(index,item.num)">+</div>
-        </div> -->
-        <server-temp v-bind:item.sync="item" v-bind:isEditor="true" class="border-bottom-1px"></server-temp>
+        <server-temp v-bind:item.sync="item" v-bind:isEditor="true" :tranType="type" class="border-bottom-1px"></server-temp>
       </div>
     </div>
 
@@ -25,37 +18,41 @@
 </template>
 <script>
   import {Toast} from "mint-ui"
-  import serverTemp from './serverTemp.vue'
+  import serverTemp from './serverTemp.vue' 
   export default {
     data() {
       return {
+        type:'',
         sevQty:'1',
         techReckList:[],
         searchCon:'',
-        techvid:''
+        techvid:'',
+        setPlaceholder:''
       }
     },
     components:{
       'server-temp':serverTemp
     },
     created:function(){
+      this.type = this.$route.params.type;
       this.$store.state.key = "techerData"
       let getTechStorage = this.$store.getters.getStorage;
       this.techvid = getTechStorage?getTechStorage.vid:'';
+      if(this.type == this.storeList) this.setPlaceholder='搜索材料名称'
+        else if(this.type == this.pickUpList) this.setPlaceholder='搜索商品名称/编码'
+        else if(this.type == this.quickQuote) this.setPlaceholder='搜索服务名称/编码'
       this.init('');//初始获取服务项目的数据
 
     },
     methods: {
       init(con){
-        let reqHttp = '';
+        // reqHttp = '/api.php/TechService/lists';
+        let reqHttp = '/api.php/'+this.getQuoteName(this.type)+'/lists';
         let key = '';
-        if(this.orderNo){
-          reqHttp = '/api.php/TechService/lists';
-          key = 'addTempSerData'
-        }else{
-          reqHttp = '/api.php/TechReck/lists';
-          key = 'addTempProData'
-        }
+        if(this.type == this.pickUpList) key='addTempSerData'
+        else if(this.type == this.storeList) key='addTechScience'
+        else key='addTempProData'
+        
         this.$http.post(reqHttp,{search:con})
         .then((response)=>{
           let res = response.data
@@ -86,13 +83,27 @@
         })
       },
       newSever() {
-        this.$router.push('/newSever')
+        this.$router.push("/newSever/"+this.type)
+        
       },
       saveProList(){
-          let project = []
-          this.techReckList.map((item,index)=>{
-            if(item.bol){
-              //要push item的内容
+        // reqHttp = '/api.php/TechService/saves';
+        let reqHttp = '/api.php/'+this.getQuoteName(this.type)+'/saves';
+        let project = []
+        console.log(this.techReckList)
+        this.techReckList.map((item,index)=>{
+          if(item.bol){
+            //要push item的内容
+            if(this.type==this.storeList){
+              project.push({
+                scienceid: item.id,
+                num: item.num,
+                types: item.types,
+                pprice: item.pprice,
+                price: item.price,
+                code: item.code
+              })
+            }else{
               project.push({
                 projectid: item.id,
                 num: item.num,
@@ -100,39 +111,60 @@
                 pprice: item.pprice,
                 price: item.price,
                 code: item.code
-              })
+              })  
             }
-          })
-          if(project.length<=0){
-            Toast('请选择服务类型');
-            return false;
-          }
 
-          let gainListsData = {};
-          gainListsData.carNo = this.carno
-          gainListsData.techvid = this.techvid
+          }
+        })
+        if(project.length<=0){
+          Toast('请选择服务类型');
+          return false;
+        }
+
+        let gainListsData = {};
+        gainListsData.carNo = this.carno
+        gainListsData.techvid = this.techvid
+        
+        if(this.type==this.storeList){
+          gainListsData.orderNo = this.orderNo
+          gainListsData.science = project
+        }else if(this.type==this.pickUpList){
+          gainListsData.orderNo = this.orderNo
           gainListsData.project = project
-          
-          gainListsData = JSON.stringify(gainListsData)
-          let _this = this;
-          this.$http.post('/api.php/TechReck/saves',{lists:gainListsData})
-          .then((response)=>{
-            let res = response.data;
-            Toast(res.message)
-            if(res.errorCode == 200){
-                let reckorderNo = res.data.reckorderNo
-                setTimeout(function(){
-                  if(_this.orderNo){
-                    window.location.href = "pickupOrder.html?carno="+_this.carno+"&orderNo="+_this.orderNo+"&reckorderNo="+reckorderNo+"#/quotation/"
-                  }else{
-                    window.location.href = "pickupOrder.html?carno="+_this.carno+"&reckorderNo="+reckorderNo+"#/quotation/"
-                  }
-                  
-                },500)
+        }else{
+          gainListsData.project = project
+        }
+        
+        gainListsData = JSON.stringify(gainListsData)
+        let _this = this;
+        this.$http.post(reqHttp, {lists:gainListsData})
+        .then((response)=>{
+          let res = response.data;
+          Toast(res.message)
+          let gainUrl = '';
+          let gainNo = ''
+          if(res.errorCode == 200){
+            if(this.type==this.storeList){
+              gainNo = res.data.scienceorderNo
+            }else{
+              gainNo = res.data.reckorderNo
             }
-            
-            
-          })
+            if(this.type==this.pickUpList){
+              gainUrl = "pickupOrder.html?carno="+this.carno+"&orderNo="+this.orderNo+"&reckorderNo="+gainNo+"#/quotation/"+this.type;
+            }else if(this.type=='store-list'){
+              gainUrl = "pickupOrder.html?carno="+this.carno+"&orderNo="+this.orderNo+"&scienceorderNo="+gainNo+"#/quotation/"+this.type;
+            }else{
+              gainUrl = "pickupOrder.html?carno="+this.carno+"&reckorderNo="+gainNo+"#/quotation/"+this.type;
+            }
+            setTimeout(function(){
+              window.location.href = gainUrl
+            },500)
+          }else{
+            Toast(res.message)
+          }
+          
+          
+        })
       }
     }
   }
@@ -170,7 +202,7 @@
         .border-bottom-1px::after
           background: #eae7e7 
       .is_selected
-        background: #ffe6c1!important
+        background: #ffecd1!important
         color: #fff 
         .item
           .account

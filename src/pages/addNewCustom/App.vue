@@ -145,7 +145,7 @@ export default {
       cusLabelText:'',//选中的value值
       cusLabelValue:0,
       cusTypeStyle:  [{name:'新客户',value:0}, {name:'普通',vlaue:1}, {name:'金牌',value:2}, {name:'钻石',vlaue:3}],
-      startDate: new Date('1970/1/1'),//开始的生日日期
+      startDate: new Date('1960/1/1'),//开始的生日日期
       endDate: new Date(),//结束的生日日期
       birthDate: '',//选中的生日日期
       cusAddress:'',//客户单位地址

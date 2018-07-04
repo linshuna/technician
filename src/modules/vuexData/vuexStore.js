@@ -5,7 +5,7 @@ Vue.use(Vuex)
 import vueAxiosPlugin from "modules/js/axiosPrototype.js"
 Vue.use(vueAxiosPlugin)
 import {Toast} from 'mint-ui'
-const defaultUrl = "/mits"
+const defaultUrl = "/susun" //默认的路径
 const store = new Vuex.Store({
     state:{
         key:'techerData',
@@ -24,7 +24,7 @@ const store = new Vuex.Store({
             }
             return data;
         },
-        getReturnUrl: function(state){
+        getReturnUrl: function(state){//获取url
             let url = window.location.href; 
             let returnUrl = '';
             if(url.indexOf("=")>-1){
@@ -103,8 +103,6 @@ const store = new Vuex.Store({
                     bodyObj.removeChild(toastObj[i])
                 }
             }    
-            
-            
         }
     }
 })

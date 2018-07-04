@@ -54,12 +54,12 @@
       <div class="setMsg">
         <p class="setPadding clearFloat">
           <span class="fl">其他联系人</span> 
-          <span class="fr grayColor">{{cusItem.contact?cusItem.contact:'暂无'}}</span>
+          <span class="fr grayColor">{{cusItem.contact | noData}}</span>
         </p>
       </div>
       <div class="setMsg setBtmPadding">
-        <p class="setPadding border-bottom-1px">生日：{{cusItem.birthday}}</p>
-        <p class="setPadding">地址：{{cusItem.address}}</p>
+        <p class="setPadding border-bottom-1px">生日：{{cusItem.birthday | noData}}</p>
+        <p class="setPadding">地址：{{cusItem.address | noData}}</p>
       </div>
       <button class="editorBtn" @click="editorFn">编辑</button>
     </div>  
@@ -73,7 +73,7 @@
 
   import {format} from 'modules/js/date.js'
   import {GetQueryString} from 'modules/js/config.js'
-
+  import {Toast} from 'mint-ui'
   export default {
     name: 'App',
     data(){
@@ -102,7 +102,12 @@
       let techvid = gainTecherData.vid||'';
       this.techvid = techvid;
       this.init(this.clientvid,techvid)
-      
+    },
+    filters:{
+      noData:function(value){
+        if(!value) return '暂无'
+          else return value
+      }
     },
     methods:{
       init:function(clientvid,techvid){

@@ -63,6 +63,7 @@ export default {
       text-align: center
       font-size: .28rem
       padding-top: 1rem
+      color: #fa9e15
       img
         display: inline-block
         width: 2.5rem

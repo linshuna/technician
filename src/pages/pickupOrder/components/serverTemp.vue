@@ -11,6 +11,7 @@
       <div class="show-num" v-else>
         x {{item.num}}
       </div>
+      <p v-show="tranType=='store-list'&&item.sku" class="setSku">库存量：{{item.sku}}</p>
   </div>
 </template>
 <script>
@@ -23,7 +24,11 @@
     props:{
       item:{type: Object},
       isEditor: {type: Boolean},
-      isDel: {type: Boolean}
+      isDel: {type: Boolean},
+      tranType: {type:String}
+    },
+    created: function(){
+
     },
     methods: {
       addSever() {
@@ -35,15 +40,15 @@
         this.$emit('update:item',item)
       },
       reduceCount(item) {
-        item.num--;
-        if(this.isDel&&item.num<=0){//item.num为0的话，就要删除
+
+        if(this.isDel&&item.num<=1){//item.num为0的话，就要删除
           this.$emit('deleteFn')
           return false;
         }
-        if(!this.isDel&&item.num<1){
+        if(!this.isDel&&item.num<=1){
           return false;
         }   
-
+        item.num--;
         this.$emit('update:item',item)
         
       },
@@ -65,7 +70,7 @@
     background: #ffffff    
   .item
     font-size: .28rem
-    line-height: .6rem
+    line-height: .5rem
     position: relative
     z-index: 5
     padding: 0 0.2rem  
@@ -77,6 +82,9 @@
       position: absolute
       right: .2rem
       bottom: 0 
+    .setSku
+      font-size: .22rem  
+      color: #bfbfbf
     .countBtn-wrapper
       position: absolute
       right: .2rem  

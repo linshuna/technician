@@ -213,16 +213,16 @@
           img 
             width: .6rem
             height: .6rem
-      .noData
-        width: 100%
-        text-align: center    
-        margin-top: 2rem  
-        color: #fa9e15
-        .noDataLogo
-          display: inline-block
-          width: 2.5rem
-        p
-          line-height: .45rem
+      // .noData
+      //   width: 100%
+      //   text-align: center    
+      //   margin-top: 2rem  
+      //   color: #fa9e15
+      //   .noDataLogo
+      //     display: inline-block
+      //     width: 2.5rem
+      //   p
+      //     line-height: .45rem
       div
         width: 100%      
         .searchResult

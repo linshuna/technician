@@ -18,9 +18,9 @@
               <span class="line"></span>
             </div>
             <div class="searchRight">
-              <p class="grayColor">名字 2018-09-09 15:15</p>
-              <p class="grayColor">预计交车时间:2018-09-9</p>
-              <p class="grayColor">嘱咐: 无</p>
+              <p class="grayColor">{{orderCar.nickname | noTipFilter}} {{orderCar.intime | noTipFilter}}</p>
+              <p class="grayColor">预计交车时间:{{orderCar.gettime | noTipFilter}}</p>
+              <p class="grayColor">嘱咐: {{orderCar.remark | noTipFilter}}</p>
               <div class="btn-wrapper">
                 <div class="btn check" @click="look">查看</div>
                 <div class="btn" @click="edit">编辑</div>
@@ -137,16 +137,17 @@
           {
             className:'nav-icon-quotation',
             name:'报价',
-            tag: 'quotation'
+            tag: 'quotation/pick-up-list'
           },
           {
             className:'nav-icon-material',
             name:'材料单',
-            tag: 'addPro'
+            tag: 'quotation/store-list'
           },
           {
             className:'nav-icon-history',
-            name:'进店历史'
+            name:'进店历史',
+            tag:''
           },
           {
             className:'nav-icon-file',
@@ -162,7 +163,14 @@
         carvid: '',
         clientvid: '',
         orderNo: '',
-        techvid: null
+        techvid: null,
+        orderCar:null
+      }
+    },
+    filters:{
+      noTipFilter:function(value){
+        if(!value) return '暂无';
+          else return value;
       }
     },
     methods: {
@@ -173,6 +181,7 @@
           let res = response.data
           if(res.errorCode == 200){
             console.log(res.data)
+            this.orderCar = res.data.order
           }else{
             Toast(res.message)
           }
@@ -188,10 +197,10 @@
         this.$router.push('/check')
       },
       addSever() {
-        this.$router.push('/quotation')
+        this.$router.push('/quotation/pick-up-list')
       },
       addPro() {
-        this.$router.push('/addPro')
+        this.$router.push('/quotation/store-list')
       },
       dispath() {
         this.$router.push('/dispath')
@@ -200,6 +209,7 @@
         this.$router.push('/bill')
       },
       handleNavClick(val) {
+        if(!val) return false;
         if(val.indexOf(".html")>-1){
           window.location.href = val;
         }else{

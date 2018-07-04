@@ -53,7 +53,7 @@ export default new Router({
         component: Check
       },
       {
-        path: '/quotation',
+        path: '/quotation/:type',
         name: 'quotation',
         component: Quotation,
         meta:{
@@ -61,7 +61,7 @@ export default new Router({
         }
       },
       {
-        path: '/addSever',
+        path: '/addSever/:type',
         name: 'addSever',
         component: AddSever,
         meta:{
@@ -71,7 +71,10 @@ export default new Router({
       {
         path: '/addPro',
         name: 'addPro',
-        component: AddPro
+        component: AddPro,
+        meta:{
+          title:'材料单'
+        }
       },
       {
         path: '/dispath',
@@ -84,7 +87,7 @@ export default new Router({
         component: Bill
       },
       {
-        path: '/newSever',
+        path: '/newSever/:type',
         name: 'newSever',
         component: NewSever,
         meta:{

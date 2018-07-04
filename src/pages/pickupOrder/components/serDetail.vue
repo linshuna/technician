@@ -9,25 +9,23 @@
     </div>
 </template>
 <script>
-import serverTemp from './serverTemp.vue'
-import {GetQueryString} from 'modules/js/config.js'
+import serverTemp from './serverTemp.vue' 
+import {Toast} from 'mint-ui'
 export default {
     data(){
         return{
-            serverList: [],
-            reckorderNo: ''
+            serverList: []
         }
     },
     components:{
         'server-temp': serverTemp
     },
     created: function(){
-        this.reckorderNo = GetQueryString('reckorderNo');
         this.init()
     },
     methods:{
         init: function(){
-            this.$http.post('/api.php/TechReck/checkreck',{reckorderNo: this.reckorderNo})
+            this.$http.post('api.php/TechReck/checkreck',{reckorderNo: this.reckorderNo})
             .then((response)=>{
                 let res = response.data;
                 if(res.errorCode == 200){
