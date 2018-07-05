@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view @getVal="getVal" @getType1Val="getType1Val"></router-view>
+    <router-view @getVal="getVal" @getType1Val="getType1Val" @getCarno="getCarno"></router-view>
     <div class="pickup">
       <div class="title border-bottom-1px">接车事项</div>
       <div class="atStore border-bottom-1px">
@@ -30,7 +30,10 @@
       </div>
     </div>
 
-    <mt-datetime-picker @confirm="handleConfirm" ref="pickerDelivery" type="datetime" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" hour-format="{value} 时" minute-format="{value} 分"></mt-datetime-picker>
+    <mt-datetime-picker 
+      @confirm="handleConfirm" 
+      :startDate="startDate"
+      ref="pickerDelivery" type="date" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日"></mt-datetime-picker>
 
     <mt-popup v-model="popupVisible" position="bottom" popup-transition="popup-fade">
       <div class="picker-toolbar picker-toolbar-oil">  
@@ -58,6 +61,7 @@
     name: 'App',
     data () {
       return {
+        carno:'',
         carvid: '',
         clientvid: '',
         techvid: null,
@@ -73,7 +77,9 @@
           {
             values: ['1/2','1/3','1/4','满']
           }
-        ]
+        ],
+        startDate: new Date(),//开始的生日日期
+        // endDate: new Date(new Date().getFullYear()+"/12/31"),//结束的生日日期
       }
     },
     computed: {
@@ -107,8 +113,12 @@
         this.type_2_Val = obj
         console.log(obj)
       },
+      getCarno(value){
+        this.carno = value
+      },
       getType1Val(obj) {
         this.type_1_Val = obj
+        console.log(obj)
       },
       handleReceive() {
         console.log(this.$route.path)
@@ -147,7 +157,8 @@
               let instance = Toast(res.message)
                 setTimeout(() => {
                   instance.close()
-                }, 2000)
+                  window.location.href = "/pickupOrder.html?orderNo="+res.data.orderNo+"&carNo="+this.carno+"#/path"
+                }, 1000)
             }else{
               Toast(res.message)
             }

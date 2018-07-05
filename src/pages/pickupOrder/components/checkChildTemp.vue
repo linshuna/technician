@@ -3,8 +3,8 @@
       <div>{{item.checkname}}</div>
         <div class="main-c">{{item.descs}}</div>
         <div class="main-r">
-          <span class="bad">不良</span>
-          <span class="normal active">正常</span>
+          <span :class="{'active':!item.bol}" class="bad" @click="changeBol">不良</span>
+          <span :class="{'active':item.bol}" class="normal" @click="changeBol">正常</span>
         </div>
   </div>
 </template>
@@ -16,6 +16,15 @@
     data(){
       return {
 
+      }
+    },
+    created:function(){
+      // console.log(this.item)
+    },
+    methods:{
+      changeBol: function(){
+          this.item.bol = !this.item.bol
+          this.$emit('setChangeItem',this.item)
       }
     }
   }  

@@ -151,13 +151,24 @@
         let project = [];
         this.serverList.map((item,index)=>{
           //要push item的内容
-          project.push({
-            projectid: item.projectid,
-            num: item.num,
-            types: item.types,
-            pprice: item.pprice,
-            price: item.price,
-          })
+          if(this.type==this.storeList){
+            project.push({
+              scienceid: item.scienceid,
+              num: item.num,
+              types: item.types,
+              pprice: item.pprice,
+              price: item.price,
+            })
+          }else{
+            project.push({
+              projectid: item.projectid,
+              num: item.num,
+              types: item.types,
+              pprice: item.pprice,
+              price: item.price,
+            })  
+          }
+          
         })
         let msgTip = '';
         let _this = this;
@@ -170,10 +181,14 @@
         .then(action => {
             let gainListsData = {};
             gainListsData.carNo = this.carno
-            gainListsData.project = project
             gainListsData.techvid = this.techvid
-            if(this.type=='store-list') gainListsData.scienceorderNo=this.scienceorderNo
-              else gainListsData.reckorderNo=this.reckorderNo
+            if(this.type=='store-list') {
+              gainListsData.scienceorderNo=this.scienceorderNo
+              gainListsData.science = project
+            }else {
+              gainListsData.reckorderNo=this.reckorderNo
+               gainListsData.project = project
+            }
             if(this.type!=='quick-quote') gainListsData.orderNo=this.orderNo
             gainListsData = JSON.stringify(gainListsData)
 

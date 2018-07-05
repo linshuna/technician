@@ -44,7 +44,7 @@
     }
   }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
   .fl
     float: left
   .fr 

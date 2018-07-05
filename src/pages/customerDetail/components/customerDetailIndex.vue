@@ -9,7 +9,7 @@
               <span>{{cusItem.uname}}</span>
               <img :src="cusItem.sex==1?boyIcon:girlIcon" class="sexIcon">
             </p>
-            <p class="remark" :class="{'grayColor':!cusItem.remark,'orangeColor':cusItem.remark}">
+            <p class="setRemark" :class="{'grayColor':!cusItem.remark,'orangeColor':cusItem.remark}">
               {{cusItem.remark?cusItem.remark:'暂无备注'}}
             </p>
             <a :href="'tel:'+cusItem.phone" class="customerTel">{{cusItem.phone}}</a>
@@ -215,6 +215,8 @@
           vertical-align: top
           font-size: .28rem
           position: relative
+          width: 80%
+          overflow: hidden
           .customerName
             padding-top: 0.2rem
             span 
@@ -227,9 +229,19 @@
               height: .3rem
               vertical-align: middle
               padding-left:.1rem
-          .remark
+          .setRemark
+            overflow: hidden
+            /* autoprefixer: off */
+            -webkit-box-orient: vertical;
+            /* autoprefixer: on */
+            text-overflow: ellipsis
+            display: -webkit-box
+            -webkit-line-clamp: 2
             padding-top: .1rem
             font-size: .3rem
+            width: 100%
+            font-size: 0.24rem
+            line-height: .32rem
           .grayColor
             color: gray
           .orangeColor

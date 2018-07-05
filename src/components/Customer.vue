@@ -144,7 +144,7 @@
     }
   }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
   .orangeColor
     color: #fa9e15
     font-size: .24rem!important
@@ -195,19 +195,6 @@
           box-sizing: border-box
           background-color #fff
           border-radius: 5px
-          // border: 1px solid #f4f4f4
-          // padding: .15rem .2rem
-          // img 
-          //   display: inline-block
-          //   width: .35rem
-          //   vertical-align: middle
-          // form
-          //   display: inline-block
-          //   width: 90%
-          //   vertical-align: middle
-          //   input 
-          //     display: inline-block
-          //     width: 100%
         .searchRight
           width: 10%  
           vertical-align: middle
@@ -216,16 +203,6 @@
             padding-left: 0.14rem
             width: .6rem
             height: .6rem
-      // .noData
-      //   width: 100%
-      //   text-align: center    
-      //   margin-top: 2rem  
-      //   color: #fa9e15
-      //   .noDataLogo
-      //     display: inline-block
-      //     width: 2.5rem
-      //   p
-      //     line-height: .45rem
       div
         width: 100%      
         .searchResult
@@ -242,13 +219,13 @@
               font-size: .28rem
               vertical-align: top
             .resultLeft
-              width: 1.92rem
+              width: 22%
               text-align left
               img
                 width: 1.2rem
                 height: 1.2rem
             .resultRight
-              width: 5.58rem
+              width: 78%
               height: 1.52rem
               position: relative
               color: #999
@@ -264,6 +241,10 @@
                   vertical-align: bottom
               .remark
                 margin-top: .3rem
+                width: 84%
+                overflow: hidden
+                text-overflow: ellipsis
+                white-space: nowrap
               .time
                 margin-top: .1rem
               a

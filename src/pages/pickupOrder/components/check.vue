@@ -1,71 +1,123 @@
 <template>
   <div class="check">
-    <mt-navbar v-model="selected">
-      <mt-tab-item v-for="(item,index) in allList" :id="index" :key="index">
-        {{item.name}}
-      </mt-tab-item>
-    </mt-navbar>
+    <loading v-if="loading"></loading>
+    <template v-else>
+      <mt-navbar v-model="selected">
+        <mt-tab-item v-for="(item,index) in allList" :id="index" :key="index">
+          {{item.name}}
+        </mt-tab-item>
+      </mt-navbar>
+      <mt-tab-container v-model="selected" class="tabContainer">
+        <mt-tab-container-item v-for="(item,index) in allList" :id="index" :key="index">
+          <div class="title">
+            <div>项目名称</div>
+            <div class="setFlex">标准</div>
+            <div>检车意见</div>
+          </div>
+          <ul>
+            <li class="item" v-for="childItem in item.list">
+              <check-child-temp v-bind:item.sync="childItem" v-on:setChangeItem="getChangeItem"></check-child-temp>
+            </li>
+          </ul>
+        </mt-tab-container-item>
+      </mt-tab-container>
+      <div class="conclusion-wrapper border-bottom-1px">检车结论
+        <div class="lastKm fr">上次里程：无</div>
+        <textarea class="conclusion" placeholder="请输入检车结论" v-model="remark"></textarea>
+      </div>
+      <div class="btn" @click="save">保存</div>
+    </template>
 
-    <!-- tab-container -->
-    <mt-tab-container v-model="selected" class="tabContainer">
-      <mt-tab-container-item v-for="(item,index) in allList" :id="allList" :key="index">
-        <div class="title">
-          <div>项目名称</div>
-          <div class="setFlex">标准</div>
-          <div>检车意见</div>
-        </div>
-        <ul>
-          <li class="item" v-for="childItem in item.list">
-            <check-child-temp v-bind:item="childItem"></check-child-temp>
-          </li>
-        </ul>
-      </mt-tab-container-item>
-    </mt-tab-container>
-    <div class="conclusion-wrapper border-bottom-1px">检车结论
-      <div class="lastKm fr">上次里程：无</div>
-      <textarea class="conclusion" placeholder="请输入检车结论"></textarea>
-    </div>
-    <div class="btn">保存</div>
   </div>
 </template>
 <script>
   import {Toast} from 'mint-ui'
+  import {mapState} from 'vuex'
   import checkChildTemp from './checkChildTemp.vue'
+  import loading from 'components/common/Loading.vue'
   export default {
     data() {
       return{
         selected: 0,
         value:'',
         allList:null,
-        paintList:null,
-        airList: null,
-        enginList: null,
-        underpanList: null,
-        roadTestList: null
+        remark: ''
       }
     },
     mounted:function(){
       this.$nextTick(function(){
         this.init()
+        console.log(this.carno)
       })
     },
     components:{
-      'check-child-temp':checkChildTemp
+      'check-child-temp':checkChildTemp,
+      'loading': loading
+    },
+    computed:{
+      ...mapState(['loading'])
     },
     methods: {
       init:function(){
+        this.$store.commit('showLoading')
         this.$http.get('/api.php/TechService/projects')
           .then((response)=>{
             let res = response.data;
             let data = res.data;
+            this.$store.commit('hideLoading')
             if(res.errorCode == 200){
               if(!data) return false;
               this.selected = 0
               this.allList = data;
-              this.paintList = data[0].list
-              this.airList = data[1].list
-              this.enginList = data[2].list
-              this.underpanList = data[3].list
+              this.allList.map((item,index)=>{
+                item.list.map((childItem,childIndex)=>{
+                  this.$set(childItem,'bol',true)
+                })
+                
+              })
+            }else{
+              Toast(res.message)
+            }
+          })
+      },
+      getChangeItem:function(value){
+          console.log(value)
+          this.allList.map((item,index)=>{
+            item.list.map((childItem,childIndex)=>{
+              if(value.id==childItem.id){
+                this.$set(item.list,childIndex,value)
+              }
+            })
+            
+          })
+          
+      },
+      save:function(){
+          console.log(this.allList)
+          let checklist = [];
+          this.allList.map((item,index)=>{
+            item.list.map((childItem,childIndex)=>{
+              checklist.push({
+                id: childItem.id,
+                status: childItem.bol?1:0
+              })
+            })
+          })
+          let listData = JSON.stringify({
+            orderNo: this.orderNo,
+            remark: this.remark,
+            checklist: checklist
+          })
+          let _this = this;
+          this.$http.post('/api.php/TechService/saveprojects',{lists:listData})
+          .then((response)=>{
+            let res = response.data;
+            if(res.errorCode == 200){
+              Toast("成功修改检测")
+              setTimeout(function(){
+                window.location.href = _this.defaultUrl+"/pickupOrder.html?orderNo="+_this.orderNo+"&carNo="+_this.carno+"#/path"  
+              },500)
+              
             }else{
               Toast(res.message)
             }
@@ -142,4 +194,8 @@
       text-align: center
       color: #fff
       background: $color-main         
+</style>
+<style lang="stylus">
+  .mint-navbar .mint-tab-item
+    padding: 10px 0;
 </style>

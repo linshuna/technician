@@ -11,13 +11,14 @@ import Setting from 'components/userChildren/Setting.vue'
 import Guide from 'components/userChildren/Guide.vue'
 import Coupon from 'components/userChildren/Coupon.vue'
 import Wallet from 'components/userChildren/Wallet.vue'
-
+import GetUrlName from 'modules/js/getUrlName.js'
+Vue.use(GetUrlName)
 
 Vue.use(Router)
 
-export default new Router({
-  mode: 'history',
-  base: '/susun', 
+export default new Router({ 
+  // mode: 'history',
+  base: this.defaultUrl, 
   routes: [
     {
       path: '/',

@@ -4,8 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import getRem from 'modules/js/getRem.js'
 import vueAxiosPlugin from 'modules/js/axiosPrototype.js'
+import GetUrlName from 'modules/js/getUrlName.js'
 Vue.use(vueAxiosPlugin)
 Vue.use(getRem) 
+Vue.use(GetUrlName)
 
 import store from 'modules/vuexData/vuexStore.js'
 

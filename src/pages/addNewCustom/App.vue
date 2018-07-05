@@ -37,7 +37,7 @@
             <span class="redColor">*</span>
           </span>
           <div class="setCusRight">
-            <input type="text" placeholder="请输入客户手机号" v-model="cusPhone"/>
+            <input type="tel" placeholder="请输入客户手机号" v-model="cusPhone"/>
           </div>
         </li>
         <li>
@@ -305,7 +305,8 @@ export default {
                 },1000)  
               }else{
                 setTimeout(function(){
-                  window.location.href = "index.html#/customer"
+                  // window.location.href = "index.html#/customer"
+                  window.location.href = this.default+"index.html#/customer"
                 },1000)
               }
               
@@ -315,7 +316,7 @@ export default {
             
           })
 
-      });
+      }).catch(()=>{})
       
     }
     

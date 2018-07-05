@@ -19,6 +19,9 @@ Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Cell.name, Cell);
 import vueAxiosPlugin from "modules/js/axiosPrototype.js"
 Vue.use(vueAxiosPlugin)
+import GetUrlName from 'modules/js/getUrlName.js'
+Vue.use(GetUrlName)
+
 
 import 'modules/css/reset.styl'
 import 'mint-ui/lib/style.css'

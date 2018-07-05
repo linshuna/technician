@@ -58,6 +58,7 @@
             this.name = data.client.uname
             this.sex = data.client.sex
             this.phone = data.client.phone
+            this.$emit('getCarno',this.carno)
           }else{
             Toast(res.message)
           }

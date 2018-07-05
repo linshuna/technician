@@ -91,15 +91,16 @@
     import searchTemp  from "components/common/searchTemp.vue"
     export default {
         data () {
-        return {
-            noDataImg: require('modules/images/noData-order.png'),
-            type:'atServe',
-            carno: '',
-            isShow: false,
-            atServeOrder: [],
-            waitPayOrder: [],
-            pickedOrder: []
-        }
+          return {
+              noDataImg: require('modules/images/noData-order.png'),
+              type:'atServe',
+              carno: '',
+              isShow: false,
+              atServeOrder: [],
+              waitPayOrder: [],
+              pickedOrder: [],
+              techvid: ''
+          }
         },
         methods:{
             gainSearchValue(value){
@@ -110,8 +111,8 @@
                 window.location.href = `./pickupOrder.html?orderNo=${orderNo}&carNo=${carNo}#/path`
                 //this.$router.push('/path')
             },
-            getOrderList(carNo) {
-                this.$http.post('/api.php/TechService/index',{carNo: carNo})
+            getOrderList() {
+                this.$http.post('/api.php/TechService/index',{carNo: this.carno,techvid: this.techvid})
                 .then((response)=>{
                     let res = response.data;
                     if(res.errorCode == 200){
@@ -135,7 +136,11 @@
             }
         },
         created() {
-            this.getOrderList(this.carno)
+            let key = 'techerData'
+            this.$store.commit('_setName',key)
+            let techerDataJson = this.$store.getters.getStorage
+            this.techvid = techerDataJson.vid
+            this.getOrderList();//调用初始数据
         },
         components:{
             'car-key-code':carKeyCode,

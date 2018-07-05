@@ -45,7 +45,10 @@ export default new Router({
       {
         path: '/edit',
         name: 'edit',
-        component: Edit
+        component: Edit,
+        meta: {
+          title:'接车事项'
+        }
       },
       {
         path: '/check',

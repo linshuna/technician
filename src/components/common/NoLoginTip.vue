@@ -19,7 +19,7 @@
     }
   }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
   .orangeColor
     color: #fa9e15
     font-size: .22rem!important

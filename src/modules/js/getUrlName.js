@@ -5,7 +5,9 @@ const carno = decodeURI(GetQueryString('carno'))||decodeURI(GetQueryString('carN
 const reckorderNo = GetQueryString('reckorderNo');
 const scienceorderNo = GetQueryString('scienceorderNo')
 
-GetUrlName.install = function(Vue,options){
+GetUrlName.install = function (Vue, options) {
+  // Vue.prototype.defaultUrl = 'http://localhost:8080'
+  Vue.prototype.defaultUrl = '/susun'
   Vue.prototype.orderNo = orderNo
   Vue.prototype.carno = carno
   Vue.prototype.reckorderNo = reckorderNo
