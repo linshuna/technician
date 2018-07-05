@@ -17,23 +17,34 @@
           <mt-tab-container class="page-tabbar-container" v-model="selected">  
             <mt-tab-container-item id="未使用"> 
               <div class="couponList">
-                <ul>
-                  <li>
-                    <p>20元洗车券</p>
-                    <p class="setMarTop">结束时间：xxxx-xx-xx</p>
-                    <button class="setListRightBtm">立即使用</button>
+                <ul class="conpon-card">
+                  <li class="card-item">
+                    <div class="item-top">
+                      <span>¥</span>
+                      <p class="number">20</p>
+                      <p class="type">洗车券</p>
+                      <button class="usebtn">立即使用</button>
+                    </div>
+                    <div class="item-bottom">
+                      <p>结束时间：2018.06.30</p>
+                    </div>
                   </li>
                 </ul>
               </div>
-              
             </mt-tab-container-item>  
             <mt-tab-container-item id="已使用">  
               <div class="couponList">
-                <ul>
-                  <li class="grayColor">
-                    <p>20元洗车券</p>
-                    <p class="setMarTop">结束时间：xxxx-xx-xx</p>
-                    <img :src="alreadyIcon" alt="" class="setListRightBtm">
+                <ul class="conpon-card">
+                  <li class="card-item">
+                    <div class="item-top">
+                      <span class="gray">¥</span>
+                      <p class="number gray">20</p>
+                      <p class="type gray">洗车券</p>
+                      <img class="invalid-img" :src="alreadyIcon">
+                    </div>
+                    <div class="item-bottom gray">
+                      <p>结束时间：2018.06.30</p>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -75,82 +86,137 @@ export default {
   methods:{
 
     
-  }
+  },
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
   .fl
     float: left
   .fr
     float: right 
   .clearFloat
     overflow: hidden
-  .grayColor 
-    font-size: .22rem
-    color: #bfbfbf  
+  .gray
+    color: #999 !important  
   #couponWrap
     width:100%
     height: 100%
     position: fixed
     top: 0
     left: 0
-    background: #f4f4f4
+    background: #fff
     z-index: 100
     .mint-tabbar
-      height: .7rem
+      height: .74rem
       top: 0
       backgound-image: none
       background:#ffffff
       border-bottom: 1px solid #efefef
       padding: 0 .2rem
+      box-shadow: 0rem 0rem 0.12rem 0rem rgba(0, 0, 0, 0.1)
+      .mint-tab-item {
+        height: .74rem;
+        line-height: .74rem;
+        padding: 0;
+        .mint-tab-item-label{
+          line-height: .74rem !important;
+          height: .74rem;
+          font-size: .34rem !important;
+        }
+      }
     .is-selected
       background: transparent
       border-bottom: 1px solid #FA9E15
       color: #FA9E15
-    .mint-tab-item
-      height: .7rem
-      line-height: .7rem
-      padding: 0  
-      .mint-tab-item-label
-        line-height: .7rem
     .tabCon  
       width: 100%
       .couponList
-        margin-top: .9rem   
-        ul
-          width: 100%
-          padding:0 .32rem
-          box-sizing: border-box
-          li
-            width: 100%
-            padding: .32rem .2rem
-            background: #ffffff
-            margin-top: .2rem
-            position: relative
-            box-sizing: border-box
-            border-radius: 5px
-            text-align: left
-            font-size: .26rem
-            .setMarTop
-              margin-top: .6rem
-            .setListRightBtm
-              position: absolute
-            button 
-              border: 1px solid skyblue 
-              color: skyblue 
-              background: transparent  
-              height: .5rem    
-              border-radius: 3px
-              font-size: .26rem  
-              right: .2rem
-              bottom: .2rem
-            img 
-              display: inline-block
-              width: 1.5rem
-              height: 1.5rem 
-              right: 0
-              bottom: 0
+        margin-top: .9rem 
+        .conpon-card {
+          width 7.14rem
+          margin 0 auto
+          .card-item {
+            position: relative;
+            margin-top: .4rem;
+            background-color: #fafafa;
+            border-radius: 0.06rem;
+            border: 1px solid #cdcdcd;
+            &:nth-child(1) {
+              margin-top: 1.14rem;
+            }
+            &::before{
+              content: '';
+              position: absolute;
+              right: -.1rem;
+              bottom: .31rem;
+              height: .2rem;
+              width: .2rem;
+              background-color: #fff;
+              transform: rotate(45deg);
+              z-index: 5;
+              border-bottom: 1px solid #cdcdcd;
+              border-left: 1px solid #cdcdcd;
+            }
+            &::after{
+              content: '';
+              position: absolute;
+              left: -.1rem;
+              bottom: .31rem;
+              height: .2rem;
+              width: .2rem;
+              background-color: #fff;
+              transform: rotate(45deg);
+              z-index: 5;
+              border-top: 1px solid #cdcdcd;
+              border-right: 1px solid #cdcdcd;
+            }
+            .item-top {
+              height: 1.38rem;
+              line-height: 1.38rem;
+              display:flex;
+              align-items: center;
+              border-bottom: 1px dashed #cdcdcd;
+              span{
+                padding: .32rem .1rem 0 .16rem; 
+                color: #fa9e15;
+                font-size: .28rem;
+              }
+              .number {
+                padding-right: .24rem;
+                color: #fa9e15;
+                font-size: .72rem;
+              }
+              .type {
+                padding-right: 2.4rem;
+                font-size: 0.34rem;
+                color: #333333;
+              }
+              .usebtn {
+                width: 1.6rem;
+                height: 0.5rem;
+                background-color: #fa9e15;
+                border-radius: .46rem;
+                font-size: 0.34rem;
+                border: none;
+                color: #fff;
+              }
+              .invalid-img {
+                position: absolute;
+                top: 0;
+                right: .24rem;
+                width: 1.38rem;
+	              height: 1.04rem;  
+              }
+            }
+            .item-bottom {
+              padding-left: .2rem;
+              height: .4rem;
+              line-height: .4rem;
+              color: #333333
+            }
+          }
+        }
         .noDataTip
           width: 100%
           text-align: center
@@ -161,6 +227,7 @@ export default {
             width: 2.5rem
           p
             margin-top: .35rem
+
 
 </style>
 

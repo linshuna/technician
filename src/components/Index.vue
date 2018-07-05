@@ -98,10 +98,10 @@
 <style lang="stylus" scoped>
   .index
     .swiper-wrapper
-      height: 3rem
+      height: 3.7rem
       .swiper-img
         width: 100%
-        height: 3rem
+        height: 3.7rem
     .data
       display: flex
       border-bottom: 1px solid #eee
@@ -110,7 +110,9 @@
         display: flex
         flex-direction: row 
         width: 100%;
-        height: 1.68rem
+        height: 1.74rem
+        .item:not(:nth-last-child(1))
+          border-right 1px solid #eee 
         .item
           flex: 1
           .num
@@ -126,6 +128,8 @@
             letter-spacing: 0.33px
     .nav-section
       padding: .6rem 0
+      .nav-section-list
+        padding: 0 .3rem
       .nav-section-list:after
         content:''
         display:block
@@ -136,12 +140,14 @@
         width:25%
         padding-bottom: .3rem
         .nav-icon
-          width:.64rem
-          height:.64rem
+          width:.84rem
+          height:.84rem
           margin:.2rem auto
           background-repeat: no-repeat
           background-size: 100% 100%
           background-position: center
+        p
+          font-size: 0.28rem
         .nav-icon-reserve
           background-image: url('../modules/images/nav-icon-reserve.png')
         .nav-icon-pickup

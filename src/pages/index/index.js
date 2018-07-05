@@ -23,8 +23,8 @@ import GetUrlName from 'modules/js/getUrlName.js'
 Vue.use(GetUrlName)
 
 
-import 'modules/css/reset.styl'
 import 'mint-ui/lib/style.css'
+import 'modules/css/reset.styl'
 import 'modules/css/iconfont.css'
 import 'modules/css/border-1px.css'
 

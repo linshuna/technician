@@ -24,7 +24,7 @@
                     <p class="customMsg">
                       {{item.uname}}
                       <img :src="item.sex==1?boyIcon:girlIcon" alt="" class="sexType"></p>
-                    <p class="remark" :class="{'grayColor':!item.remark,'orangeColor':item.remark}">{{item.remark?item.remark:'暂无'}}</p>
+                    <p class="remark grayColor">{{item.remark?item.remark:'暂无'}}</p>
                     <p class="time grayColor">03:21PM</p>
                     <a :href="'tel:'+item.phone">
                       <img src="../modules/images/telIcon.png" alt="" class="telIcon">
@@ -150,7 +150,7 @@
     font-size: .24rem!important
   .grayColor
     color: #999  
-    font-size: .24rem!important
+    font-size: .26rem!important
   .customerWrap
     width: 100%
     min-height: 100%

@@ -95,10 +95,11 @@
       li
         width: 100%
         position: relative
-        padding: .3rem 0
+        height: 1.1rem
+        line-height: 1.1rem
         text-align: left
         color: #333
-        font-size: .28rem
+        font-size: 0.34rem
         .selfRight
           position: absolute
           right: .2rem

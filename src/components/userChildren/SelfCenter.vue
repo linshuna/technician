@@ -87,14 +87,15 @@
       padding-left: .2rem
       box-sizing: border-box
       .userLogo
-        padding: .6rem 0!important
+        padding: .1rem 0!important
       li
         width: 100%
         position: relative
-        padding: .3rem 0
+        height: 1.1rem
+        line-height: 1.1rem
         text-align: left
         color: #333
-        font-size: .28rem
+        font-size: 0.34rem
         .selfRight
           position: absolute
           right: .2rem
@@ -102,12 +103,12 @@
           transform: translate(0,-50%)  
           .grayColor
             color: #bfbfbf
-            font-size: .24rem
+            font-size: .34rem
           img
             display: inline-block
           .defaultLogo
-            width: 1rem
-            height: 1rem  
+            width: .72rem
+            height: .72rem  
             vertical-align: middle
           .rightArrow  
             width: .15rem

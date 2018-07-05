@@ -1,7 +1,7 @@
 <template>
   <div class="setting">
     <ul>
-      <li class="border-bottom-1px" @click="registerFn">
+      <li @click="registerFn">
         <span class="lockLeft">
           <img :src="lockIcon" alt="">
           <span>修改密码</span>  
@@ -72,11 +72,13 @@
       box-sizing: border-box
       li
         width: 100%
+        margin-top: .36rem
         position: relative
-        padding: .3rem 0
+        height: 1.1rem
+        line-height: 1.1rem
         text-align: left
         color: #333
-        font-size: .28rem
+        font-size: 0.34rem
         .lockLeft
           img
             display: inline-block
@@ -104,18 +106,17 @@
             vertical-align: middle
     .btnWrap
       width: 100%
-      padding: 0 .3rem
       box-sizing: border-box
       margin-top: 1.5rem
       button 
         width: 100%
-        height: .7rem
+        height: .9rem
         border: none
         width: 100%
         background: #FA9E15
         color: #ffffff
         border-radius : 2px
-        font-size: .28rem
+        font-size: .32rem
 
 
 </style>

@@ -206,6 +206,7 @@ export default {
     padding: 0
     .changeTimeWrap
       width: 100%
+      text-align: center
       ul.listWrap
         background:#ffffff
         border-bottom: 1px solid #efefef
