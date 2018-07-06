@@ -128,16 +128,6 @@ import {
           else return (value-0).toFixed(1)
       }
     },
-    created: function(){
-      let key = 'techerData'
-      this.$store.commit('_setName',key)
-      let techerDataJson = this.$store.getters.getStorage
-      if(techerDataJson){
-        this.techvid = techerDataJson.vid
-        this.init();//初始数据
-      }
-      
-    },
   }
 }
 </script>
