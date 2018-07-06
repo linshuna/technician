@@ -1,7 +1,7 @@
 <template>
   <div class="userWrap">
     <div v-if="!isLink">
-      <div class="card header">
+      <div class="header">
         <div class="header-top clearFloat" v-if="!techerData">
           <div class="img-box fl">
             <img :src="defaultIcon" alt="头像">
@@ -18,37 +18,35 @@
           <div class="user-info fl">
             <p class="user-name">{{techerData.nickname}}</p>
             <p class="user-city">{{techerData.phone}}</p>
-            <div class="user-asset clearFloat">
-              <p class="fl">可提现
-                <span class="number">0.00</span>
-              </p>
-              <router-link to="/user/wallet">
-                  <button class="fl">
-                    我的钱包
-                  </button>
-                </router-link>
-            </div>
           </div>
         </div>
-        <ul class="header-bottom">
-          <li>
-            <p>今日收入</p>
-            <span>10</span>
-          </li>
-          <li>
-            <p>今日预约</p>
-            <span>10</span>
-          </li>
-          <li>
-            <p>未交车辆</p>
-            <span>10</span>
-          </li>
-        </ul>
+        <div class="header-bottom">
+          <router-link to="/user/wallet">
+            <div class="user-asset">
+              <img src="../modules/images/mywallet.png" alt="qb">
+              <p class="wallet">我的钱包</p>
+              <p>可提现<span class="number">0.00</span></p>
+              <img class="arrow" :src="rightArrowIcon">
+            </div>
+          </router-link>
       </div>
-      <ul class="card middle">
+      </div>
+      <ul class="middle">
+        <li>
+          <p class="number">{{userInfo.order||0}}</p>
+          <p>今日预约</p>
+        </li>
+        <li>
+          <p class="number">{{userInfo.recive||0}}</p>
+          <p>今日接车</p>
+        </li>
+        <li>
+          <p class="number">{{userInfo.quit||0}}</p>
+          <p>今日交车</p>
+        </li>
         <router-link v-for="(linkItem,index) in userTypeData" :key="index" :to="linkItem.linkUrl" tag="li">
-          <p>{{linkItem.linkName}}</p>
           <img :src="linkItem.icon" alt="">
+          <p>{{linkItem.linkName}}</p>
         </router-link>
       </ul>
       <ul class="card footer">
@@ -97,7 +95,7 @@
           'linkName': '优惠券'
         }],
         userSettingTypeData: [{
-          'linkUrl': '/user/selfCenter',
+          'linkUrl': `/user/selfCenter`,
           'icon': require("modules/images/selfCenterIcon.png"),
           'linkName': '个人中心'
         }, {
@@ -125,6 +123,7 @@
         }],
         isLogin: false,
         techerData: null,
+        userInfo: {},
         returnUrl: window.location.href,
         isLink: false,
         avatar: null //用户的头像
@@ -147,9 +146,9 @@
             this.isLogin = true;
             this.techerData = gainTecherData; //获取登录的数据
             this.avatar = gainTecherData.headimg; //获取登录的头像
+            this.getUserInfo()
           }
         }
-
       })
     },
     computed: {
@@ -161,6 +160,20 @@
     methods: {
       getIsLink(bol) {
         this.isLink = bol
+      },
+      getUserInfo() {
+        this.$http.post('/api.php/Tech/user',{
+          techvid: this.techerData.vid
+        }).then(res=>{
+          if(res.data.errorCode == 200){
+            console.log(res.data.data);
+            this.userInfo = res.data.data
+          }else{
+            Toast(res.data.message)
+          }
+        }).catch(err => {
+          Toast(err)
+        })
       },
       setAvatar() {
         this.$refs.avatarInput.click()
@@ -285,7 +298,7 @@ html,body {
 .userWrap {
   box-sizing: border-box;
   height: 100%;
-  background-color: #dedede;
+  background-color: #f5f5f5;
   font-size: .28rem;
   text-align: left;
   .card {
@@ -294,102 +307,97 @@ html,body {
     margin-bottom: .3rem;
     box-shadow: 0rem 0.1rem 0.2rem 0rem rgba(0, 0, 0, 0.08);
   }
-  .header {
-    height: 4.24rem;
-  }
   .header-top {
-    height: 2.88rem;
-    border-bottom: 1px solid #e5e5e5;
+    height: 1.74rem;
+    background-image: linear-gradient(90deg,#fa7554 0%, #fa9820 100%);
     .img-box {
-      width: 1.88rem;
-      height: 1.88rem;
-      margin: .38rem .44rem;
+      width: 1.16rem;
+	    height: 1.16rem;
+      padding: .3rem 0.26rem 0 .36rem;
       border-radius: 50%;
-      overflow: hidden;
       img {
-        width: 1.88rem;
-        height: 1.88rem;
+        width: 100%;
+        height: 100%;
       }
     }
     .user-login {
-      padding-top: .2rem
+      padding-top: .64rem
     }
     .user-login a {
-      font-size: .48rem;
-      color: #4a4a4a;
+      font-size: .32rem;
+      color: #fff;
     }
     .user-info {
       display: flex;
       flex-direction: column;
       .user-name {
-        padding-top: .84rem;
-        font-size: .48rem;
-        color: #4a4a4a;
-        line-height: .66rem;
+        padding-top: .44rem;
+        font-size: .32rem;
+        color: #fff;
       }
       .user-city {
-        font-size: 0.32rem;
-        color: #9b9b9b;
+        font-size: 0.24rem;
+        color: #f5f5f5;
         line-height: 0.44rem;
-      }
-      .user-asset {
-        p {
-          font-size: .28rem;
-          color: #9b9b9b;
-          .number {
-            font-size: .4rem;
-            color: #fa9e15;
-            padding-left: .2rem;
-          }
-        }
-        button {
-          width: 1.28rem;
-          height: 0.34rem;
-          line-height: .3rem;
-          text-align: center;
-          border-radius: 0.16rem;
-          margin-left: .8rem;
-          margin-top: .06rem;
-          font-size: .24rem;
-          color: #fa9e15;
-          border: solid 1px #fa9e15;
-          background-color: #fff;
-        }
       }
     }
   }
   .header-bottom {
-    display: flex;
-    justify-content: space-around;
-    li {
-      text-align: center;
-      p {
-        padding-top: 0.2rem;
-        font-size: 0.28rem;
-        color: #999999;
+    .user-asset {
+      height: 0.84rem;
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      img{
+        padding: 0 .36rem;
+        width: 0.44rem;
+	      height: 0.44rem;
       }
-      span {
-        display: block
-        padding-top: 0.2rem;
-        font-size: 0.48rem;
-        color: #262628;
+      p {
+        font-size: .3rem;
+        color: #666;
+      }
+      .wallet{
+        padding-right: 2.64rem;
+      }
+      .number {
+        padding: 0 .2rem;
+        font-size: 0.34rem;
+        color: #fa9820;
+      }
+      .arrow {
+        padding: 0;
+        width: 0.14rem;
+        height: 0.24rem;
       }
     }
   }
   .middle {
-    height: 1.6rem;
+    margin: .3rem auto;
+    width: 7.42rem;
     display: flex;
-    justify-content: space-around;
-    text-align: center;
-    p {
-      padding-top: 0.24rem;
-      font-size: 0.28rem;
-      color: #999999;
-    }
-    img {
-      padding-top: .2rem;
-      width: 0.44rem;
-	    height: 0.48rem;
+    flex-wrap: wrap;
+    border-radius: .16rem;
+    overflow: hidden;
+    li{
+      width: 33.33%;
+      height: 1.6rem;
+      background-color: #fff;
+      text-align: center;
+      color: #999;
+      .number {
+        padding: .26rem 0 .16rem;
+        font-size: .48rem;
+        color: #262628;
+      }
+      p {
+        font-size: 0.28rem;
+      }
+      img {
+        padding: .26rem 0 .16rem;
+        width: 0.44rem;
+	      height: 0.48rem;
+      }
     }
   }
   .footer {
@@ -398,7 +406,7 @@ html,body {
       line-height: 1rem;
       border-bottom: 1px solid #e5e5e5;
       p {
-        font-size: 0.34rem;
+        font-size: 0.3rem;
 	      color: #4a4a4a;
       }
     }

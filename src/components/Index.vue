@@ -10,19 +10,19 @@
     <div class="data">
       <ul>
         <li class="item">
-          <div class="num">6</div>
+          <div class="num">{{userData.money||0}}</div>
           <div class="desc">今日收入</div>
         </li>
         <li class="item">
-          <div class="num">60</div>
+          <div class="num">{{userData.order||0}}</div>
           <div class="desc">今日预约</div>
         </li>
         <li class="item">
-          <div class="num">12</div>
+          <div class="num">{{userData.num||0}}</div>
           <div class="desc">未交车辆</div>
         </li>
         <li class="item">
-          <div class="num">11</div>
+          <div class="num">{{userData.numtwo||0}}</div>
           <div class="desc">今日订单</div>
         </li>
       </ul>
@@ -41,9 +41,14 @@
   </div>
 </template>
 <script>
+import {
+    Toast
+  } from "mint-ui"
   export default {
     data() {
       return{
+        userInfo: this.$store.getters.getStorage || null,
+        userData: {},
         bannerImg: require('modules/images/banner.jpg'),
         navData: [
           {
@@ -90,18 +95,38 @@
         ]
       }
     },
+    mounted() {
+      this.getUserData()
+    },
     methods: {
-      
+      getUserData() { 
+        let vid = this.userInfo || null
+        if (!vid) {
+          return
+        }
+        this.$http.post('/api.php/Tech/indexs',{
+          techvid: this.userInfo.vid
+        }).then(res=>{
+          if(res.data.errorCode == 200){
+            console.log(res.data.data);
+            this.userData = res.data.data
+          }else{
+            Toast(res.data.message)
+          }
+        }).catch(err => {
+          Toast(err)
+        })
+      },
     }
   }
 </script>
 <style lang="stylus" scoped>
   .index
     .swiper-wrapper
-      height: 3.7rem
+      height: 3.3rem
       .swiper-img
         width: 100%
-        height: 3.7rem
+        height: 3.3rem
     .data
       display: flex
       border-bottom: 1px solid #eee
@@ -110,7 +135,7 @@
         display: flex
         flex-direction: row 
         width: 100%;
-        height: 1.74rem
+        height: 1.38rem
         .item:not(:nth-last-child(1))
           border-right 1px solid #eee 
         .item
@@ -127,7 +152,7 @@
             color: rgba(30,30,30,0.50)
             letter-spacing: 0.33px
     .nav-section
-      padding: .6rem 0
+      padding: .2rem 0
       .nav-section-list
         padding: 0 .3rem
       .nav-section-list:after

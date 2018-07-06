@@ -65,7 +65,6 @@
         height: 1.2rem
         top: -.7rem
         border-radius: 50%
-        box-shadow: 0 1px 4px 0 rgba(30,30,30,0.10);
         img
           width: 100%
           height: 100%

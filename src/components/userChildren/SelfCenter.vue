@@ -4,35 +4,37 @@
       <li class="border-bottom-1px userLogo">
         <span>头像</span>
         <div class="selfRight">
-          <img :src="defaultIcon" alt="" class="defaultLogo">
+          <img :src="getStorage.headimg" alt="" class="defaultLogo">
           <img :src="rightArrowIcon" alt="" class="rightArrow">
         </div>
       </li>
       <li class="border-bottom-1px">
         <span>用户名</span>
         <div class="selfRight">
-          <span class="grayColor">Man</span>
+          <span class="grayColor">{{getStorage.username}}</span>
           <img :src="rightArrowIcon" alt="" class="rightArrow">
         </div>
       </li>
       <li class="border-bottom-1px">
         <span>昵称</span>
         <div class="selfRight">
-          <span class="grayColor">Man</span>
+          <span class="grayColor">{{getStorage.nickname}}</span>
           <img :src="rightArrowIcon" alt="" class="rightArrow">
         </div>
       </li>
       <li class="border-bottom-1px">
         <span>性别</span>
         <div class="selfRight">
-          <span class="grayColor">保密</span>
+          <span class="grayColor" v-if="getStorage.sex==0">保密</span>
+          <span class="grayColor" v-else-if="getStorage.sex==1">男</span>
+          <span class="grayColor" v-else>女</span>
           <img :src="rightArrowIcon" alt="" class="rightArrow">
         </div>
       </li>
       <li>
         <span>出生日期</span>
         <div class="selfRight">
-          <span class="grayColor">xxxx年xx月xx日</span>
+          <span class="grayColor">{{getStorage.birthday}}</span>
           <img :src="rightArrowIcon" alt="" class="rightArrow">
         </div>
       </li>
@@ -53,10 +55,28 @@
       this.$emit('getIsLink',true)
     },
     mounted: function(){
+
+    },
+    computed: {
+      getStorage() {
+        return this.$store.getters.getStorage;
+      },
     },
     methods:{
-
-      
+      getUserInfo() {
+        this.$http.post('/api.php/Tech/user',{
+          techvid: this.techerData.vid
+        }).then(res=>{
+          if(res.data.errorCode == 200){
+            console.log(res.data.data);
+            this.userInfo = res.data.data
+          }else{
+            Toast(res.data.message)
+          }
+        }).catch(err => {
+          Toast(err)
+        })
+      },
     }
   }
 </script>
