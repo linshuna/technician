@@ -114,7 +114,7 @@
         let instance = Toast('请先登录')
         setTimeout(() => {
           instance.close()
-          window.location.href = './login.html?returnUrl'+window.location.href
+          window.location.href = './login.html?returnUrl='+window.location.href
         }, 2000);
       }
     }

@@ -48,7 +48,7 @@
           searchValue:'',
           searchIcon: require("modules/images/searchIcon.png"),
           defaultLogo: require("modules/images/defaultLogo.png"),
-          addIcon: require("modules/images/add-icon.png"),
+          addIcon: require("modules/images/add-icon-bg.png"),
           telIcon: require("modules/images/telIcon.png"),
           rightArrowIcon: require("modules/images/rightArrow.png"),
           carList: [],

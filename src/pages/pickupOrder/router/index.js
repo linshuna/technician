@@ -40,14 +40,17 @@ export default new Router({
       {
         path: '/look',
         name: 'look',
-        component: Look
+        component: Look,
+        meta:{
+          title:'接车信息'
+        }
       },
       {
         path: '/edit',
         name: 'edit',
         component: Edit,
         meta: {
-          title:'接车事项'
+          title:'接车编辑事项'
         }
       },
       {

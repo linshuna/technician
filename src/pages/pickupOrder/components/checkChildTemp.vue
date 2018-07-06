@@ -29,7 +29,8 @@
     }
   }  
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
+@import '~modules/css/variable.styl'
 .item
   display: flex
   height: .8rem
@@ -47,13 +48,14 @@
     font-size: 0
     .bad
       border-radius:2px 0 0 2px!important
+      color: $gray-color9
     .normal
       border-radius: 0 2px 2px 0!important
     span
-      padding: .1rem
+      padding: .05rem 0.1rem
       font-size: .24rem
       border: 1px solid #eee
       &.active
-        color: #315cda
-        background: #6c95f74d
+        color: #ffffff
+        background: $color-main
 </style>

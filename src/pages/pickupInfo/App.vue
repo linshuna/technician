@@ -1,39 +1,43 @@
 <template>
   <div id="app">
     <router-view @getVal="getVal" @getType1Val="getType1Val" @getCarno="getCarno"></router-view>
-    <div class="pickup">
-      <div class="title border-bottom-1px">接车事项</div>
-      <div class="atStore border-bottom-1px">
+    <ul class="pickup">
+      <li class="atStore border-bottom-1px">
         在店等
         <mt-switch v-model="waitSwitch"></mt-switch>
-      </div>
-      <div class="odometer-wrapper">
+      </li>
+      <li class="odometer-wrapper border-bottom-1px">
         <div class="title">进店里程</div>
-        <input class="odometer" type="number" v-model="distance"/>
-        <div class="pre-odometer">上次里程:<span>无</span></div>
-      </div>
-      <div class="oil-wrapper">
+        <div class="default-right-wrap">
+          <input class="odometer" type="number" v-model="distance" placeholder="请输入进店里程"/>
+        </div>
+        <div class="pre-odometer">
+          上次里程:<span>无</span>
+        </div>
+      </li>
+      <li class="oil-wrapper border-bottom-1px">
         <div class="title">进店油表</div>
-        <div class="oil" @click="openOilPicker">{{this.oil}}
+        <div class="oil default-right-wrap" @click="openOilPicker">
+          <input v-model="oil" readonly placeholder="请选择进店油表"/>
           <span class="iconfont fr">&#xe60d;</span>
         </div>
-      </div>
-      <div class="expect-delivery">
+      </li>
+      <li class="expect-delivery border-bottom-1px">
         <div class="title">预计交车</div>
-        <div class="delivery-time" @click="openTimePicker">
-         {{this.deliveryTime}}
+        <div class="delivery-time default-right-wrap" @click="openTimePicker">
+          <input v-model="deliveryTime" placeholder="请选择预计交车日期"/>
         </div>
-      </div>
-      <div class="owner-remark">
+      </li>
+      <li class="owner-remark">
         车主嘱咐
         <textarea class="remark" placeholder="请输入车主嘱咐" v-model="remark"></textarea>
-      </div>
-    </div>
+      </li>
+    </ul>
 
     <mt-datetime-picker 
       @confirm="handleConfirm" 
       :startDate="startDate"
-      ref="pickerDelivery" type="date" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日"></mt-datetime-picker>
+      ref="pickerDelivery" type="datetime" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" hour-format="{value} 时" minute-format="{value} 分"></mt-datetime-picker>
 
     <mt-popup v-model="popupVisible" position="bottom" popup-transition="popup-fade">
       <div class="picker-toolbar picker-toolbar-oil">  
@@ -97,6 +101,7 @@
       handleConfirm(value) {
         console.log(format(value.toString(),"yyyy-MM-dd HH:mm"))
         this.deliveryTime = format(value.toString(),"yyyy-MM-dd HH:mm");
+
       },
       openOilPicker() {
         this.popupVisible = true
@@ -150,7 +155,7 @@
 
 
         if(this.$route.path==='/type3'){
-          this.$http.post(`/api.php/TechMeet/users`,{wait: this.wait,distance:this.distance,gettime:this.deliveryTime,oil: this.oil,remark: this.remark,techvid:this.techvid,carvid:this.carvid,clientvid:this.clientvid})
+          this.$http.post(`/api.php/TechMeet/users`,{wait: this.wait,distance:this.distance,gettime:this.deliveryTime,oid: this.oil,remark: this.remark,techvid:this.techvid,carvid:this.carvid,clientvid:this.clientvid})
           .then((response)=>{
             let res = response.data
             if(res.errorCode == 200){
@@ -264,7 +269,25 @@
       padding: 15px 10px
       box-sizing: border-box
       color: #26a2ff 
-
+  .pickup
+    width:100%
+    margin-top: .4rem
+    background: #fff
+    box-sizing: border-box
+    li >>> .default-right-wrap
+      display: inline-block
+      width: 4.5rem
+      padding: .15rem 0.1rem
+      margin: .1rem 0 .1rem .2rem
+      border: 1px solid #d9d9d9
+      border-radius: 4px
+    li >>> input
+      height: 100%
+      font-size: .26rem
+      color: $gray-color    
+    li
+      width:100%
+      padding: .2rem 0    
   #app
     color: #2c3e50
     font-size: .32rem
@@ -280,61 +303,31 @@
       overflow: hidden
       .title
         float: left
-      .odometer
-        float: left
-        width: 4rem
-        height: 0.4rem
-        font-size: 0.28rem
-        border: 1px solid #d9d9d9
-        padding: 0.1rem 0.2rem
-        margin-top: 0.2rem
-        margin-left: .2rem
-        border-radius: 4px
       .pre-odometer
-        font-size: 0.24rem
-        float: left
-        margin-left: 1.5rem
-        border-radius: 4px
-        height: .4rem
-        line-height: .4rem
+        font-size: .24rem
+        border-radius: 4px;
+        color: $gray-color
+        margin-left: 1.4rem
     .oil-wrapper
       overflow: hidden
       .title
-        float: left
-      .oil
-        display: inline-block
-        width: 4rem
-        line-height: .4rem
-        padding: .1rem .2rem
-        margin: .1rem 0 .1rem .2rem
-        border: 1px solid #d9d9d9
-        border-radius: 4px
-        font-size: .28rem
+        float: left 
     .expect-delivery
       overflow: hidden
       .title
         float: left
-      .delivery-time
-        display: inline-block
-        width: 4rem
-        height: .4rem
-        line-height: .4rem
-        padding: .1rem .2rem
-        margin: .1rem 0 .1rem .2rem
-        border: 1px solid #d9d9d9
-        border-radius: 4px
-        font-size: .28rem
     .owner-remark
       .remark
-        width: 4rem
+        width: 4.5rem
         height: 1rem
         margin-left: .1rem
         vertical-align: middle
         border: 1px solid #d9d9d9
         border-radius: 4px
         font-family: PingFangSC-Regular
-        font-size: .28rem
-        padding: 0 .2rem
+        font-size: .24rem
+        padding: .1rem
+        color: $gray-color
   .btn-wrapper
       position: fixed
       width: 100%

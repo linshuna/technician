@@ -5,7 +5,7 @@ Vue.use(Vuex)
 import vueAxiosPlugin from "modules/js/axiosPrototype.js"
 Vue.use(vueAxiosPlugin)
 import {Toast} from 'mint-ui'
-const defaultUrl = "/susun" //默认的路径
+const defaultUrl = __dirname; //默认的路径
 const store = new Vuex.Store({
     state:{
         key:'techerData',

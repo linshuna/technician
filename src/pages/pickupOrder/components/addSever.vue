@@ -1,8 +1,10 @@
 <template>
   <div class="addSever">
-    <form action="javascript:return true">
-        <input class="search" type="search" :placeholder="setPlaceholder" v-model="searchCon" @keyup.13="init(searchCon)"/>
-    </form>
+    <div class="set-search-padding">
+      <search-temp setWidthStyle="100" 
+          :setPlaceholder="setPlaceholder"
+          v-on:getSearchValue="gainSearchValue" ></search-temp>
+    </div>
     
     <div class="item-wrapper">
       <div :class="{'is_selected':item.bol}"  @click.stop="item.bol=!item.bol" v-for="(item,index) in techReckList" :key="index">
@@ -11,14 +13,15 @@
     </div>
 
     <div class="btn-wrapper">
-      <div class="btn border-right-1px" @click="newSever">新增</div>
-      <div class="btn" @click="saveProList">保存</div>
+      <div class="btn border-right-1px setBtnLightColor" @click="newSever">新增</div>
+      <div class="btn setColor setBtnMainColor" @click="saveProList">保存</div>
     </div>
   </div>
 </template>
 <script>
   import {Toast} from "mint-ui"
   import serverTemp from './serverTemp.vue' 
+  import searchTemp  from "components/common/searchTemp.vue"
   export default {
     data() {
       return {
@@ -31,7 +34,8 @@
       }
     },
     components:{
-      'server-temp':serverTemp
+      'server-temp':serverTemp,
+      'search-temp':searchTemp
     },
     created:function(){
       this.type = this.$route.params.type;
@@ -81,6 +85,9 @@
             Toast(res.message)
           }
         })
+      },
+      gainSearchValue(value){
+        this.init(value)
       },
       newSever() {
         this.$router.push("/newSever/"+this.type)
@@ -182,21 +189,16 @@
     font-size: .28rem
     min-height: 100% 
     background: #fff
-    .search
-      width: 90%
-      height: .8rem
-      padding: .1rem
-      padding-left: .8rem
-      box-sizing: border-box
-      border: 1px solid #eee
-      position: absolute
-      left: .3rem
-      top: .2rem
-      background: url('../../../modules/images/searchIcon.png') no-repeat
-      background-size: .5rem .5rem
-      background-position: .2rem
+    .set-search-padding
+      width: 100%
+      padding: 0 .2rem
+      box-sizing: border-box  
+      margin-top: .2rem
     .item-wrapper
-      margin-top: 1.4rem 
+      width: 100%
+      padding: 0 .2rem
+      box-sizing: border-box
+      margin-top: .4rem 
       padding-bottom: 2rem
       >div
         .border-bottom-1px::after
@@ -219,7 +221,6 @@
       width: 100%
       height: .8rem
       line-height: .8rem
-      background: $color-main
       z-index: 100
       .btn
         width: 50%

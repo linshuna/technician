@@ -3,6 +3,8 @@
  * http://cssreset.com
  */
 $color-main = #FA9E15
+$color-light = rgba(250,158,21,.7)
+$gray-color = #464646
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -134,3 +136,33 @@ input,textarea
     top: 0 !important;
     z-index: 999999 !important;
 }
+//****** 按钮的颜色 ********
+.setBtnLightColor
+  background: $color-light
+.setBtnMainColor
+  background: $color-main  
+
+//****** 开关按钮的样式 ******
+.mint-switch-core
+  width: 41px!important
+  height: 20px!important
+.mint-switch-core::before
+  width: 39px!important
+  height: 18px!important
+.mint-switch-core::after 
+  width: 18px!important
+  height: 18px!important
+.mint-switch-input:checked + .mint-switch-core
+  border-color: $color-main!important
+  background-color: $color-main !important
+//******* 切换的颜色和线条颜色以及设置padding ****
+.mint-tab-item.is-selected
+  color: $color-main!important
+.pickup-order-wrap .mint-tab-item.is-selected{
+  border-bottom: 3px solid $color-main !important;  
+}
+.mint-navbar .mint-tab-item
+  padding: 8px 0!important
+#carDetailMsgWrap .mint-tab-item-label{
+  line-height: .7rem!important;
+}  

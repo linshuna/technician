@@ -93,155 +93,140 @@
                   </li>
                   <li>
                     <span class="grayColor">本年</span>
-                    <span>0</span>
-                    <span>0.00</span>
+                    <span>{{allNum}}</span>
+                    <span>{{allMoney | priceFilter}}</span>
                   </li>
                   <li>
                     <span class="grayColor">累计</span>
-                    <span>2</span>
-                    <span>100.00</span>
+                    <span>{{yearNum}}</span>
+                    <span>{{yearMoney | priceFilter}}</span>
                   </li>
                 </ul>
-                <!-- <div class="searchWrap">
-                    <img :src="searchIcon" alt="">
-                    <input type="text" v-model="searchValue" placeholder="搜索项目">
-                </div>  -->
                 <div class="search-temp-wrap">
                   <search-temp setWidthStyle="100" 
                     setPlaceholder="搜索项目"
                     v-on:getSearchValue="gainSearchValue" ></search-temp>
                 </div>
                 <div class="searchResult">
+                  <template v-if="!consumeList||consumeList.length==0">
+                    <no-data-tip :tipData="{typeTipe:0,titleTip:'车辆管理',conTip:'暂无消费记录'}"></no-data-tip>
+                  </template>
+                  <template v-else>
                     <ul>
-                      <li>
-                        <div class="searchLeft">
-                          <span class="searchTime">xxx-xx-xx</span>
-                          <span class="ring"></span>
-                          <span class="line"></span>
-                        </div>
-                        <div class="searchRight">
-                          <p>￥50</p>
-                          <p class="grayColor">1、蜡水快洗</p>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="searchLeft">
-                          <span class="searchTime">xxx-xx-xx</span>
-                          <span class="ring"></span>
-                          <span class="line"></span>
-                        </div>
-                        <div class="searchRight">
-                          <p>￥50</p>
-                          <p class="grayColor">1、蜡水快洗</p>
-                        </div>
-                      </li>
-                    </ul>
+                        <li v-for="item in consumeList">
+                          <div class="searchLeft">
+                            <span class="searchTime">{{item.month}}</span>
+                            <span class="ring"></span>
+                            <span class="line"></span>
+                          </div>
+                          <div class="searchRight">
+                            <p>{{item.money | priceFilter}}</p>
+                            <template v-for="(listItem,listIndex) in item.project">
+                              <p class="grayColor">{{listIndex+1}}、{{listItem.name}}</p>
+                            </template>
+                            
+                          </div>
+                        </li>
+
+                      </ul>
+                  </template>
+                    
                 </div>
             </div>
           </mt-tab-container-item>  
           <mt-tab-container-item id="检车记录">  
             <div id="checkedRemark">
-              <ul class="checkedRemarkList">
-                <li>
-                  <p class="checkedTitle border-bottom-1px">
-                    <span class="checkedTime">2018.06.04</span>
-                    <img :src="rightArrowIcon">  
-                  </p>
-                  <p class="clearFloat">
-                    <span class="fl">项目名称</span>
-                    <span class="fr">检测备注</span>
-                  </p>
-                  <ul class="projectList">
-                    <li class="checkedCon clearFloat">
+              <template v-if="!checkList||checkList.length==0">
+                <no-data-tip :tipData="{typeTipe:0,titleTip:'车辆管理',conTip:'暂无检车记录'}"></no-data-tip>
+              </template>
+              <template v-else>
+                <ul class="checkedRemarkList">
+                  <li>
+                    <p class="checkedTitle border-bottom-1px">
+                      <span class="checkedTime">2018.06.04</span>
+                      <img :src="rightArrowIcon">  
+                    </p>
+                    <p class="clearFloat">
                       <span class="fl">项目名称</span>
-                      <span class="fr">无</span>
-                    </li>
-                    <li class="checkedCon clearFloat">
-                      <span class="fl">项目名称</span>
-                      <span class="fr">无</span>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <p class="checkedTitle border-bottom-1px">
-                    <span class="checkedTime">2018.06.04</span>
-                    <img :src="rightArrowIcon">  
-                  </p>
-                  <p class="clearFloat">
-                    <span class="fl">项目名称</span>
-                    <span class="fr">检测备注</span>
-                  </p>
-                  <ul class="projectList">
-                    <li class="checkedCon clearFloat">
-                      <span class="fl">项目名称</span>
-                      <span class="fr">无</span>
-                    </li>
-                    <li class="checkedCon clearFloat">
-                      <span class="fl">项目名称</span>
-                      <span class="fr">无</span>
-                    </li>
-                  </ul>
-                  
-                </li>
-              </ul>
+                      <span class="fr">检测备注</span>
+                    </p>
+                    <ul class="projectList">
+                      <li class="checkedCon clearFloat">
+                        <span class="fl">项目名称</span>
+                        <span class="fr">无</span>
+                      </li>
+                      <li class="checkedCon clearFloat">
+                        <span class="fl">项目名称</span>
+                        <span class="fr">无</span>
+                      </li>
+                    </ul>
+                  </li>
+
+                </ul>
+              </template>
             </div>
           </mt-tab-container-item>  
           <mt-tab-container-item id="报价记录">  
             <!-- 报价记录 -->
             <div id="quotedRemark">  
-              <ul class="checkedRemarkList">
-                <li>
-                  <p class="checkedTitle border-bottom-1px">
-                    <span class="checkedTime">2018.06.04</span>
-                    <img :src="rightArrowIcon">  
-                  </p>
-                  <p class="clearFloat">
-                    <span class="fl">服务名称</span>
-                  </p>
-                  <ul class="projectList">
-                    <li class="checkedCon clearFloat">
+              <template v-if="!recordList||recordList.length==0">
+                <no-data-tip :tipData="{typeTipe:0,titleTip:'车辆管理',conTip:'暂无报价记录'}"></no-data-tip>
+              </template>
+              <template v-else>
+                <ul class="checkedRemarkList">
+                  <li>
+                    <p class="checkedTitle border-bottom-1px">
+                      <span class="checkedTime">2018.06.04</span>
+                      <img :src="rightArrowIcon">  
+                    </p>
+                    <p class="clearFloat">
                       <span class="fl">服务名称</span>
-                      <span class="fr quotedMsg">
-                        <span class="smallFont">x1</span>
-                        <span class="orangeColor">￥250</span>
-                      </span>
-                    </li>
-                    <li class="checkedCon clearFloat">
+                    </p>
+                    <ul class="projectList">
+                      <li class="checkedCon clearFloat">
+                        <span class="fl">服务名称</span>
+                        <span class="fr quotedMsg">
+                          <span class="smallFont">x1</span>
+                          <span class="orangeColor">￥250</span>
+                        </span>
+                      </li>
+                      <li class="checkedCon clearFloat">
+                        <span class="fl">服务名称</span>
+                        <span class="fr quotedMsg">
+                          <span class="smallFont">x1</span>
+                          <span class="orangeColor">￥250</span>
+                        </span>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p class="checkedTitle border-bottom-1px">
+                      <span class="checkedTime">2018.06.04</span>
+                      <img :src="rightArrowIcon">  
+                    </p>
+                    <p class="clearFloat">
                       <span class="fl">服务名称</span>
-                      <span class="fr quotedMsg">
-                        <span class="smallFont">x1</span>
-                        <span class="orangeColor">￥250</span>
-                      </span>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <p class="checkedTitle border-bottom-1px">
-                    <span class="checkedTime">2018.06.04</span>
-                    <img :src="rightArrowIcon">  
-                  </p>
-                  <p class="clearFloat">
-                    <span class="fl">服务名称</span>
-                  </p>
-                  <ul class="projectList">
-                    <li class="checkedCon clearFloat">
-                      <span class="fl">服务名称</span>
-                      <span class="fr quotedMsg">
-                        <span class="smallFont">x1</span>
-                        <span class="orangeColor">￥250</span>
-                      </span>
-                    </li>
-                    <li class="checkedCon clearFloat">
-                      <span class="fl">服务名称</span>
-                      <span class="fr quotedMsg">
-                        <span class="smallFont">x1</span>
-                        <span class="orangeColor">￥250</span>
-                      </span>
-                    </li>
-                  </ul>
-                  
-                </li>
-              </ul>
+                    </p>
+                    <ul class="projectList">
+                      <li class="checkedCon clearFloat">
+                        <span class="fl">服务名称</span>
+                        <span class="fr quotedMsg">
+                          <span class="smallFont">x1</span>
+                          <span class="orangeColor">￥250</span>
+                        </span>
+                      </li>
+                      <li class="checkedCon clearFloat">
+                        <span class="fl">服务名称</span>
+                        <span class="fr quotedMsg">
+                          <span class="smallFont">x1</span>
+                          <span class="orangeColor">￥250</span>
+                        </span>
+                      </li>
+                    </ul>
+                    
+                  </li>
+                </ul>
+              </template>
             </div>   
           </mt-tab-container-item>  
         </mt-tab-container>  
@@ -262,6 +247,7 @@
   Vue.component(TabContainerItem.name, TabContainerItem);
   Vue.component(Cell.name, Cell);
   import {GetQueryString} from 'modules/js/config.js'
+  import noDataTip from 'components/common/noDataTip'
 export default {
   name: 'App',
   data(){
@@ -277,11 +263,19 @@ export default {
       carId:null,
       clientvid: null,
       info:null,
-      carinfo:null
+      carinfo:null,
+      allMoney: 0,
+      allNum: 0,
+      yearMoney: 0,
+      yearNum:0,
+      consumeList: null,
+      checkList: null,
+      recordList: null
     }
   },
   components:{
-    'search-temp':searchTemp
+    'search-temp':searchTemp,
+    'no-data-tip':noDataTip
   },
   mounted: function(){
     let clientvid = GetQueryString('cusId');
@@ -292,6 +286,15 @@ export default {
     this.$nextTick(function(){
       document.title = '车辆详情'
     })
+    this.getConsume()//消费记录
+    this.getChecks()//检测记录
+    this.getRecord()//报价记录
+    console.log(!this.recordList)
+  },
+  filters:{
+    priceFilter:function(value){
+      return "￥"+(value-0).toFixed(1)
+    }
   },
   methods:{
     init(carId){
@@ -316,14 +319,51 @@ export default {
             Toast(res.data.message)
           }
         }) 
-
       })  
+      .catch(()=>{})
     },
     carEditorFn(){
       this.$router.push({path:"/addNewCar/"+this.carId})
     },
     gainSearchValue(value){//搜索项目的内容（触发回车按钮）
       console.log(value)
+    },
+    getConsume(){
+      this.$http.post('/api.php/TechCar/consume',{carvid:this.carId})
+      .then((response)=>{
+        let res = response.data;
+        if(res.errorCode == 200){
+          let resData = res.data;
+          this.allMoney = resData.allMoney
+          this.allNum = resData.allNum
+          this.yearMoney = resData.yearMoney
+          this.yearNum = resData.yearNum
+          this.consumeList = resData.list
+        }else{
+          Toast(res.message)
+        }
+      })
+    },
+    getChecks(){
+      this.$http.post('/api.php/TechCar/checks',{carvid: this.carId})
+      .then((response)=>{
+        let res = response.data;
+        if(res.errorCode == 200){
+          let resData = res.data;
+          this.checkList = res.data;
+        }else{
+          Toast(res.message)
+        }
+      })
+    },
+    getRecord(){
+      this.$http.post('/api.php/TechCar/record',{carvid: this.carId})
+      .then((response)=>{
+        let res = response.data;
+        if(res.errorCode == 200){
+          this.recordList = res.data;
+        }
+      })
     }
 
     

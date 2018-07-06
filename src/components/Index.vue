@@ -72,7 +72,7 @@ import {
             name:'充值优惠'
           },
           {
-            link:this.defaultUrl+'/index.html#/customer',
+            link:'./index.html#/customer',
             // link:'/customer',
             className:'nav-icon-customer',
             name:'我的客户'
@@ -92,7 +92,12 @@ import {
             className:'nav-icon-bill',
             name:'我的账单'
           }
-        ]
+        ],
+        techvid:0,
+        money: 0,
+        num: 0,
+        numtwo: 0,
+        order: 0
       }
     },
     mounted() {
@@ -117,8 +122,24 @@ import {
           Toast(err)
         })
       },
-    }
+    filters:{
+      priceFilter: function(value){
+        if(!value) return 0
+          else return (value-0).toFixed(1)
+      }
+    },
+    created: function(){
+      let key = 'techerData'
+      this.$store.commit('_setName',key)
+      let techerDataJson = this.$store.getters.getStorage
+      if(techerDataJson){
+        this.techvid = techerDataJson.vid
+        this.init();//初始数据
+      }
+      
+    },
   }
+}
 </script>
 <style lang="stylus" scoped>
   .index
