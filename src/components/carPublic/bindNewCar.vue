@@ -111,7 +111,7 @@
         </li>
       </ul>
       <car-key-code v-on:transferplate="gainCarno" v-bind:isShow.sync="isShow"></car-key-code>
-      <brand :popBrand.sync="popBrand" @selectedBrand="activedBrand" @closePop="closePop"></brand>
+      <brand :popBrand.sync="popBrand" @selectedBrand="activedBrand" @closePop="closePop" @modelid="getModelid"></brand>
       <!-- <button class="saveBtn" @click="saveMsg">保存</button> -->
 
   </div>
@@ -164,6 +164,7 @@ export default {
       gainCarData:null,
       popBrand: false,
       selectedBrand: '',//选中车辆类型的参数
+      modelid: 0
     }
   },
   vuerify:{
@@ -227,6 +228,10 @@ export default {
       this.gainCarData["vin"] = newValue;
       this.$emit("gainCarMsg",this.gainCarData)
     },
+    modelid: function(newValue,oldValue){
+      this.gainCarData['modelid'] = newValue;
+      this.$emit("gainCarMsg",this.gainCarData)
+    },
     registDate:function(newValue,oldValue){
       this.gainCarData["regtime"] = newValue
       this.$emit("gainCarMsg",this.gainCarData)
@@ -269,7 +274,7 @@ export default {
         this.slots=[{
               defaultIndex:0,
               flex: 1,
-              values: this.companyStyle,//职业类型
+              values: this.companyStyle,//职业类型 
               // className: 'slot1',
               textAlign: 'center'
         }];
@@ -311,9 +316,13 @@ export default {
     closePop() {
       this.popBrand = false
     },
+    getModelid(modelid){
+      this.modelid = modelid
+    },
     saveMsg:function(){
       console.log(this.cusNameVaule)
-    }
+    },
+    
     
   }
 }

@@ -21,8 +21,8 @@
       <span class="fr" :class="{'orangeColor':total>0}">¥{{total | totalFilter}}</span> 
     </div>
     <div class="btn-wrapper">
-      <div class="btn border-right-1px" @click="addSever">{{setAddFont}}</div>
-      <div class="btn" @click="saveReck">{{setSaveFont}}</div>
+      <div class="btn border-right-1px setBtnLightColor" @click="addSever">{{setAddFont}}</div>
+      <div class="btn setBtnMainColor" @click="saveReck">{{setSaveFont}}</div>
     </div>
   </div>
 </template>
@@ -233,6 +233,11 @@
     z-index: 10
     font-size: .28rem
     background: #f9f9f9
+    .itemWrap
+      width: 100%
+      padding: 0 .2rem
+      box-sizing: border-box  
+      margin-top: .2rem
     .item-wrapper
       margin-top: 1.4rem 
     .addServerTipWrap  
@@ -264,7 +269,6 @@
       width: 100%
       height: .8rem
       line-height: .8rem
-      background: $color-main
       .btn
         width: 50%
         float: left  

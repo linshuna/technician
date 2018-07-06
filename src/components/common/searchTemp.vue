@@ -74,6 +74,9 @@ export default {
             if(this.type){
                 this.$emit('getSearchValue',this.searchValue)
             }
+        },
+        enterSearch: function(){
+          this.$emit('getSearchValue',this.searchValue)
         }
         
     }
@@ -87,6 +90,7 @@ export default {
     border-radius: 5px
     padding: .15rem .2rem
     box-sizing: border-box
+    border-radius: 4px
     img 
         display: inline-block
         width: .35rem

@@ -10,19 +10,19 @@
     <div class="data">
       <ul>
         <li class="item">
-          <div class="num">6</div>
+          <div class="num">{{money | priceFilter}}</div>
           <div class="desc">今日收入</div>
         </li>
         <li class="item">
-          <div class="num">60</div>
+          <div class="num">{{order}}</div>
           <div class="desc">今日预约</div>
         </li>
         <li class="item">
-          <div class="num">12</div>
+          <div class="num">{{num}}</div>
           <div class="desc">未交车辆</div>
         </li>
         <li class="item">
-          <div class="num">11</div>
+          <div class="num">{{numtwo}}</div>
           <div class="desc">今日订单</div>
         </li>
       </ul>
@@ -67,7 +67,7 @@
             name:'充值优惠'
           },
           {
-            link:this.defaultUrl+'/index.html#/customer',
+            link:'./index.html#/customer',
             // link:'/customer',
             className:'nav-icon-customer',
             name:'我的客户'
@@ -87,11 +87,44 @@
             className:'nav-icon-bill',
             name:'我的账单'
           }
-        ]
+        ],
+        techvid:0,
+        money: 0,
+        num: 0,
+        numtwo: 0,
+        order: 0
       }
     },
-    methods: {
+    filters:{
+      priceFilter: function(value){
+        if(!value) return 0
+          else return (value-0).toFixed(1)
+      }
+    },
+    created: function(){
+      let key = 'techerData'
+      this.$store.commit('_setName',key)
+      let techerDataJson = this.$store.getters.getStorage
+      if(techerDataJson){
+        this.techvid = techerDataJson.vid
+        this.init();//初始数据
+      }
       
+    },
+    methods: {
+      init: function(){
+        this.$http.post('/api.php/Tech/indexs',{techvid: this.techvid})
+        .then((response)=>{
+          let res = response.data;
+          if(res.errorCode == 200){
+              let resData = res.data;
+              this.money = resData.money;
+              this.num = resData.num;
+              this.numtwo = resData.numtwo;
+              this.order = resData.order;
+          }
+        })
+      }
     }
   }
 </script>

@@ -2,12 +2,12 @@
     <div class="pickup-order-wrap">
         <mt-navbar v-model="type">
         <mt-tab-item id="atServe" class="">
-            <div>服务中(22)</div>
-            <div>¥25,7878</div>
+            <div>服务中({{firstnum}})</div>
+            <div style="padding-top:.1rem;font-size:.26rem;">{{first | priceFilter}}</div>
         </mt-tab-item>
         <mt-tab-item id="waitPay">
-            <div>待结账(2)</div>
-            <div>¥25,8</div>
+            <div>待结账({{secondnum}})</div>
+            <div style="padding-top:.1rem;font-size:.26rem;">{{second | priceFilter}}</div>
         </mt-tab-item>
         <mt-tab-item id="picked">
             <div>已提车</div>
@@ -24,7 +24,7 @@
         <!-- tab-container -->
         <mt-tab-container v-model="type">
         <mt-tab-container-item id="atServe">
-            <div class="item border-bottom-1px" v-for="item in atServeOrder" @click="goOrderDetail(item.orderNo,item.carNo)" v-if="atServeOrder.length>0">
+            <div class="item" v-for="item in atServeOrder" @click="goOrderDetail(item.orderNo,item.carNo)" v-if="atServeOrder.length>0">
             <img class="carImg" :src="item.icon"/>
             <div class="main-c">
                 <div class="carno">{{item.carNo}}</div>
@@ -43,7 +43,7 @@
             </div>
         </mt-tab-container-item>
         <mt-tab-container-item id="waitPay">
-            <div class="item border-bottom-1px" v-for="item in waitPayOrder" @click="goOrderDetail(item.orderNo,item.carNo)" v-if="waitPayOrder.length>0">
+            <div class="item" v-for="item in waitPayOrder" @click="goOrderDetail(item.orderNo,item.carNo)" v-if="waitPayOrder.length>0">
             <img class="carImg" :src="item.icon"/>
             <div class="main-c">
                 <div class="carno">{{item.carNo}}</div>
@@ -62,7 +62,7 @@
             </div>
         </mt-tab-container-item>
         <mt-tab-container-item id="picked">
-            <div class="item border-bottom-1px" v-for="item in pickedOrder" @click="goOrderDetail(item.orderNo,item.carNo)" v-if="pickedOrder.length>0">
+            <div class="item" v-for="item in pickedOrder" @click="goOrderDetail(item.orderNo,item.carNo)" v-if="pickedOrder.length>0">
             <img class="carImg" :src="item.icon"/>
             <div class="main-c">
                 <div class="carno">{{item.carNo}}</div>
@@ -99,7 +99,17 @@
               atServeOrder: [],
               waitPayOrder: [],
               pickedOrder: [],
-              techvid: ''
+              techvid: '',
+              first:0,
+              firstnum:0,
+              second:0,
+              secondnum:0
+          }
+        },
+        filters:{
+          priceFilter:function(value){
+            if(!value) return "￥"+0;
+              else return "￥"+value;
           }
         },
         methods:{
@@ -116,9 +126,14 @@
                 .then((response)=>{
                     let res = response.data;
                     if(res.errorCode == 200){
-                    this.atServeOrder = res.data.service
-                    this.waitPayOrder = res.data.pay
-                    this.pickedOrder = res.data.finish
+                      let resData = res.data;
+                      this.atServeOrder = resData.service
+                      this.waitPayOrder = resData.pay
+                      this.pickedOrder = resData.finish
+                      this.first = resData.first;
+                      this.firstnum = resData.firstnum
+                      this.second = resData.seconde
+                      this.secondnum = resData.secondnum
                     }
                 })
             },
@@ -148,11 +163,20 @@
         }
     }
 </script>
-
+<style lang="stylus">
+  .mint-tab-container-wrap{
+    width: 100%;
+    padding: 0 .4rem;
+    box-sizing: border-box; 
+  }
+  .mint-tab-container{
+    padding-bottom: .2rem;
+  } 
+</style>
 <style lang="stylus" scoped>
   @import '~modules/css/variable.styl'
   .pickup-order-wrap >>>  .mint-tab-item-label
-    font-size: .28rem
+    font-size: .32rem
 
   .pickup-order-wrap
     font-family: PingFangSC-Regular
@@ -162,18 +186,16 @@
       top: 0
       width: 100%
       z-index: 9
-     
+      box-shadow: 0 0 6px 0 rgba(0,0,0,0.10);
     .search
       font-size: .24rem
-      margin: .24rem
-      margin-top: 1.6rem;
-    //   background: url('modules/images/searchIcon.png') no-repeat
-    //   background-size: .4rem .4rem
-    //   background-position: .1rem
+      margin:1.6rem .4rem 0
     .item
       overflow: hidden
-      font-size: .28rem
-      padding: .2rem
+      font-size: 0.28rem
+      padding: 0.2rem
+      box-shadow: 0 0 1px 0 rgba(0,0,0,0.10)
+      margin-top: .2rem
       .carImg
         width: 1rem
         height: 1rem
@@ -184,20 +206,22 @@
         float: left
         margin-left: .4rem
         color: #a9a9a9
-        line-height: .54rem
+        line-height: .45rem
+        font-size: .24rem
         .carno
           font-size: .32rem
           line-height: .54rem
           color: #2c3e50
       .main-r
         float: right 
-        font-size: .32rem
         .type
-          color: $color-main
-          margin-bottom: .9rem
+          color: #82A0FA
+          font-size: .24rem
+          margin-bottom: .8rem
         .account
-          color: #2eb2f3
+          color: $color-main
           font-size: .36rem
+          text-align: right
     .noData
       margin: 2rem
       text-align: center

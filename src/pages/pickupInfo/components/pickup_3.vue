@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="carInfo-wrapper border-bottom-1px">
-      <img class="carImg" :src="carImg"/>
+      <img class="carImg" :src="carImg" alt="车辆图片"/>
       <div class="carInfo">
         <div class="carno">{{this.carno}}</div>
         <div class="brand">{{this.carplate}}</div>
@@ -9,7 +9,7 @@
     </div>
     <div class="user-wrapper">
       <div class="name">{{this.name}}</div>
-      <img class="sexImg" :src="sexImg"/>
+      <img class="sexImg" :src="sexImg" alt="性别图片"/>
       <div class="phone">{{this.phone}}</div>
       <div class="vip-type">会员</div>
     </div>
@@ -87,19 +87,24 @@
     .carImg
       width: 1rem
       height: 1rem
-      padding: .2rem
+      -webkit-box-sizing: border-box
       box-sizing: border-box
-      float: left
+      display: inline-block
+      vertical-align: middle
     .carInfo
-      float: left
-      margin-top: .2rem
+      display: inline-block
+      vertical-align: middle
+      .brand
+        font-size: .26rem
+        padding-top: .1rem
   .user-wrapper
     height: 1rem 
     line-height: 1rem
+    font-size: .28rem
     .sexImg
-      float: left
-      width: .3rem
-      margin: .3rem 2rem 0 .6rem 
+      display: inline-block;
+      width: 0.5rem;
+      margin-left: .2rem;
     .name
       float: left
     .vip-type
@@ -111,7 +116,7 @@
     color: #18b3f9
     border: 1px solid #18b3f9
     display: inline-block
-    padding: .1rem
+    padding: 0.1rem .15rem
     border-radius: 4px
     position: absolute
     left: 50%

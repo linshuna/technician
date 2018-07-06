@@ -301,12 +301,11 @@ export default {
               if(this.clientvid){
                 let clientvid = this.clientvid;
                 setTimeout(function(){
-                  window.location.href = "customerDetail.html?cusId="+clientvid
+                  window.location.href = "./customerDetail.html?cusId="+clientvid
                 },1000)  
               }else{
                 setTimeout(function(){
-                  // window.location.href = "index.html#/customer"
-                  window.location.href = this.default+"index.html#/customer"
+                  window.location.href = "./index.html#/customer"
                 },1000)
               }
               
@@ -407,7 +406,7 @@ export default {
                     padding: 0
               .mint-cell:last-child
                 background: transparent!important
-            input[type="text"],span.inp
+            input[type="text"],input[type="tel"],span.inp
               display: inline-block
               width: 100%
               border:1px solid #f4f4f4

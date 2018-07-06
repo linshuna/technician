@@ -2,17 +2,41 @@
   <mt-popup v-model="show" position="right" class="pop-wrapper" :closeOnClickModal=false>
     <div ref="wrapper" style="height: 100%">
       <div>
-        <div class="brand-wrapper" v-for="(item,key) of brandArr" :key="key" :ref="key">
+        <div class="brand-wrapper" v-for="(item,key) of brandArr" :key="key" :ref="key" v-show="brandArr">
           <div class="title border-bottom-1px">{{key}}</div>
           <ul class="item-list">
-            <li class="brand border-bottom-1px" v-for="(innerItem,index) of item" :key="innerItem.id" @click="selected(index,key,innerItem.name)">
-              <img :src="innerItem.pic"/>
-              <span class="text">{{innerItem.name}}</span>
+            <li class="brand border-bottom-1px" v-for="(innerItem,index) of item" :key="innerItem.carplateid" @click="selected(innerItem.carplateid,index,key,innerItem.carplate,0)">
+              <img :src="innerItem.icon"/>
+              <span class="text">{{innerItem.carplate}}</span>
               <span class="iconfont selected-icon icon-xuanzhong" v-show="activeIndex===index&&activeKey===key"></span>
             </li>
           </ul>
         </div>
       </div>
+      <div>
+        <div class="brand-wrapper" v-for="(item,key) of carmodelsList" :key="key" :ref="key" v-show="carmodelsList">
+          <div class="title border-bottom-1px">{{key}}</div>
+          <ul class="item-list">
+            <li class="brand border-bottom-1px" v-for="(innerItem,index) of item" :key="innerItem.carnatid" @click="selected(innerItem.carnatid,index,key,innerItem.carnat,1)">
+              <span class="text">{{innerItem.carnat}}</span>
+              <span class="iconfont selected-icon icon-xuanzhong" v-show="activeIndex===index&&activeKey===key"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="brand-wrapper" v-for="(item,key) of carnatList" :key="key" :ref="key" v-show="carnatList">
+          <div class="title border-bottom-1px">{{key}}</div>
+          <ul class="item-list">
+            <li class="brand border-bottom-1px" v-for="(innerItem,index) of item" :key="innerItem.modelid" @click="selected(innerItem.modelid,index,key,innerItem.outputs,2)">
+              <span class="text">{{innerItem.outputs}}</span>
+              <span class="iconfont selected-icon icon-xuanzhong" v-show="activeIndex===index&&activeKey===key"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
     </div>
 
     <div class="alphabet-wrapper">
@@ -47,41 +71,12 @@
         activeKey: '',
         activeIndex: '-1',
         activeBrand: '',
-        brandArr:{
-          A:[
-            {id:'0',name:'奥迪',pic:'http://mb.hhqccar.cn/Public/icon/aodi.jpg'}
-          ],
-          B:[
-            {id:'1',name:'标致',pic: "http://mb.hhqccar.cn/Public/icon/biaozhi.jpg"},
-            {id:'2',name:'保时捷',pic: "http://mb.hhqccar.cn/Public/icon/baoshijie.jpg"},
-            {id:'3',name:'别克',pic: "http://mb.hhqccar.cn/Public/icon/bieke.jpg"}
-          ],
-          C: [
-            {id:'4',name:'昌河',pic: "http://mb.hhqccar.cn/Public/icon/changhe.jpg"}
-          ],
-          D: [
-            {id:'5',name:'东风风行',pic: "http://mb.hhqccar.cn/Public/icon/dongfeng.jpg"}
-          ],
-          H: [
-            {id:'6',name:'海马',pic: "http://mb.hhqccar.cn/Public/icon/haima.jpg"}
-          ],
-          J: [
-            {id:'7',name:'吉普',pic: "http://mb.hhqccar.cn/Public/icon/jipu.jpg"}
-          ],
-          K: [
-            {id:'8',name:'标致',pic: "http://mb.hhqccar.cn/Public/icon/biaozhi.jpg"},
-            {id:'9',name:'保时捷',pic: "http://mb.hhqccar.cn/Public/icon/baoshijie.jpg"},
-            {id:'10',name:'别克',pic: "http://mb.hhqccar.cn/Public/icon/bieke.jpg"}
-          ],
-          P: [
-            {id:'12',name:'标致',pic: "http://mb.hhqccar.cn/Public/icon/biaozhi.jpg"},
-            {id:'17',name:'保时捷',pic: "http://mb.hhqccar.cn/Public/icon/baoshijie.jpg"},
-            {id:'13',name:'别克',pic: "http://mb.hhqccar.cn/Public/icon/bieke.jpg"},
-            {id:'14',name:'标致',pic: "http://mb.hhqccar.cn/Public/icon/biaozhi.jpg"},
-            {id:'15',name:'保时捷',pic: "http://mb.hhqccar.cn/Public/icon/baoshijie.jpg"},
-            {id:'16',name:'别克',pic: "http://mb.hhqccar.cn/Public/icon/bieke.jpg"}
-          ]
-        }
+        carplateid:0,
+        brandArr:[],
+        carmodelsList: [],
+        carnatid: 0,
+        carnatList: [],
+        modelid: 0
       }
     },
     computed: {
@@ -108,7 +103,37 @@
       },
       
     },
+    created: function(){
+      this.init()
+    },
     methods: {
+      init(){
+        this.$http.get('/api.php/TechCarModels/index')
+        .then((response)=>{
+          let res = response.data;
+          if(res.errorCode == 200){
+            this.brandArr = res.data
+          }
+        })
+      },
+      getCarmodels(){
+        this.$http.post('/api.php/TechCarModels/carmodels',{carplateid: this.carplateid})
+        .then((response)=>{
+          let res = response.data;
+          if(res.errorCode == 200){
+              this.carmodelsList = res.data;
+          }
+        })
+      },
+      getYearPl(){
+        this.$http.post('/api.php/TechCarModels/yearPl',{carnatid:this.carnatid})
+        .then((response)=>{
+          let res = response.data;
+          if(res.errorCode == 200){
+              this.carnatList = res.data;
+          }
+        })
+      },
       initScroll() {
         this.$nextTick(() => {  
         if (!this.scroll) {  
@@ -122,10 +147,26 @@
       handleLetterClick(e) {
         this.currentLetter = e.target.innerText;
       },
-      selected(index,key,brandName) {
+      selected(id,index,key,brandName,type) {
         this.activeKey = key;
         this.activeIndex = index;
-        this.activeBrand = brandName;
+        let _this = this;
+        if(type==0){
+          this.activeBrand = brandName;
+          this.brandArr = [];//设置为空
+          this.carplateid = id; 
+          this.getCarmodels() 
+        }else if(type==1){
+          setTimeout(function(){
+            _this.carmodelsList = [];//设置为空
+          },500)
+          this.carmodelsList = [];//设置为空
+          this.carnatid = id;
+          this.getYearPl()
+        }else if(type==2){
+          this.modelid = id;
+        }
+        
       },
       reset() {
         this.activeKey='';
@@ -134,6 +175,7 @@
       confirm() {
         this.$emit('closePop')
         this.$emit('selectedBrand',this.activeBrand);
+        this.$emit('modelid',this.modelid)
       }
     }
   }
@@ -154,9 +196,12 @@
       font-size: 0
       padding: 0 .2rem
       font-size: .28rem
+      line-height: 1rem
       img
-        width: 1rem
-        height: 1rem
+        width: .8rem
+        height: .8rem
+        display: inline-block
+        vertical-align: middle
       .text
         display: inline-block
         line-height: 1rem

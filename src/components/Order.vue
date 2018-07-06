@@ -195,13 +195,15 @@ export default {
   mounted: function(){
   },
   methods:{
-
+    init:function(){
+      
+    }
     
   }
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .fl
     float: left
   .fr

@@ -64,7 +64,7 @@
         window.location.href= `./pickupInfo.html?carvid=${carvid}#/type2`
       },
       addCar() {
-        window.location.href='pickupInfo.html#/type1'
+        window.location.href='./pickupInfo.html#/type1'
       },
       gainCarno:function(value){//子组件传给当前组件（父组件）
         this.carno = value.carno

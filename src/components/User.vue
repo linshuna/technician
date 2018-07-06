@@ -283,11 +283,11 @@ html,body {
   height 100%
 }
 .userWrap {
-  box-sizing: border-box;
   height: 100%;
   background-color: #dedede;
   font-size: .28rem;
   text-align: left;
+  padding-bottom: 2rem;
   .card {
     width: 100%;
     background-color: #ffffff;

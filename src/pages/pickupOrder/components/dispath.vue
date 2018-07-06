@@ -86,3 +86,18 @@
       color: #fff
       background: $color-main
 </style>
+<style lang="stylus">
+  .mint-radiolist 
+    width: 100%;
+    padding: 0 .2rem;
+    box-sizing: border-box;
+    .mint-cell
+      padding: 0;
+      background: #FFFFFF;
+      margin-top: .2rem;
+      box-shadow: 0 0 1px 0 rgba(0,0,0,0.10);
+      border-radius: 4px;
+      .mint-cell-wrapper
+        background-image: none
+
+</style>

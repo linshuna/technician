@@ -21,8 +21,11 @@
           </ul>
         </mt-tab-container-item>
       </mt-tab-container>
-      <div class="conclusion-wrapper border-bottom-1px">检车结论
+      <div class="conclusion-wrapper">
+        检车结论
         <div class="lastKm fr">上次里程：无</div>
+      </div>
+      <div class="conclusion-wrapper">
         <textarea class="conclusion" placeholder="请输入检车结论" v-model="remark"></textarea>
       </div>
       <div class="btn" @click="save">保存</div>
@@ -115,7 +118,7 @@
             if(res.errorCode == 200){
               Toast("成功修改检测")
               setTimeout(function(){
-                window.location.href = _this.defaultUrl+"/pickupOrder.html?orderNo="+_this.orderNo+"&carNo="+_this.carno+"#/path"  
+                window.location.href = "./pickupOrder.html?orderNo="+_this.orderNo+"&carNo="+_this.carno+"#/path"  
               },500)
               
             }else{
@@ -178,7 +181,7 @@
       line-height: .8rem
       background: #fff
       .lastKm
-        color: #2494b7
+        color: $color-main
       .conclusion
         width: 98%
         height: 2rem
@@ -198,4 +201,8 @@
 <style lang="stylus">
   .mint-navbar .mint-tab-item
     padding: 10px 0;
+  .mint-navbar
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.10)
+  .mint-tab-container
+    margin-top: .1rem  
 </style>

@@ -2,19 +2,18 @@
   <div id="path">
       <div class="nav-section commen-width">
         <ul class="nav-section-list">
-          <li v-for="(nav,index) in navData" :key="index" @click="handleNavClick(nav.tag)">
+          <li v-for="(nav,index) in navData" :key="index" @click="handleNavClick(nav)">
             <div class="nav-icon" :class="nav.className"></div>
             <p>{{nav.name}}</p>
           </li>
         </ul>
       </div>
-      <div class="arrow"></div>
       <div class="path-wrapper">
         
         <ul>
           <p class="line"></p>
           <li v-if="orderCar">
-            <div class="searchLeft">
+            <div class="searchLeft" :class="{'color-active':status<2,'color-gray':status>1}">
               <span class="searchTime">接车</span>
               <span class="ring"></span>
             </div>
@@ -29,7 +28,7 @@
             </div>
           </li>
           <li v-if="checkList">
-            <div class="searchLeft">
+            <div class="searchLeft" :class="{'color-active':status<2,'color-gray':status>1}">
               <span class="searchTime">检车</span>
               <span class="ring"></span>
             </div>
@@ -42,7 +41,7 @@
             </div>
           </li>
           <li v-if="reckList">
-            <div class="searchLeft">
+            <div class="searchLeft"  :class="{'color-active':status<2,'color-gray':status>=2}">
               <span class="searchTime">报价</span>
               <span class="ring"></span>
             </div>
@@ -55,21 +54,26 @@
             </div>
           </li>
           <li>
-            <div class="searchLeft">
+            <div class="searchLeft"  :class="{'color-active':status<2,'color-gray':status>=2}">
               <span class="searchTime">材料</span>
               <span class="ring"></span>
             </div>
             <div class="searchRight">
-              <ul style="display:inline-block;padding:0;line-height: .45rem;">
-                <li class="grayColor" v-for="item in scienceList">{{item.name}} {{item.num | getScienceFilter}}</li>
-              </ul>
+              <template v-if="scienceList&&scienceList.length>0">
+                <ul style="display:inline-block;padding:0;line-height: .45rem;">
+                  <li class="grayColor" v-for="item in scienceList">{{item.name}} {{item.num | getScienceFilter}}</li>
+                </ul>
+              </template>
+              <template v-else>
+                <span class="grayColor">{{scienceList | noTipFilter}}</span>
+              </template>
               <div class="btn-wrapper">
                 <div class="btn check" :class="{'btn-active':status<2,'btn-gray':status>=2}" @click="addPro" >添加材料</div>
               </div>
             </div>
           </li>
           <li>
-            <div class="searchLeft">
+            <div class="searchLeft"  :class="{'color-active':status<2,'color-gray':status>=2}">
               <span class="searchTime">派工</span>
               <span class="ring"></span>
             </div>
@@ -81,7 +85,7 @@
             </div>
           </li>
           <li>
-            <div class="searchLeft">
+            <div class="searchLeft" :class="{'color-active':status<2,'color-gray':status>=2}">
               <span class="searchTime">确认</span>
               <span class="ring"></span>
             </div>
@@ -92,7 +96,7 @@
             </div>
           </li>
           <li>
-            <div class="searchLeft">
+            <div class="searchLeft" :class="{'color-active':status<3,'color-gray':status>2}">
               <span class="searchTime">收款</span>
               <span class="ring"></span>
             </div>
@@ -104,7 +108,7 @@
             </div>
           </li>
           <li>
-            <div class="searchLeft">
+            <div class="searchLeft" :class="{'color-active':status<4,'color-gray':status>=4}">
               <span class="searchTime">提车</span>
               <span class="ring"></span>
             </div>
@@ -129,16 +133,19 @@
           {
             className:'nav-icon-report',
             name:'检测单',
+            isCheck:'check',
             tag: 'check'
           },
           {
             className:'nav-icon-quotation',
             name:'报价',
+            isCheck:'addSever',
             tag: 'quotation/pick-up-list'
           },
           {
             className:'nav-icon-material',
             name:'材料单',
+            isCheck:'addPro',
             tag: 'quotation/store-list'
           },
           {
@@ -149,13 +156,12 @@
           {
             className:'nav-icon-file',
             name:'客户档案',
-            // tag: 'index.html#/customer'
-            tag: '/customer'
+            tag: './index.html#/customer'
           },
           {
             className:'nav-icon-carMsg',
             name:'车辆信息',
-            tag:'carDetail.html'
+            tag:'./carDetail.html'
           }
         ],
         carvid: '',
@@ -173,7 +179,7 @@
     },
     filters:{
       noTipFilter:function(value){
-        if(!value) return '暂无';
+        if(!value||value.length==0) return '暂无';
           else return value;
       },
       payFilter: function(value){
@@ -234,15 +240,21 @@
         this.$router.push('/bill')
       },
       handleNavClick(val) {
-        if(!val) return false;
-        if(val.indexOf(".html")>-1){
-          window.location.href = val;
+        let tag = val.tag
+        if(!tag) return false;
+        if(val.isCheck){
+          this.$store.dispatch('delToast')
+          if(this.status>=2){Toast('您已提交订单');return false;}
+        }
+        if(tag.indexOf(".html")>-1){
+          window.location.href = tag;
         }else{
-          this.$router.push('/'+val)
+          this.$router.push('/'+tag)
         }
       },
       makepay(){
         this.$store.dispatch('delToast');
+        if(!this.orderCar){Toast('您还没有编辑接车信息'); return false;}
         if(!this.nickname){Toast('您还没派工');return false;}
         if(this.status<2){Toast('您还没有提交结账');return false;}
         if(this.status>=3){return false;} //已提交车辆
@@ -289,6 +301,7 @@
   }
 </script>
 <style lang="stylus" scoped>
+  @import '~modules/css/variable.styl'
   #path
     position: fixed
     top: 0
@@ -301,21 +314,34 @@
     background: #f9f9f9
     overflow: scroll
     padding-bottom: .2rem
-    .nav-section
-      padding: .6rem 0
-      background: #fff
-      .nav-section-list:after
-        content:''
-        display:block
-        clear:both
+    .nav-section:after
+      width: 0
+      height: 0
+      border-style: solid
+      border-width: 25px
+      border-color: #fff transparent transparent transparent
+      content:''
+      display:block
+      clear:both
+      position: relative
+      left: 50%
+      transform: translate(-50%,0)
+    .nav-section-list
+      background: #fff  
+      overflow: hidden
+      padding: .2 0
+      box-shadow: 0 0 6px 0 rgba(0,0,0,0.10)
       li
         display:inline-block
         float:left
         width:25%
         padding-bottom: .3rem
+        color: $gray-color6
+        font-size: .28rem
+        background: #fff
         .nav-icon
-          width:.64rem
-          height:.64rem
+          width:.84rem
+          height:.84rem
           margin:.2rem auto
           background-repeat: no-repeat
           background-size: 100% 100%
@@ -331,7 +357,7 @@
         .nav-icon-file
           background-image: url('../../../modules/images/nav-icon-file.png')
         .nav-icon-carMsg
-          background-image: url('../../../modules/images/nav-icon-carMsg.png')    
+          background-image: url('../../../modules/images/nav-icon-carMsg-pickup.png')    
     .arrow
       width: 100%
       height: .5rem
@@ -348,6 +374,7 @@
         padding: .2rem
         box-sizing: border-box 
         position:relative
+        overflow: hidden 
         .line
           display: inline-block
           width: .02rem
@@ -372,10 +399,11 @@
             box-sizing: border-box
             position: absolute
             left: -.7rem
+          .color-active
             .searchTime
               display: inline-block
               width: 75%
-              color: #a9a9a9
+              color: $color-main
               font-size: .24rem
               vertical-align: middle
               text-align: right
@@ -384,15 +412,31 @@
               display: inline-block
               width: 0.25rem
               height: 0.25rem
-              background: #FA9E15
+              background: $color-main
               border-radius: 50% 
               vertical-align: middle
-            .line
+          .color-gray
+            .searchTime
               display: inline-block
-              width: .02rem
-              height: 1.2rem
-              background: #d4d4d4
-              margin-right: .1rem
+              width: 75%
+              color: $gray-color9
+              font-size: .24rem
+              vertical-align: middle
+              text-align: right
+              box-sizing: border-box
+            .ring
+              display: inline-block
+              width: 0.25rem
+              height: 0.25rem
+              background: $gray-color9
+              border-radius: 50% 
+              vertical-align: middle
+          .line
+            display: inline-block
+            width: .02rem
+            height: 1.2rem
+            background: #d4d4d4
+            margin-right: .1rem
           .searchRight
             //display: inline-block
             width: 84%  

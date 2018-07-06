@@ -7,19 +7,29 @@
       </li>
       <li class="odometer-wrapper border-bottom-1px">
         <div class="title">进店里程</div>
-        <input class="odometer" type="number" v-model="distance"/>
+        <div class="default-right-wrap">
+          <input class="odometer" type="number" v-model="distance" placeholder="请输入进店里程"/>
+        </div>
         <div class="pre-odometer">上次里程:<span>无</span></div>
       </li>
       <li class="oil-wrapper border-bottom-1px">
         <div class="title">进店油表</div>
-        <div class="oil" @click="openOilPicker">{{oil}}
+        <div  class="default-right-wrap" @click="openOilPicker">
+          <input v-model="oil" readonly placeholder="请选择进店油表"/>
           <span class="iconfont fr">&#xe60d;</span>
         </div>
       </li>
       <li class="expect-delivery border-bottom-1px">
         <div class="title">预计交车</div>
-        <div class="delivery-time" @click="openTimePicker">
+        <div  class="default-right-wrap" @click="openTimePicker('deliveryTime')">
           <input placeholder="请选择日期" v-model="deliveryTime"/>
+          <span class="iconfont fr">&#xe60d;</span>
+        </div>
+      </li>
+      <li class="expect-delivery border-bottom-1px">
+        <div class="title">回访日期</div>
+        <div class="default-right-wrap" @click="openTimePicker('visitime')">
+          <input placeholder="请选择日期" v-model="visitime"/>
           <span class="iconfont fr">&#xe60d;</span>
         </div>
       </li>
@@ -29,7 +39,7 @@
       </li>
     </ul>
 
-    <mt-datetime-picker @confirm="handleConfirm" ref="pickerDelivery" type="datetime" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" hour-format="{value} 时" minute-format="{value} 分" ></mt-datetime-picker>
+    <mt-datetime-picker @confirm="handleConfirm" :startDate="startDate" ref="pickerDelivery" type="datetime" year-format="{value} 年" month-format="{value} 月" date-format="{value} 日" hour-format="{value} 时" minute-format="{value} 分" ></mt-datetime-picker>
 
     <mt-popup v-model="popupVisible" position="bottom" popup-transition="popup-fade">
       <div class="picker-toolbar picker-toolbar-oil">  
@@ -38,11 +48,12 @@
       </div>  
       <mt-picker ref="oil" :slots="slots" @change="onValuesChange"></mt-picker>
     </mt-popup>
-    <div class="btn">保存</div>
+    <div class="btn" @click="save">保存</div>
   </div>
 </template>
 <script>
   import {Toast,MessageBox} from 'mint-ui'
+  import {format} from 'modules/js/date.js'
   export default {
     data() {
       return {
@@ -56,7 +67,10 @@
           }
         ],
         distance:'',
-        remark:''
+        remark:'',
+        visitime: '',
+        currentPickerId: '',
+        startDate: new Date()
       }
     },
     mounted:function(){
@@ -73,12 +87,14 @@
               this.distance = res.data.distance
               this.oil = res.data.oid
               this.deliveryTime = res.data.gettime//交车时间
+              this.visitime = res.data.visitime;//回访日期
               this.remark = res.data.remark
           }
         })
       },
-      openTimePicker() {
+      openTimePicker(type) {
         this.$refs.pickerDelivery.open();
+        this.currentPickerId = type;
       },
       openOilPicker() {
         this.popupVisible = true
@@ -89,19 +105,38 @@
       select() {
         this.popupVisible = false;
         this.oil = this.$refs.oil.getValues().toString();
-      },
-      onValuesChange() {},
-      handleConfirm() {
         
       },
+      onValuesChange() {},
+      handleConfirm(value) {
+        if(this.currentPickerId == 'deliveryTime'){
+          this.deliveryTime = format(value,'yyyy-MM-dd HH:mm')
+        }else{
+          this.visitime = format(value,'yyyy-MM-dd HH:mm')
+        }
+      },
       save(){
+        if(!this.distance){ Toast('请填写进店里程'); return false;}
+        if(!this.deliveryTime){ Toast('请选择预计交车时间'); return false;}
+        if(!this.visitime){ Toast('请选择回访日期'); return false;}
+        let reqData = {
+          orderNo: this.orderNo,
+          gettime: this.deliveryTime,
+          distance: this.distance,
+          oid: this.oil,
+          remark: this.remark,
+          visitime: this.visitime
+        }
         MessageBox.confirm('是否确认修改接单信息','').then(action => {
-          this.$http.post('',reqData)
+          this.$http.post('/api.php/TechService/editsorder',reqData)
           .then((response)=>{
             let res = response.data;
             if(res.errorCode == 200){
               Toast('修改成功');
-
+              let url = "./pickupOrder.html?orderNo="+this.orderNo+"&carNo="+this.carno+"#/path"
+              setTimeout(function(){
+                window.location.href = url
+              },500)
             }else{
               Toast(res.message)
             }
@@ -116,9 +151,10 @@
 <style lang="stylus" scoped>
   @import '~modules/css/variable.styl'
   .edit >>> .mint-switch
-    position: absolute
-    top: .1rem
-    right: 0
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0,-50%);
   .edit >>> .picker-item
     font-size: .28rem 
   .edit >>> .mint-popup-bottom
@@ -134,9 +170,20 @@
     background: #fff
     padding: 0 .2rem
     box-sizing: border-box
-    li
-      width:100%
-      padding: .2rem 0    
+    li >>> .default-right-wrap
+      display: inline-block
+      width: 4.5rem
+      padding: .15rem 0.1rem
+      margin: .1rem 0 .1rem .2rem
+      border: 1px solid #d9d9d9
+      border-radius: 4px    
+    li >>> input
+      height: 100%
+      font-size: .26rem
+      color: $gray-color
+  li
+    width:100%
+    padding: .2rem 0      
   .edit
     position: fixed
     top: 0
@@ -159,15 +206,11 @@
       overflow: hidden;
       .title
         float: left
-      .odometer
-        display: inline-block
-        width: 4rem
-        padding: .1rem .2rem
-        margin: .1rem 0 .1rem .2rem
-        border: 1px solid #d9d9d9
       .pre-odometer
         font-size: .24rem
         border-radius: 4px;
+        color: $gray-color
+        margin-left: 1.4rem
     .oil-wrapper
       overflow: hidden
       .title
@@ -188,21 +231,22 @@
         display: inline-block
         width: 4rem
         height: .4rem
-        padding: .1rem .2rem
+        padding: .1rem
         margin: .1rem 0 .1rem .2rem
         border: 1px solid #d9d9d9
-        border-radius: 4px;
+        border-radius: 4px
     .owner-remark
       .remark
-        width: 4rem
+        width: 4.5rem
         height: 1rem
         margin-left: .1rem
         vertical-align: middle
         border: 1px solid #d9d9d9
         border-radius: 4px
         font-family: PingFangSC-Regular
-        font-size: .28rem
-        padding: 0 .2rem
+        font-size: .24rem
+        padding: .1rem
+        color: $gray-color
     .btn
       position: fixed
       bottom: 0
@@ -215,14 +259,3 @@
       background: $color-main    
 </style>
 
-<style lang="stylus">
-  .mint-switch-core
-    width: 41px
-    height: 20px
-  .mint-switch-core::before
-    width: 39px
-    height: 18px
-  .mint-switch-core::after 
-    width: 18px
-    height: 18px
-</style>

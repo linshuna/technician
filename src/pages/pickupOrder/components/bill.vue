@@ -1,15 +1,15 @@
 <template>
   <div class="bill">
     <div class="wrapper">
-      <div class="item">
+      <div class="item border-bottom-1px">
         应收金额
         <div class="fr grayColor">{{price}}</div>
       </div>
-      <div class="item">
+      <div class="item border-bottom-1px">
         成本价
         <div class="fr grayColor">{{pprice}}</div>
       </div>
-      <div class="item">
+      <div class="item border-bottom-1px">
         实收金额
         <input class="fr" :value="money"/>
       </div>
@@ -90,7 +90,7 @@
           let res = response.data;
           Toast(res.message)
           if(res.errorCode == 200){
-              let url = this.defaultUrl+"/pickupOrder.html?orderNo="+this.orderNo+"&carNo="+this.carno+"#/path"
+              let url = "./pickupOrder.html?orderNo="+this.orderNo+"&carNo="+this.carno+"#/path"
               setTimeout(function(){
                 window.location.href = url
               },500)
@@ -119,6 +119,10 @@
     .wrapper
       background: #fff
       font-size: .32rem
+      width: 100%
+      padding-left: .2rem
+      box-sizing: border-box
+      color: $gray-color
       .item
         height: 1rem
         line-height: 1rem
