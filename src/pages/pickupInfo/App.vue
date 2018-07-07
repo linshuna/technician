@@ -19,7 +19,7 @@
         <div class="title">进店油表</div>
         <div class="oil default-right-wrap" @click="openOilPicker">
           <input v-model="oil" readonly placeholder="请选择进店油表"/>
-          <span class="iconfont fr">&#xe60d;</span>
+          <span class="iconfont fr" style="color:#999">&#xe648;</span>
         </div>
       </li>
       <li class="expect-delivery border-bottom-1px">

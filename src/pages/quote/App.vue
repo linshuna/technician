@@ -50,7 +50,13 @@
     },
     created() {
       let gainTecherData = this.$store.getters.getStorage;
-      if(gainTecherData){
+      if(!gainTecherData){
+        let instance = Toast('请先登录')
+        setTimeout(() => {
+          instance.close()
+          window.location.href = './login.html?returnUrl='+window.location.href
+        }, 2000);
+      }else{
         this.techvid = gainTecherData.vid;
       }
     },

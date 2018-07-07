@@ -6,11 +6,13 @@ import Customer from 'components/Customer.vue'
 import PickupCar from 'components/PickupCar.vue'
 import Order from 'components/Order.vue'
 import User from 'components/User.vue'
+
 import SelfCenter from 'components/userChildren/SelfCenter.vue'
 import Setting from 'components/userChildren/Setting.vue'
 import Guide from 'components/userChildren/Guide.vue'
 import Coupon from 'components/userChildren/Coupon.vue'
 import Wallet from 'components/userChildren/Wallet.vue'
+import MyBill from 'components/userChildren/MyBill.vue'
 import GetUrlName from 'modules/js/getUrlName.js'
 Vue.use(GetUrlName)
 
@@ -40,7 +42,7 @@ export default new Router({
             { path:'/user/guide',component: Guide,name: 'Guide',meta:{title:'帮助中心'} },
             { path:'/user/coupon',component: Coupon,name: 'Coupon',meta:{title:'优惠券'} },
             { path:'/user/wallet',component: Wallet,name: 'Wallet',meta:{title:'我的钱包'} },
-            
+            { path:'/user/mybill',component: MyBill,name: 'mybill',meta:{title:'我的账单'} },            
           ]
         }
       ]

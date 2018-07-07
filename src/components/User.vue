@@ -86,7 +86,7 @@
           'icon': require("modules/images/firendIcon.png"),
           'linkName': '推荐好友'
         }, {
-          'linkUrl': '/user/coupon',
+          'linkUrl': '/user/mybill',
           'icon': require("modules/images/myOrderIcon.png"),
           'linkName': '我的账单'
         }, {

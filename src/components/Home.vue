@@ -4,9 +4,9 @@
     <mt-tabbar v-model="selected">
       <mt-tab-item id="/index">
         <router-link to="/index">
-          <!-- <div class="iconfont">&#xe605;</div> -->
-          <img class="index-img" src="../modules/images/icon_gongzuotai.png" v-if="selected=='/index'" alt="">
-          <img class="index-img" src="../modules/images/icon_gongzuotai_dis.png" v-else alt="">
+          <div class="iconfont">&#xe615;</div>
+          <!--<img class="index-img" src="../modules/images/icon_gongzuotai.png" v-if="selected=='/index'" alt="">
+          <img class="index-img" src="../modules/images/icon_gongzuotai_dis.png" v-else alt=""> -->
           <p class="footer-bar-label">工作台</p>
         </router-link>
       </mt-tab-item>
@@ -25,13 +25,13 @@
       </mt-tab-item>
       <mt-tab-item id="/order">
         <router-link to="/order">
-          <div class="iconfont">&#xe634;</div>
+          <div class="iconfont">&#xe635;</div>
           <p class="footer-bar-label">订单</p>
         </router-link>   
       </mt-tab-item>
       <mt-tab-item id="/user">
         <router-link to="/user">
-          <div class="iconfont">&#xe61d;</div>
+          <div class="iconfont">&#xe60d;</div>
           <p class="footer-bar-label">我的</p>
         </router-link>   
       </mt-tab-item>
@@ -69,14 +69,15 @@
           width: 100%
           height: 100%
       .iconfont
-        font-size: .5rem
-        color: #e3e3e3
+        font-size: .48rem
+        color: #999
       .footer-bar-label
-        color: #e3e3e3;
-        //margin-bottom: .08rem
+        color: #999
+        padding-top: 0.06rem
       .is-selected
         .iconfont
           color: #FA9E15
         .footer-bar-label
           color: #FA9E15
+          padding-top: 0.06rem
 </style>

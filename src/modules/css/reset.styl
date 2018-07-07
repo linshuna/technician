@@ -158,11 +158,16 @@ input,textarea
 //******* 切换的颜色和线条颜色以及设置padding ****
 .mint-tab-item.is-selected
   color: $color-main!important
-.pickup-order-wrap .mint-tab-item.is-selected{
+.set-tab-default .mint-tab-item.is-selected,
+.set-serverTab-default .mint-tab-item.is-selected{
   border-bottom: 3px solid $color-main !important;  
 }
 .mint-navbar .mint-tab-item
   padding: 8px 0!important
-#carDetailMsgWrap .mint-tab-item-label{
+.set-tab-default .mint-tab-item-label{
   line-height: .7rem!important;
+  font-size: .28rem!important;
 }  
+.set-tab-default .mint-navbar .mint-tab-item{
+  padding: 0 !important;
+}

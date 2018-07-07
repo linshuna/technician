@@ -1,5 +1,5 @@
 <template>
-    <div class="pickup-order-wrap">
+    <div class="pickup-order-wrap set-serverTab-default">
         <mt-navbar v-model="type">
         <mt-tab-item id="atServe" class="">
             <div>服务中({{firstnum}})</div>
@@ -71,7 +71,7 @@
                 <div class="deliveryTime">预计交车时间 <span>{{item.gettime}}</span></div>
             </div>
             <div class="main-r">
-                <div class="type">已提车</div>
+                <div class="type grayColor">已提车</div>
                 <div class="account">¥{{item.price}}</div>
             </div>
             </div>
@@ -151,11 +151,20 @@
             }
         },
         created() {
-            let key = 'techerData'
-            this.$store.commit('_setName',key)
-            let techerDataJson = this.$store.getters.getStorage
-            this.techvid = techerDataJson.vid
-            this.getOrderList();//调用初始数据
+          let gainTecherData = this.$store.getters.getStorage
+          if(!gainTecherData){
+            let instance = Toast('请先登录')
+            setTimeout(() => {
+              instance.close()
+              window.location.href = './login.html?returnUrl='+window.location.href
+            }, 2000);
+          }
+          
+          let key = 'techerData'
+          this.$store.commit('_setName',key)
+          let techerDataJson = this.$store.getters.getStorage
+          this.techvid = techerDataJson.vid
+          this.getOrderList();//调用初始数据
         },
         components:{
             'car-key-code':carKeyCode,
@@ -175,6 +184,8 @@
 </style>
 <style lang="stylus" scoped>
   @import '~modules/css/variable.styl'
+  .grayColor
+    color: $gray-color9
   .pickup-order-wrap >>>  .mint-tab-item-label
     font-size: .32rem
 
@@ -207,20 +218,20 @@
         margin-left: .4rem
         color: #a9a9a9
         line-height: .45rem
-        font-size: .24rem
+        font-size: .26rem
         .carno
-          font-size: .32rem
+          font-size: .28rem
           line-height: .54rem
           color: #2c3e50
       .main-r
         float: right 
         .type
-          color: #82A0FA
-          font-size: .24rem
+          color: $color-main
+          font-size: .28rem
           margin-bottom: .8rem
         .account
-          color: $color-main
-          font-size: .36rem
+          color: #82A0FA
+          font-size: 0.28rem
           text-align: right
     .noData
       margin: 2rem

@@ -57,7 +57,7 @@ export default {
     font-size: .24rem  
     color: #fa9e15
   .couponList
-    margin-top: .9rem   
+    margin-top: .9rem
     .noDataTip
       width: 100%
       text-align: center

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="set-tab-default">
     <mt-navbar v-model="selected" :fixed=true>
       <mt-tab-item id="1">当前仓库</mt-tab-item>
       <mt-tab-item id="2">待采购</mt-tab-item>
@@ -18,52 +18,7 @@
               <div>编码: B2121</div>
               <div>库存: 23</div>
             </div>
-            <div class="iconfont arrowRight">&#xe66b;</div>
-          </li>
-          <li class="item border-bottom-1px">
-            <img class="proImg" src="../../modules/images/defaultLogo.png"/>
-            <div class="main-c">
-              <div>小型轿车雨刮器</div>
-              <div>编码: B2121</div>
-              <div>库存: 23</div>
-            </div>
-            <div class="iconfont arrowRight">&#xe66b;</div>
-          </li>
-          <li class="item border-bottom-1px">
-            <img class="proImg" src="../../modules/images/defaultLogo.png"/>
-            <div class="main-c">
-              <div>小型轿车雨刮器</div>
-              <div>编码: B2121</div>
-              <div>库存: 23</div>
-            </div>
-            <div class="iconfont arrowRight">&#xe66b;</div>
-          </li>
-          <li class="item border-bottom-1px">
-            <img class="proImg" src="../../modules/images/defaultLogo.png"/>
-            <div class="main-c">
-              <div>小型轿车雨刮器</div>
-              <div>编码: B2121</div>
-              <div>库存: 23</div>
-            </div>
-            <div class="iconfont arrowRight">&#xe66b;</div>
-          </li>
-          <li class="item border-bottom-1px">
-            <img class="proImg" src="../../modules/images/defaultLogo.png"/>
-            <div class="main-c">
-              <div>小型轿车雨刮器</div>
-              <div>编码: B2121</div>
-              <div>库存: 23</div>
-            </div>
-            <div class="iconfont arrowRight">&#xe66b;</div>
-          </li>
-          <li class="item border-bottom-1px">
-            <img class="proImg" src="../../modules/images/defaultLogo.png"/>
-            <div class="main-c">
-              <div>小型轿车雨刮器</div>
-              <div>编码: B2121</div>
-              <div>库存: 23</div>
-            </div>
-            <div class="iconfont arrowRight">&#xe66b;</div>
+            <div class="iconfont arrowRight">&#xe646;</div>
           </li>
         </ul>
         <div class="btn">添加库存</div>
@@ -92,17 +47,28 @@
         selected: '1'
       }
     },
+    created() {
+      let gainTecherData = this.$store.getters.getStorage;
+      if(!gainTecherData){
+        let instance = Toast('请先登录')
+        setTimeout(() => {
+          instance.close()
+          window.location.href = './login.html?returnUrl='+window.location.href
+        }, 2000);
+      }
+    },
     methods: {
       
     }
   }
 </script>
-
+<style lang="stylus">
+  .mint-navbar.is-fixed
+    border-bottom: 1px solid #efefef!important
+</style>
 <style lang="stylus" scoped>
   @import '~modules/css/variable.styl'
-
-  #app >>> .mint-navbar
-    height: 1rem
+  
   #app
     color: #2c3e50
     font-size: .28rem
@@ -113,18 +79,20 @@
         display: flex
         padding: 0 .2rem
         .proImg
-          width: 1.6rem
-          height: 1.6rem
-          margin: .4rem .2rem
+          width: 1.2rem
+          height: 1.2rem
+          margin: .32rem .2rem
+          display: inline-block
+          vertical-align: middle
         .main-c
           flex: 1
-          line-height: .6rem
+          line-height: .45rem
           padding: .2rem 0
         .arrowRight
           float: right 
           line-height: 2rem
           font-size: .4rem
-          color: #000
+          color: #999
     .btn
       position: fixed
       bottom: 0

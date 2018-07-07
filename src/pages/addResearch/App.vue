@@ -3,8 +3,9 @@
     <div class="search">
       <input v-model="carno" class="search-input" placeholder="请输入车牌号" @click.prevent="showCarKeyCode" readonly/>
       <div class="add-wrapper" @click="addCar">
-        <div class="iconfont">&#xe60c;</div>
-        <div class="">新增车辆</div>
+        <!--<div class="iconfont">&#xe60c;</div>
+        <div class="">新增车辆</div> -->
+        <img :src="addIcon" alt="" class="addIcon">
       </div>
     </div>
     <ul class="result">
@@ -31,7 +32,8 @@
         isShow: false,
         tip: '',
         timer: null,
-        list: []
+        list: [],
+        addIcon: require("modules/images/add-icon-bg.png"),
       }
     },
     methods: {
@@ -107,7 +109,7 @@
     font-size: .28rem
     .search
       .search-input
-        width: 74%
+        width: 85%
         border: 1px solid #eee
         padding: 0 .8rem
         margin: .2rem
@@ -117,12 +119,17 @@
         background: url('../../modules/images/searchIcon.png') no-repeat
         background-size: .5rem
         background-position: .2rem
+        border-radius:4px
       .add-wrapper
         position: absolute
         right: .2rem
-        top: .2rem
+        top: .25rem
         color: $color-main
         text-align: center
+        .addIcon
+          display: inline-block
+          width: .65rem
+          height: .65rem
     .result
       .item
         padding: 0 .2rem

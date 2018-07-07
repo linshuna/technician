@@ -14,13 +14,13 @@
          
       <template v-if="getStorage">
         <loading v-if="loading"></loading>
-        <div v-else-if="customerList.length>0" style="margin-top:1.14rem;">
+        <div v-else-if="customerList&&customerList.length>0" style="margin-top:1.14rem;">
           <ul class="searchResult">
-              <li v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)">
+              <li v-for="(item,index) in customerList" :key="index" @click="linkCusDetial(item.clientvid)" :class="{'border-bottom-1px':index+1!==customerList.length}">
                   <div class="resultLeft">
                     <img :src="item.headimg" alt="">
                   </div>
-                  <div class="resultRight border-bottom-1px">
+                  <div class="resultRight">
                     <p class="customMsg">
                       {{item.uname}}
                       <img :src="item.sex==1?boyIcon:girlIcon" alt="" class="sexType"></p>
@@ -228,11 +228,10 @@
               width: 78%
               height: 1.52rem
               position: relative
-              color: #999
               text-align: left
               box-sizing: border-box
               .customMsg
-                font-size: 0.34rem
+                font-size: 0.32rem
                 .sexType 
                   display: inline-block
                   width: .64rem
@@ -240,7 +239,7 @@
                   margin-left: .44rem
                   vertical-align: bottom
               .remark
-                margin-top: .3rem
+                margin-top: .2rem
                 width: 84%
                 overflow: hidden
                 text-overflow: ellipsis
@@ -252,8 +251,8 @@
                 top: 0.26rem
                 right: .32rem
                 img.telIcon
-                  width: .6rem
-                  height: .6rem
+                  width: .5rem
+                  height: .5rem
 
 
 

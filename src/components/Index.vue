@@ -31,19 +31,17 @@
     <div class="nav-section commen-width">
       <ul class="nav-section-list">
         <li v-for="(nav,index) in navData" :key="index">
-          <a :href="nav.link">
+          <div @click="changeUrl(nav.link)">
             <div class="nav-icon" :class="nav.className"></div>
             <p>{{nav.name}}</p>
-          </a>
+          </div>
         </li>
       </ul>
     </div>
   </div>
 </template>
 <script>
-import {
-    Toast
-  } from "mint-ui"
+import {Toast} from "mint-ui"
   export default {
     data() {
       return{
@@ -83,12 +81,13 @@ import {
             name:'车辆管理'
           },
           {
-            link:'./store.html',
+            // link:'./store.html',
+            link:'',
             className:'nav-icon-storeManage',
             name:'仓库管理'
           },
           {
-            link:'',
+            link:'./index.html#/user/mybill',
             className:'nav-icon-bill',
             name:'我的账单'
           }
@@ -102,6 +101,12 @@ import {
     },
     mounted() {
       this.getUserData()
+    },
+    filters:{
+      priceFilter: function(value){
+        if(!value) return 0
+          else return (value-0).toFixed(1)
+      }
     },
     methods: {
       getUserData() { 
@@ -122,12 +127,16 @@ import {
           Toast(err)
         })
       },
-    filters:{
-      priceFilter: function(value){
-        if(!value) return 0
-          else return (value-0).toFixed(1)
+      changeUrl: function(url){
+        if(!url){
+          this.$store.dispatch('delToast')
+          Toast('正在开发中，敬请期待。。。');
+          return false;
+        }
+        window.location.href = url
       }
-    },
+    
+      
   }
 }
 </script>

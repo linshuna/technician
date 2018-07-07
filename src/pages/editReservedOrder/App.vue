@@ -2,17 +2,17 @@
   <div id="app">
     <div class="item border-bottom-1px carInfo">{{this.carno}}</div>
     <div class="item border-bottom-1px" @click="showNameModal">{{this.name}}
-      <span class="iconfont icon-right">&#xe66b;</span>
+      <span class="iconfont icon-right">&#xe646;</span>
     </div>
     <div class="item border-bottom-1px" @click="showTypeModal">服务类型
-      <span class="iconfont icon-right">&#xe66b;</span>
+      <span class="iconfont icon-right">&#xe646;</span>
     </div>
     <div class="item border-bottom-1px" @click="showPicker">预约到店日期
-      <span class="iconfont icon-right">&#xe66b;</span>
+      <span class="iconfont icon-right">&#xe646;</span>
       <span class="fr">{{this.date}}</span>
     </div>
     <div class="item border-bottom-1px" @click="showTimeModal">预约到店时间
-      <span class="iconfont icon-right">&#xe66b;</span>
+      <span class="iconfont icon-right">&#xe646;</span>
     </div>
     <div class="item link-phone border-bottom-1px">
       联系电话
@@ -384,6 +384,7 @@ export default {
         font-size: .3rem
         float: right
         margin-right: .2rem
+        color: $gray-color9
       .phone
         display: inline-block
         //width: 4rem

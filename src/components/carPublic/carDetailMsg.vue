@@ -1,6 +1,6 @@
 <template>
-  <div id="carDetailMsgWrap">
-    <div class="carDetailMsg">
+  <div id="carDetailMsgWrap" >
+    <div class="carDetailMsg set-tab-default">
       <mt-tabbar v-model="selected" fixed>  
         <mt-tab-item id="车辆信息">  
           车辆信息  
@@ -121,7 +121,10 @@
                           </div>
                           <div class="searchRight">
                             <p>{{item.money | priceFilter}}</p>
-                            <template v-for="(listItem,listIndex) in item.project">
+                            <template v-if="!item.project||item.project.length==0">
+                                <span class="grayColor">暂无</span>
+                            </template>
+                            <template v-else v-for="(listItem,listIndex) in item.project">
                               <p class="grayColor">{{listIndex+1}}、{{listItem.name}}</p>
                             </template>
                             
@@ -401,7 +404,7 @@ export default {
       background:#ffffff
     .is-selected
       background: transparent
-      border-bottom: 1px solid #FA9E15
+      border-bottom: 3px solid #FA9E15
       color: #FA9E15
     .mint-tab-item
       height: .7rem
@@ -467,7 +470,7 @@ export default {
         width: 100%
         margin-top: .2rem
         background: #ffffff
-        ul
+        ul.consume
           width: 100%
           .consumeTitle
             width: 100%

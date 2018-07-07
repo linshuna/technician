@@ -165,7 +165,7 @@ body
         width: 1rem
         height: .6rem
         float: right
-        background: url('../../modules/images/add-icon.png') no-repeat
+        background: url('../../modules/images/add-icon-bg.png') no-repeat
         background-size: contain
     .noData
       margin: 2rem

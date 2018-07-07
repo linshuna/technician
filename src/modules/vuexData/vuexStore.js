@@ -31,7 +31,7 @@ const store = new Vuex.Store({
               let urlArr = url.split("=");   
               returnUrl = urlArr[1]
             }else{
-                returnUrl = defaultUrl
+                returnUrl = defaultUrl+"/index.html"
             }
             state.returnUrl = returnUrl;
             return state.returnUrl;

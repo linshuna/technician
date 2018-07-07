@@ -114,10 +114,15 @@ export default {
           date: '',
           range: true
       },
-      isShowDate: true
+      isShowDate: true,
+      techvid: null
     }
   },
   created: function(){
+    let getStorage = this.$store.getters.getStorage;
+    if(getStorage){
+      this.techvid = getStorage.vid;
+    }
     this.$emit('getIsLink',true)
   },
   components:{datepicker},
@@ -231,14 +236,6 @@ export default {
             display:inline-block
             width: .15rem
             vertical-align: middle
-          // position: relative 
-          // .left
-          //   position: absolute
-          //   left: 0
-            
-          // .right
-          //   position: absolute
-          //   right: 0  
     .mint-tabbar
       height: .7rem
       top: 0
@@ -256,22 +253,6 @@ export default {
         padding: 0  
         .mint-tab-item-label
           line-height: .7rem
-    // .tabCon  
-    //   width: 100%
-    //   margin-top: .7rem
-    //   height: .9rem
-    //   line-height: .9rem
-    //   background: #ffffff
-    //   .timeCon
-    //     width: 100%
-    //     img
-    //       display: inline-block
-    //       width: .15rem
-    //       vertical-align: middle
-    //     span
-    //       display: inline-block
-    //       margin:0 .4rem
-    //       vertical-align: middle
     .walletDetail
       width: 100%
       margin-top: .2rem
@@ -320,6 +301,10 @@ export default {
     width: 100%
     background: rgba(30,30,30,.2)
 </style>
-
+<style lang="stylus">
+  .input-wrapper{
+    border: none!important;
+  }
+</style>
 
 
